@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cabins</title>
+</head>
+<body>
+    <h1>Cabins</h1>
+    <ul>
+        {% for cabin in cabins %}
+            <li>{{ cabin.name }} - {{ cabin.cabin_no }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

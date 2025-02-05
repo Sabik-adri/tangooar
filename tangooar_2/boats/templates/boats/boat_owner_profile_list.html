@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Boat Owner Profiles{% endblock %}
+
+{% block content %}
+<h1>Boat Owner Profiles</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Company Name</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profile in profiles %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ profile.company_name }}</td>
+            <td>{{ profile.contact_number }}</td>
+            <td>{{ profile.email }}</td>
+            <td>
+                <a href="{% url 'update_boat_owner_profile' profile.id %}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{% url 'delete_boat_owner_profile' profile.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'create_boat_owner_profile' %}" class="btn btn-success">Add New Profile</a>
+{% endblock %}

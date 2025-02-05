@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tour Package Schedules</title>
+</head>
+<body>
+    <h1>Tour Package Schedules</h1>
+    <ul>
+        {% for schedule in schedules %}
+            <li>{{ schedule.package.package_name }} - {{ schedule.schedule_date }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

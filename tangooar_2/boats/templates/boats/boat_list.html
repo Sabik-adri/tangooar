@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Boat List{% endblock %}
+
+{% block content %}
+    <h1>Boat List</h1>
+    <a href="{% url 'create_boat' %}">Add New Boat</a>
+    <ul>
+        {% for boat in boats %}
+        <li>
+            <strong>{{ boat.name }}</strong><br>
+            Owner: {{ boat.owner_profile.company_name }}<br>
+            Price: ${{ boat.price }}<br>
+            Type: {{ boat.type }}<br>
+            Cabin Quantity: {{ boat.cabin_quantity }}<br>
+            <a href="{% url 'update_boat' boat.id %}">Update</a> |
+            <a href="{% url 'delete_boat' boat.id %}">Delete</a>
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

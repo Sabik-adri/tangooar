@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Boat Owner Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create Boat Owner Profile</h2>
+    <form method="POST" action="{% url 'create_boat_owner_profile' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="user" class="form-label">User</label>
+            <select name="user" id="user" class="form-control" required>
+                <option value="">Select User</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.name }} ({{ user.role }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="company_name" class="form-label">Company Name</label>
+            <input type="text" name="company_name" id="company_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea name="address" id="address" class="form-control" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="contact_number" class="form-label">Contact Number</label>
+            <input type="text" name="contact_number" id="contact_number" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+{% endblock %}
+

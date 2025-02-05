@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Boat{% endblock %}
+
+{% block content %}
+    <h1>Update Boat</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="owner_profile">Owner Profile:</label>
+        <select name="owner_profile" id="owner_profile">
+            {% for owner in owners %}
+            <option value="{{ owner.id }}" {% if owner == boat.owner_profile %}selected{% endif %}>
+                {{ owner.company_name }}
+            </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" value="{{ boat.name }}"><br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description">{{ boat.description }}</textarea><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" step="0.01" value="{{ boat.price }}"><br>
+
+        <label for="type">Type:</label>
+        <select name="type" id="type">
+            <option value="House boat" {% if boat.type == "House boat" %}selected{% endif %}>House boat</option>
+            <option value="Semi House boat" {% if boat.type == "Semi House boat" %}selected{% endif %}>Semi House boat</option>
+            <option value="Traditional boat" {% if boat.type == "Traditional boat" %}selected{% endif %}>Traditional boat</option>
+        </select><br>
+
+        <label for="cabin_quantity">Cabin Quantity:</label>
+        <input type="number" name="cabin_quantity" id="cabin_quantity" value="{{ boat.cabin_quantity }}"><br>
+
+        <label for="length">Length:</label>
+        <input type="number" name="length" id="length" step="0.01" value="{{ boat.length }}"><br>
+
+        <label for="width">Width:</label>
+        <input type="number" name="width" id="width" step="0.01" value="{{ boat.width }}"><br>
+
+        <label for="height">Height:</label>
+        <input type="number" name="height" id="height" step="0.01" value="{{ boat.height }}"><br>
+
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}
+

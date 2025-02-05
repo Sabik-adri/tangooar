@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tour Packages</title>
+</head>
+<body>
+    <h1>Tour Packages</h1>
+    <ul>
+        {% for package in packages %}
+            <li>{{ package.package_name }} - {{ package.price }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
