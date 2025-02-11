@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Manager List{% endblock %}
+
+{% block content %}
+    <h1>Manager List</h1>
+    <a href="{% url 'create_manager' %}">Add New Manager</a>
+    <ul>
+        {% for manager in managers %}
+        <li>
+            <strong>{{ manager.user.username }}</strong> (Assigned Boats: {{ manager.assigned_boats }})<br>
+            Name: {{ manager.name }}<br>
+            Owner Profile: {{ manager.owner_profile.company_name }}<br>
+            Created At: {{ manager.created_at }}<br>
+            <a href="{% url 'update_manager' manager.id %}">Update</a> |
+            <a href="{% url 'delete_manager' manager.id %}">Delete</a>
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Cabin List{% endblock %}
+
+{% block content %}
+    <h1>Cabin List</h1>
+    <a href="{% url 'create_cabin' %}">Add New Cabin</a>
+    <ul>
+        {% for cabin in cabins %}
+        <li>
+            <strong>{{ cabin.name }}</strong> ({{ cabin.cabin_no }})<br>
+            Boat: {{ cabin.boat.name }}<br>
+            Price: ${{ cabin.price }}<br>
+            <a href="{% url 'update_cabin' cabin.id %}">Update</a> |
+            <a href="{% url 'delete_cabin' cabin.id %}">Delete</a>
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Customer{% endblock %}
+
+{% block content %}
+    <h1>Update Customer</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="user">User:</label>
+        <select name="user" id="user">
+            {% for user in users %}
+            <option value="{{ user.id }}" {% if user == customer.user %}selected{% endif %}>
+                {{ user.username }}
+            </option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}
+

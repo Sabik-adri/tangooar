@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Boat{% endblock %}
+
+{% block content %}
+    <h1>Create Boat</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="owner_profile">Owner Profile:</label>
+        <select name="owner_profile" id="owner_profile">
+            {% for owner in owners %}
+            <option value="{{ owner.id }}">{{ owner.company_name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name"><br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description"></textarea><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" step="0.01"><br>
+
+        <label for="type">Type:</label>
+        <select name="type" id="type">
+            <option value="House boat">House boat</option>
+            <option value="Semi House boat">Semi House boat</option>
+            <option value="Traditional boat">Traditional boat</option>
+        </select><br>
+
+        <label for="cabin_quantity">Cabin Quantity:</label>
+        <input type="number" name="cabin_quantity" id="cabin_quantity"><br>
+
+        <label for="length">Length:</label>
+        <input type="number" name="length" id="length" step="0.01"><br>
+
+        <label for="width">Width:</label>
+        <input type="number" name="width" id="width" step="0.01"><br>
+
+        <label for="height">Height:</label>
+        <input type="number" name="height" id="height" step="0.01"><br>
+
+        <button type="submit">Create</button>
+    </form>
+{% endblock %}
+
