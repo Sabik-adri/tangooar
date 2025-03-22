@@ -29,12 +29,14 @@ urlpatterns = [
     
     # Boats
     path('boats/', views.boat_list_view, name='boat_list'),
+    path('api/boats/<int:boat_id>/', views.get_boat_details, name='boat_details'),
     path('boats/create/', views.create_boat_view, name='create_boat'),
     path('boats/update/<int:pk>/', views.update_boat_view, name='update_boat'),
     path('boats/delete/<int:pk>/', views.delete_boat_view, name='delete_boat'),
     
     # Cabin
     path('cabins/', views.cabin_list_view, name='cabins'),
+    path('api/cabins/<int:cabin_id>/', views.get_cabin_details, name='cabin_details'),
     path('cabins/create/', views.create_cabin_view, name='create_cabin'),
     path('cabins/update/<int:pk>/', views.update_cabin_view, name='update_cabin'),
     path('cabins/delete/<int:pk>/', views.delete_cabin_view, name='delete_cabin'),

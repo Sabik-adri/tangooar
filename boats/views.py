@@ -24,7 +24,7 @@ from django.utils import timezone
 
 
 def dashboard_view(request):
-    return render(request, 'boats/dashboard.html')
+    return render(request, 'index.html')
 
 def signup_view(request):
     if request.method == 'POST':
@@ -286,13 +286,34 @@ def customer_list_view(request):
 
 
 # Boat
-@csrf_exempt
 def boat_list_view(request):
     boats = Boat.objects.all()
     context = {
         'boats': boats
     }
-    return render(request, 'boats/boat_list.html', context)
+    return render(request, 'transports-list.html', context)
+
+def get_boat_details(request, boat_id):
+    try:
+        boat = Boat.objects.prefetch_related('cabins').get(id=boat_id)
+        data = {
+            'id': boat.id,
+            'name': boat.name,
+            'owner_profile': {
+                'company_name': boat.owner_profile.company_name
+            },
+            'price': str(boat.price),
+            'type': boat.type,
+            'cabins': [{
+                'id': cabin.id,
+                'name': cabin.name,
+                'price': str(cabin.price),
+                'cabin_no': cabin.cabin_no
+            } for cabin in boat.cabins.all()]
+        }
+        return JsonResponse(data)
+    except Boat.DoesNotExist:
+        return JsonResponse({'error': 'Boat not found'}, status=404)
 
 @csrf_exempt
 def create_boat_view(request):
@@ -356,12 +377,37 @@ def delete_boat_view(request, pk):
 
 
 # Cabin
+# def cabin_list_view(request):
+#     cabins = Cabin.objects.all()
+#     context = {
+#         'cabins': cabins
+#     }
+#     return render(request, 'boats/cabin_list.html', context)
+
 def cabin_list_view(request):
-    cabins = Cabin.objects.all()
-    context = {
-        'cabins': cabins
-    }
+    boats = Boat.objects.prefetch_related('cabins').all()
+    context = {'boats': boats}
     return render(request, 'boats/cabin_list.html', context)
+
+
+def get_cabin_details(request, cabin_id):
+    try:
+        cabin = Cabin.objects.get(id=cabin_id)
+        data = {
+            'id': cabin.id,
+            'name': cabin.name,
+            'cabin_no': cabin.cabin_no,
+            'description': cabin.description,
+            'price': str(cabin.price),
+            'length': str(cabin.length) if cabin.length else None,
+            'width': str(cabin.width) if cabin.width else None,
+            'height': str(cabin.height) if cabin.height else None,
+            'photos': cabin.photos,
+            'created_at': cabin.created_at.isoformat(),
+        }
+        return JsonResponse(data)
+    except Cabin.DoesNotExist:
+        return JsonResponse({'error': 'Cabin not found'}, status=404)
 
 
 @csrf_exempt
