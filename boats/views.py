@@ -26,6 +26,7 @@ from django.utils import timezone
 def dashboard_view(request):
     return render(request, 'index.html')
 
+
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
