@@ -22,6 +22,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 
+# Hi I am Adri
 
 def dashboard_view(request):
     return render(request, 'index.html')
