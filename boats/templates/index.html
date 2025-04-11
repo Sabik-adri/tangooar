@@ -60,24 +60,25 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
-                                <div class="top-header-right">
-                                    <div class="contact-section">
-                                        <div class="circle-primary-sm">
-                                            <i class="ri-phone-line"></i>
+                                <div class="logo">
+                                    <a href="{% url 'dashboard' %}"><img src="{% static 'images/logo/logo_.png' %}" alt="logo" class="changeLogo" width="130"></a>
+                                </div>
+                                
+                                <!-- search box -->
+                                <div class="search-box search-bar d-none d-lg-block">
+                                    <div class="header-search">
+                                        <span class="pera">Destination, attraction</span>
+                                        <div class="search-icon">
+                                            <i class="ri-search-line"></i>
                                         </div>
-                                        <div class="info">
-                                            <p class="pera">Call Anytime</p>
-                                            <h4 class="title">
-                                                <a href="javascript:void(0)">00 (888) +123456</a>
-                                            </h4>
-                                        </div>
+                                        <kbd class="light-text">
+                                            <abbr title="Ctrl">Ctrl +</abbr> k
+                                        </kbd>
                                     </div>
                                 </div>
                                 <!-- Top Left Side -->
                                 <!-- Logo-->
-                                <div class="logo">
-                                    <a href="{% url 'dashboard' %}"><img src="{% static 'images/logo/logo.png' %}" alt="logo" class="changeLogo"></a>
-                                </div>
+                                
                                 <div class="header-right-three pl-15 d-none d-lg-flex">
                                     <div class="lang">
                                         <i class="ri-global-line"></i>
@@ -209,7 +210,7 @@
                                                     </a>
                                                     <ul class="submenu">
                                                         <li class="single-list">
-                                                            <a href="{% url 'boat_list' %}" class="single">Our Boats</a>
+                                                            <a href="{% url 'boat_list_index' %}" class="single">Our Boats</a>
                                                         </li>
                                                         <li class="single-list">
                                                             <a href="top-filter-transports-list.html" class="single">Top Filter Category</a>
@@ -385,19 +386,25 @@
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <!-- search box -->
-                                            <div class="search-box search-bar d-none d-lg-block">
-                                                <div class="header-search">
-                                                    <span class="pera">Destination, attraction</span>
-                                                    <div class="search-icon">
-                                                        <i class="ri-search-line"></i>
+                                            
+                                        <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
+
+                                            <div class="top-header-right">
+                                                <div class="contact-section">
+                                                    <div class="circle-primary-sm">
+                                                        <i class="ri-phone-line"></i>
                                                     </div>
-                                                    <kbd class="light-text">
-                                                        <abbr title="Ctrl">Ctrl +</abbr> k
-                                                    </kbd>
+                                                    <div class="info">
+                                                        <p class="pera">Call Anytime</p>
+                                                        <h4 class="title">
+                                                            <a href="javascript:void(0)">+880 1400913327</a>
+                                                        </h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
                                     </nav>
                                 </div>
                             </div>
@@ -748,13 +755,43 @@
                 <div class="row align-items-center justify-content-between g-4">
                     <div class="col-xl-12">
                         <div class="hero-caption-three position-relative z-3">
-                            <h4 class="title wow fadeInUp" data-wow-delay="0.0s">
-                                Plan tours to dream locations in just a click!
-                            </h4>
+                            <h1 class="logo-title">
+                                <span class="light-text">Tang</span><span class="gradient-text">oo</span><span class="light-text">ar</span><span class="light-text">.com</span>
+                            </h1>
+                            <style>
+                                .logo-title {
+                                    font-family: 'Poppins', sans-serif;
+                                    font-weight: 800;
+                                    font-size: 88px;
+                                    line-height: 1;
+                                    letter-spacing: 0;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+                                
+                                .gray-text {
+                                    color: #999999;
+                                }
+                                
+                                .light-text {
+                                    color: #e5e5e5;
+                                }
+                                
+                                .gradient-text {
+                                    background: linear-gradient(to right, #ffa500, #ff4500); /* Orange to reddish-orange */
+                                    -webkit-background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                    font-weight: 800;
+                                }                                
+                            </style>
+                            <p class="pera wow fadeInUp" data-wow-delay="0.0s">
+                                "Discover Tangooar Haor’s Hidden Wonders – Your Journey Begins Here!"
+                            </p>
                             <p class="pera wow fadeInUp" data-wow-delay="0.1s">
-                                Travel is a transformative and enriching experience that
-                                allows individuals to explore new destinations, cultures, and
-                                landscapes
+                                Get ready to explore the beautiful waters of Tanguar Haor. Whether you're here to enjoy the calm, see amazing wildlife, or take an exciting trip, we’re here to make sure you have a great time. Our boats are ready to take you on a peaceful ride through stunning nature. Book your trip today and start your adventure!
                             </p>
                         </div>
                         <div class="hero-footer position-relative z-3 wow fadeInUp" data-wow-delay="0.3s">
@@ -784,6 +821,22 @@
                 </div>
             </div>
         </section>
+
+
+        <!-- Call-to-Action -->
+        <section style="background-color: #2F333A; padding-top: 30px; padding-bottom: 50px; margin-top: 20px; margin-bottom: 50px;">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                        <div class="text-center">
+                            <p style="font-size: 18px; color: white;" class="pera">Explore our website to find the perfect boat for your trip, check availability, and book in just a few clicks. Let us guide you through the wonders of Tanguar Haor – your adventure starts here!</p>
+                            <br>
+                            <p style="font-size: 18px; color: white;" class="pera">We offer a selection of renowned boats, providing you with the best services to explore the stunning Tanguar Haor. Whether you're looking for affordable options, mid-range comfort, or premium experiences, our fleet includes houseboats, semi-houseboats, and traditional boats to match your needs.</p>
+                            <br>
+                            <p style="font-size: 18px; color: white;" class="pera">Choose to book a private cabin as part of a package, or reserve an entire boat for your group or team. Explore our full range of boats and start planning your perfect trip today!</p>
+                        </div>
+                </div>
+            </div>
+        </section>
         <!--/ End-of Hero-->
 
         <!-- Plan area S t a r t -->
@@ -791,7 +844,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="plan-section-three plan-shadow">
+                        {% comment %} <div class="plan-section-three plan-shadow">
                             <div class="choose-plan-nav">
 
                                 <!-- Buttons Type Select -->
@@ -1210,7 +1263,7 @@
                                 </div>
                                 <!-- / End-of Search Contents -->
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
             </div>
@@ -1220,20 +1273,11 @@
         <!-- Packages S t a r t -->
         <section class="package-area section-padding2">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-7">
-                        <div class="section-title mx-464 mx-auto text-center">
-                            <span class="highlights">Popular Packages</span>
-                            <h4 class="title">
-                                Most Favorite Tour Place in The World
-                            </h4>
-                        </div>
-                    </div>
-                </div>
+                <h6 style="font-size: 24px; font-weight: bold; margin: 18px 0;">Featured Boats</h6>
                 <div class="row">
                     <div class="col-lg-12">
                         <!-- Tab Buttons -->
-                        <ul class="nav nav-pills package-pills" id="pills-tab" role="tablist">
+                        {% comment %} <ul class="nav nav-pills package-pills" id="pills-tab" role="tablist">
                             <li class="nav-item package-item" role="presentation">
                                 <button class="nav-link package-nav active" id="pills-london-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-london" role="tab" aria-controls="pills-london" aria-selected="true">
@@ -1267,9 +1311,11 @@
                                     Dubai
                                 </button>
                             </li>
-                        </ul>
+                        </ul> {% endcomment %}
                         <!-- Tab contents -->
-                        <div class="tab-content" id="pills-tabContent">
+    
+
+                        {% comment %} <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-london" role="tabpanel"
                                 aria-labelledby="pills-london-tab">
                                 <div class="row g-4">
@@ -2112,6 +2158,68 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> {% endcomment %}
+
+                        <div class="row g-4">
+                            {% for boat in boats %}
+                            <div class="col-xl-4 col-lg-4 col-sm-6">
+                                <div class="transports-card">
+                                    <div class="transports-img imgEffect4">
+                                        <a href="{% url 'boat_details' boat.id %}">
+                                            {% if boat.photos %}
+                                            <img src="{{ boat.photos.url }}" alt="{{ boat.name }}">
+                                            {% else %}
+                                            <img src="{% static 'assets/images/default-boat.png' %}" alt="{{ boat.name }}">
+                                            {% endif %}
+                                        </a>
+                                        <div class="rating-badge-car">
+                                            <div class="rating">
+                                                <i class="ri-star-s-fill"></i>
+                                                <p class="pera">5 (20 Reviews)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="transports-content">
+                                        <h4 class="area-name">
+                                            <a href="{% url 'boat_details' boat.id %}">{{ boat.name }}</a>
+                                        </h4>
+                                        <div class="location">
+                                            <i class="ri-map-pin-line"></i>
+                                            <div class="name text-capitalize">Owned by {{ boat.owner_profile.company_name }}</div>
+                                        </div>
+                                        <div class="transports-person">
+                                            <div class="count">
+                                                <div class="icon text-primary">
+                                                    <i class="ri-speed-up-line"></i>
+                                                </div>
+                                                <p class="pera">{{ boat.length|default:'N/A' }} ft</p>
+                                            </div>
+                                            <div class="count">
+                                                <div class="icon text-primary">
+                                                    <i class="ri-tools-fill"></i>
+                                                </div>
+                                                <p class="pera text-capitalize">{{ boat.type }}</p>
+                                            </div>
+                                            <div class="count">
+                                                <div class="icon text-primary">
+                                                    <i class="ri-bus-2-line"></i>
+                                                </div>
+                                                <p class="pera text-capitalize">{{ boat.cabin_quantity }} Cabins</p>
+                                            </div>
+                                        </div>
+                                        <div class="cart-footer d-flex flex-wrap justify-content-between">
+                                            <div class="d-flex gap-6 align-items-center">
+                                                <p class="pera">${{ boat.price }}</p>
+                                                <p class="sub-pera text-12 text-capitalize">/trip</p>
+                                            </div>
+                                            <a href="{% url 'boat_details' boat.id %}" class="browse-btn">Book Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <p>No boats available.</p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -2120,7 +2228,7 @@
                         <div class="section-button d-inline-block">
                             <a href="tour-list.html">
                                 <div class="btn-primary-icon-sm">
-                                    <p class="pera">View All Tour</p>
+                                    <a href="{% url 'boat_list' %}" class="pera">View All Tour</a>
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
                             </a>
@@ -2132,7 +2240,7 @@
         <!--/ End of Packages -->
 
         <!-- Special area S t a r t -->
-        <section class="special-area bottom-padding">
+        {% comment %} <section class="special-area bottom-padding">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-7">
@@ -3933,8 +4041,8 @@
                 </div>
             </div>
         </section>
-        <!--/ End of Pricing -->
-    </main>
+        <!--/ End of Pricing -->{% endcomment %}
+    </main> 
 
     <!-- Footer S t a r t -->
     <footer>
@@ -4027,7 +4135,7 @@
                         <div class="footer-content">
                             <div class="d-flex flex-column gap-20">
                                 <div class="logo">
-                                    <img src="assets/images/logo/logo.png" alt="travello" class="changeLogo">
+                                    <img src="assets/images/logo/logo_.png" alt="travello" class="changeLogo">
                                 </div>
                                 <p class="pera">
                                     Travel is a transformative and enriching experience that

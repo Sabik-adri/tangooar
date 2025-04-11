@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bookings</title>
+</head>
+<body>
+    <h1>Bookings</h1>
+    <ul>
+        {% for booking in bookings %}
+            <li>{{ booking.boat.name if booking.boat else "No Boat" }} - {{ booking.booking_date }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

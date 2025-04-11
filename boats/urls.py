@@ -29,6 +29,8 @@ urlpatterns = [
     
     # Boats
     path('boats/', views.boat_list_view, name='boat_list'),
+    path('', views.boat_list_view_index, name='boat_list_index'),
+    
     path('api/boats/<int:boat_id>/', views.get_boat_details, name='boat_details'),
     path('boats/create/', views.create_boat_view, name='create_boat'),
     path('boats/update/<int:pk>/', views.update_boat_view, name='update_boat'),

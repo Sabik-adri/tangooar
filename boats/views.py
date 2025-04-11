@@ -25,7 +25,11 @@ from django.utils import timezone
 # Hi I am Adri
 
 def dashboard_view(request):
-    return render(request, 'index.html')
+    boats = Boat.objects.all()
+    context = {
+        'boats': boats
+    }
+    return render(request, 'index.html', context)
 
 
 def signup_view(request):
@@ -295,6 +299,13 @@ def boat_list_view(request):
     }
     return render(request, 'transports-list.html', context)
 
+def boat_list_view_index(request):
+    boats = Boat.objects.all()
+    context = {
+        'boats': boats
+    }
+    return render(request, 'index.html', context)
+
 def get_boat_details(request, boat_id):
     try:
         boat = Boat.objects.prefetch_related('cabins').get(id=boat_id)
@@ -322,7 +333,8 @@ def create_boat_view(request):
     if request.method == "POST":
         owner_id = request.POST.get("owner_profile")
         owner_profile = get_object_or_404(BoatOwnerProfile, id=owner_id)
-        Boat.objects.create(
+        
+        boat = Boat.objects.create(
             owner_profile=owner_profile,
             name=request.POST.get("name"),
             description=request.POST.get("description"),
@@ -332,15 +344,13 @@ def create_boat_view(request):
             length=request.POST.get("length"),
             width=request.POST.get("width"),
             height=request.POST.get("height"),
-            created_by=request.user.id
+            created_by=request.user.id,
+            photos=request.FILES.get("photos")  # ✅ This is the fix
         )
         return redirect('boat_list')
-    
+
     owners = BoatOwnerProfile.objects.all()
-    context = {
-        'owners': owners
-    }
-    return render(request, 'boats/boat_create.html', context)
+    return render(request, 'boats/boat_create.html', {'owners': owners})
 
 @csrf_exempt
 def update_boat_view(request, pk):

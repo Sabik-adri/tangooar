@@ -1132,7 +1132,11 @@
             <div class="transports-card">
                 <div class="transports-img imgEffect4">
                     <a href="{% url 'boat_details' boat.id %}">
-                        <img src="{{ boat.photos|default:'assets/images/default-boat.png' }}" alt="{{ boat.name }}">
+                        {% if boat.photos %}
+                        <img src="{{ boat.photos.url }}" alt="{{ boat.name }}">
+                        {% else %}
+                        <img src="{% static 'assets/images/default-boat.png' %}" alt="{{ boat.name }}">
+                        {% endif %}
                     </a>
                     <div class="rating-badge-car">
                         <div class="rating">

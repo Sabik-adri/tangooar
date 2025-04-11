@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Manager{% endblock %}
+
+{% block content %}
+    <h1>Create Manager</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required>
+        <br>
+
+        <label for="user">User:</label>
+        <select name="user" id="user">
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        
+        <label for="owner_profile">Owner Profile:</label>
+        <select name="owner_profile" id="owner_profile">
+            {% for owner_profile in owner_profiles %}
+            <option value="{{ owner_profile.id }}">{{ owner_profile.company_name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        
+        <label for="assigned_boats">Assigned Boats:</label>
+        <textarea name="assigned_boats" id="assigned_boats"></textarea>
+        <br>
+        
+        <button type="submit">Create</button>
+    </form>
+{% endblock %}
+
