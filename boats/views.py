@@ -1,5 +1,9 @@
-from datetime import timezone
+from datetime import datetime, timezone
+import re
+from django.forms import ValidationError
 from django.shortcuts import render
+
+from .form import BoatForm
 
 from .models import Manager
 from .models import BoatOwnerProfile, Boat, Cabin, ScheduleCalendar, Customer, Booking, TourType, TourPackage, TourPackageSchedule
@@ -308,25 +312,39 @@ def boat_list_view_index(request):
 
 def get_boat_details(request, boat_id):
     try:
-        boat = Boat.objects.prefetch_related('cabins').get(id=boat_id)
+        boat = Boat.objects.prefetch_related('cabins', 'schedules').get(id=boat_id)
+
+        # Get schedule info (assuming boat-based schedules)
+        schedule = boat.schedules.first()
+        available_dates = schedule.available_dates.split(',') if schedule and schedule.available_dates else []
+        reserved_dates = schedule.reserved_dates.split(',') if schedule and schedule.reserved_dates else []
+        calendar_days = list(range(1, 31))  # [1, 2, ..., 30]
+
         data = {
             'id': boat.id,
             'name': boat.name,
+            'description': boat.description,
+            'price': boat.price,
+            'type': boat.type,
+            'cabin_quantity': boat.cabin_quantity,
+            'is_reserved': boat.is_reserved,
+            'length': boat.length,
+            'width': boat.width,
+            'height': boat.height,
+            'photos': request.build_absolute_uri(boat.photos.url) if boat.photos else '',
             'owner_profile': {
                 'company_name': boat.owner_profile.company_name
             },
-            'price': str(boat.price),
-            'type': boat.type,
-            'cabins': [{
-                'id': cabin.id,
-                'name': cabin.name,
-                'price': str(cabin.price),
-                'cabin_no': cabin.cabin_no
-            } for cabin in boat.cabins.all()]
+            'cabins': boat.cabins.all(),
+            'available_dates': available_dates,
+            'reserved_dates': reserved_dates,
+            'booked_dates' : boat.booked_dates,
+            'calendar_days': calendar_days  # Add the list of days to the context
         }
-        return JsonResponse(data)
+
+        return render(request, 'booking-sheet.html', {'boat': data})
     except Boat.DoesNotExist:
-        return JsonResponse({'error': 'Boat not found'}, status=404)
+        return render(request, 'booking-sheet.html', {'error': 'Boat not found'})
 
 @csrf_exempt
 def create_boat_view(request):
@@ -334,6 +352,29 @@ def create_boat_view(request):
         owner_id = request.POST.get("owner_profile")
         owner_profile = get_object_or_404(BoatOwnerProfile, id=owner_id)
         
+        # Validate booked_dates format (e.g., "2025-05-01:2025-05-05,2025-06-01:2025-06-07")
+        booked_dates = request.POST.get("booked_dates")
+        if booked_dates:
+            try:
+                # Simple validation: check if dates match YYYY-MM-DD:YYYY-MM-DD format
+                date_ranges = booked_dates.split(",")
+                date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}:\d{4}-\d{2}-\d{2}$")
+                for date_range in date_ranges:
+                    if not date_pattern.match(date_range):
+                        raise ValidationError(f"Invalid date range format: {date_range}")
+                    start_date, end_date = date_range.split(":")
+                    # Optionally, validate that dates are valid and start_date <= end_date
+                    from datetime import datetime
+                    start = datetime.strptime(start_date, "%Y-%m-%d")
+                    end = datetime.strptime(end_date, "%Y-%m-%d")
+                    if start > end:
+                        raise ValidationError(f"Start date must be before end date in range: {date_range}")
+            except ValidationError as e:
+                return render(request, 'boats/boat_create.html', {
+                    'owners': BoatOwnerProfile.objects.all(),
+                    'error': str(e)
+                })
+
         boat = Boat.objects.create(
             owner_profile=owner_profile,
             name=request.POST.get("name"),
@@ -344,8 +385,9 @@ def create_boat_view(request):
             length=request.POST.get("length"),
             width=request.POST.get("width"),
             height=request.POST.get("height"),
+            booked_dates=booked_dates,  # Save the booked_dates
             created_by=request.user.id,
-            photos=request.FILES.get("photos")  # ✅ This is the fix
+            photos=request.FILES.get("photos")
         )
         return redirect('boat_list')
 
@@ -356,23 +398,22 @@ def create_boat_view(request):
 def update_boat_view(request, pk):
     boat = get_object_or_404(Boat, pk=pk)
     if request.method == "POST":
-        boat.owner_profile = get_object_or_404(BoatOwnerProfile, id=request.POST.get("owner_profile"))
-        boat.name = request.POST.get("name")
-        boat.description = request.POST.get("description")
-        boat.price = request.POST.get("price")
-        boat.type = request.POST.get("type")
-        boat.cabin_quantity = request.POST.get("cabin_quantity")
-        boat.length = request.POST.get("length")
-        boat.width = request.POST.get("width")
-        boat.height = request.POST.get("height")
-        boat.updated_by = request.user.id
-        boat.save()
-        return redirect('boat_list')
-    
-    owners = BoatOwnerProfile.objects.all()
+        form = BoatForm(request.POST, request.FILES, instance=boat)
+        if form.is_valid():
+            form.instance.updated_by = request.user.id
+            form.save()
+            return redirect('boat_list')
+        context = {
+            'boat': boat,
+            'owners': BoatOwnerProfile.objects.all(),
+            'form': form
+        }
+        return render(request, 'boats/boat_update.html', context)
+    form = BoatForm(instance=boat)
     context = {
         'boat': boat,
-        'owners': owners
+        'owners': BoatOwnerProfile.objects.all(),
+        'form': form
     }
     return render(request, 'boats/boat_update.html', context)
 

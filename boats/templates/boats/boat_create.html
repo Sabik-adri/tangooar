@@ -44,7 +44,24 @@
         <label for="photos">Photos:</label>
         <input type="file" name="photos" id="photos" multiple><br>
 
+        <label for="booked_dates">Reserved Dates (e.g., 2025-05-01:2025-05-05,2025-06-01:2025-06-07):</label>
+        <input type="text" name="booked_dates" id="booked_dates"><br>
+
         <button type="submit">Create</button>
     </form>
-{% endblock %}
 
+    <!-- Optional: Add Flatpickr for date range picking -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    {% comment %} <script>
+        flatpickr("#booked_dates", {
+            mode: "multiple",
+            dateFormat: "Y-m-d",
+            conjunction: ",", // Separator for multiple dates
+            enableTime: false,
+            onChange: function(selectedDates, dateStr, instance) {
+                // Optional: Format as date ranges if needed
+            }
+        });
+    </script> {% endcomment %}
+{% endblock %}

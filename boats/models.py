@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.forms import ValidationError
 
 class User(AbstractUser):
     ROLES = [
@@ -127,7 +128,8 @@ class Customer(models.Model):
 
 class Booking(models.Model):
     customer = models.ForeignKey('boats.Customer', on_delete=models.CASCADE, related_name='bookings')
-    boat = models.ForeignKey('boats.Boat', on_delete=models.CASCADE, blank=True, null=True, related_name='bookings')
+    # boat = models.ForeignKey('boats.Boat', on_delete=models.CASCADE, blank=True, null=True, related_name='bookings')
+    boat = models.ForeignKey(Boat, on_delete=models.CASCADE, related_name='bookings')
     cabin = models.ForeignKey('boats.Cabin', on_delete=models.CASCADE, blank=True, null=True, related_name='bookings')
     booking_date = models.DateField()
     start_date = models.DateField()
@@ -139,6 +141,10 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_by = models.IntegerField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    def clean(self):
+        if self.start_date > self.end_date:
+            raise ValidationError("Start date must be before end date.")
 
 class TourType(models.Model):
     name = models.CharField(max_length=255)
