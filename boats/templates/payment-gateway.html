@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block content %}
+<div style="height: 70px; background-color: #2F333A; line-height: 70px; text-align: left; padding-left: 50px; padding-right: 50px;"><span style="color: white; font-size: 15px;">Welcome to Tangooar.com</span></div>
+
 <!DOCTYPE html>
 <html lang="zxx" dir="ltr">
 <head>
@@ -12,20 +12,22 @@
         };
         setTheme();
     </script>
+{% load static %}
     <meta logo="{% static 'images/logo/logo.png' %}">
     <meta white-logo="{% static 'images/logo/logo-white.png' %}">
-
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Travello - Multipurpose travel and tour booking. This template is suitable for travel agency, tour, travel website, tour operator, tourism, booking trip or adventure website.">
-    <meta name="keywords" content="travel, trip booking, tour, hotel, tour guide, tourism, blog, flight, travel agency, tourism agency, accommodation, tour website">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Travello - Multipurpose travel and tour booking.These template is suitable for  travel agency , tour, travel website , tour operator , tourism , booking  trip or adventure website. ">
+    <meta name="keywords" content="travel, trip booking,tour, hotel, tour guide, tourism, blog, flight, travel agency, tourism agency, accommodation, tour website">
     <meta name="author" content="inittheme">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Multipurpose travel and tour booking">
     <meta property="og:site_name" content="Travello">
     <meta property="og:url" content="https://inittheme.com">
-    <meta property="og:image" content="{% static 'images/selfie.jpg' %}">
+    <meta property="og:image" content="https://inittheme.com/images/selfie.jpg">
     <meta property="og:description" content="Multipurpose travel and tour booking, multipurpose template">
     <meta name="twitter:title" content="Multipurpose travel and tour booking">
     <meta name="twitter:description" content="Multipurpose travel and tour booking, multipurpose template">
@@ -37,7 +39,7 @@
     <meta name="csrf-token" content="...">
     <meta name="currency" content="$">
     <!-- Title -->
-    <title>Multipurpose travel and tour booking</title>
+    <title>Multipurpose travel and tour booking </title>
     <link rel="icon" type="image/x-icon" sizes="20x20" href="{% static 'images/icon/favicon.png' %}">
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-5.3.0.min.css' %}">
@@ -740,344 +742,243 @@
         </div>
         <!-- / End-Search -->
     </header>
-    
     <main>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                background: #f5f5f5;
-            }
-            .boat-header {
-                display: flex;
-                gap: 20px;
-                background: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .boat-image {
-                width: 400px;
-                height: auto;
-                border-radius: 8px;
-            }
-            .image-gallery {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                width: 120px;
-            }
-            .image-gallery img {
-                width: 100%;
-                height: auto;
-                border-radius: 8px;
-                cursor: pointer;
-            }
-            .boat-details {
-                flex: 1;
-            }
-            .boat-details h2 {
-                font-size: 24px;
-                margin: 0 0 10px;
-                color: #333;
-            }
-            .boat-details p {
-                margin: 5px 0;
-                color: #555;
-            }
-            .boat-details p strong {
-                color: #333;
-            }
-            .rating {
-                color: #f5a623;
-                font-size: 18px;
-                margin: 5px 0;
-            }
-            .amenities {
-                margin-top: 10px;
-            }
-            .amenities ul {
-                list-style-type: none;
-                padding: 0;
-            }
-            .amenities ul li {
-                margin: 5px 0;
-                color: #555;
-            }
-            .amenities ul li::before {
-                content: "• ";
-                color: #d32f2f;
-            }
-            .calendar, .cabins, .summary {
-                margin-top: 30px;
-                background: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .calendar h3 {
-                margin-top: 0;
-            }
-            .calendar-grid {
-                display: grid;
-                grid-template-columns: repeat(7, 1fr);
-                gap: 5px;
-                text-align: center;
-            }
-            .calendar-grid div {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-            .calendar-grid .header {
-                background: #f0f0f0;
-                font-weight: bold;
-            }
-            .calendar-grid .day {
-                background: #fafafa;
-            }
-            .calendar-grid .day.reserved {
-                background: #d32f2f;
-                color: white;
-            }
-            .calendar-grid .day.empty {
-                background: #fff;
-                border: none;
-            }
-            .cabins .cabin {
-                border: 1px solid #ddd;
-                padding: 10px;
-                margin-bottom: 10px;
-                border-radius: 4px;
-            }
-            .summary-box {
-                border: 1px solid #aaa;
-                padding: 10px;
-                background: #f9f9f9;
-                border-radius: 4px;
-            }
-            .btn {
-                background: #d32f2f;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                margin-right: 10px;
-                padding-bottom: 20px;
-            }
-            .btn.blue {
-                background: #1976d2;
-            }
-        </style>
-    
-        {% if boat %}
-        <div class="boat-header">
-            <div class="image-gallery">
-                {% if boat.photos %}
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                {% else %}
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                {% endif %}
-            </div>
-            <img src="{{ boat.photos|default:'https://via.placeholder.com/400x300?text=No+Image' }}" class="boat-image" alt="Boat image">
-            <div class="boat-details">
-                <h2>{{ boat.name }}</h2>
-                <div class="rating">★★★★★</div>
-                <p><strong>Owner:</strong> {{ boat.owner_profile.company_name }}</p>
-                <p><strong>ID:</strong> {{ boat.id }}</p>
-                <p><strong>Availability:</strong> {% if boat.is_reserved %}Fully Booked{% else %}Available{% endif %}</p>
-                <div class="amenities">
-                    <ul>
-                        <li><strong>{{ boat.type }}:</strong> Length {{ boat.length|floatformat:1 }} ft, Width {{ boat.width|floatformat:1 }} ft, Height {{ boat.height|floatformat:1 }} ft, {{ boat.cabin_quantity }} Cabins</li>
-                        {% for cabin in boat.cabins %}
-                            <li><strong>{{ cabin.name }} ({{ cabin.cabin_no }}):</strong> {{ cabin.length|floatformat:1 }} X {{ cabin.width|floatformat:1 }} Square feet, Attached Washroom & Balcony</li>
-                        {% endfor %}
-                        <li><strong>Description:</strong> {{ boat.description|default:"No description available" }}</li>
-                        <li><strong>Meal Facilities:</strong> 5 meals, 4 snacks, unlimited tea-coffee</li>
-                        <li><strong>Departure from:</strong> Moddha Nagar</li>
-                        <li><strong>Places to visit:</strong> Watch Tower, Tekarghaat, Jadukata Nodi</li>
-                        <li><strong>Facilities:</strong> Life Jacket, 24/7 Power Supply, Gas Cylinder</li>
-                    </ul>
-                </div>
-
-                
-
-            </div>
-        </div>
-
-<div style="background-color: #E73C17; color: white; padding: 10px; margin: 10px 0; font-size: 20px; letter-spacing: 1px; word-spacing: 3px; text-align: center;">
-    D e t a i l e d       B o o k i n g       S h e e t
-</div>
-
-    
-        <style>
-            .calendar {
-                width: 100%;
-                max-width: 800px;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 15px;
-                padding-top: 15px;
-                background-color: #f8f8f8;
-            }
-        </style>
-        <div class="calendar">
-            <h3>Booking Calendar - April 2025</h3>
-            <div class="calendar-grid">
-                <!-- Weekday headers -->
-                <div class="header">Sun</div>
-                <div class="header">Mon</div>
-                <div class="header">Tue</div>
-                <div class="header">Wed</div>
-                <div class="header">Thu</div>
-                <div class="header">Fri</div>
-                <div class="header">Sat</div>
-    
-                <!-- Fill in empty days before the 1st (April 1, 2025 was a Tuesday) -->
-                <div class="day empty"></div>
-                <div class="day empty"></div>
-    
-                <!-- Generate days for April 2025 -->
-                {% for day in boat.calendar_days %}
-                {% with date="2025-04-"|add:day|stringformat:"02d" %}
-                    <div class="day {% if date in boat.reserved_dates %}reserved{% elif day == 5 or day == 15 or day == 25 %}orange{% endif %}">
-                        {{ day }}
-                    </div>
-                {% endwith %}
-                {% endfor %}
-            </div>
-            <p><strong>Reserved Dates:</strong> {{ boat.reserved_dates|join:", " }}</p>
-            <p><strong>Available Dates:</strong> {{ boat.available_dates|join:", " }}</p>
-        </div>
-        <style>
-            .calendar-grid .day.orange {
-                background: #E73C17;
-                color: white;
-            }
-        </style>
-
-
         
-<div style="display: flex; justify-content: space-between; width: 600px; margin-left: 200px; padding: 50px;">
-    <div id="boat-structure" class="boat-grid"></div>
-    <div id="cabin-details" style="margin-left: 20px;"></div>
-</div>
 
-<style>
-    .boat-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 120px);
-        grid-auto-rows: 80px;
-        gap: 10px;
-    }
+        <style>
+            
+            .header {
+                padding: 20px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .form-container {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 20px 0;
+            }
+            .form-section {
+                width: 48%;
+                padding-right: 2%;
+            }
+            .form-title {
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-size: 14px;
+            }
+            .form-control {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 14px;
+            }
+            .dropdown {
+                display: flex;
+                gap: 10px;
+            }
+            .dropdown select {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+                background-size: 1em;
+            }
+            .payment-method {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .payment-method-label {
+                font-weight: bold;
+                margin-right: 20px;
+                font-size: 14px;
+            }
+            .payment-icons {
+                display: flex;
+                gap: 10px;
+            }
+            .payment-icon {
+                height: 30px;
+                border-radius: 4px;
+                padding: 5px;
+                background-color: white;
+                border: 1px solid #eee;
+            }
+            .pay-button {
+                background-color: #000;
+                color: white;
+                border: none;
+                padding: 15px;
+                width: 100%;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 4px;
+                margin-top: 20px;
+            }
+            .code-input {
+                position: relative;
+            }
+            .code-input input {
+                padding-right: 40px;
+            }
+            .eye-icon {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+                border: 1px solid #ddd;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
 
-.cabin-box {
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.booked {
-    background-color: #d9534f; /* red */
-}
-
-.available {
-    background-color: #5cb85c; /* green */
-}
-</style>
-    
-        {% comment %} <div class="cabins">
-            <h3>Cabins</h3>
-            {% for cabin in boat.cabins %}
-                <div class="cabin">
-                    <p><strong>Name:</strong> {{ cabin.name }} ({{ cabin.cabin_no }})</p>
-                    <p><strong>Price:</strong> {{ cabin.price }} TK</p>
-                    <p><strong>Dimensions:</strong> {{ cabin.length|floatformat:1 }} ft x {{ cabin.width|floatformat:1 }} ft x {{ cabin.height|floatformat:1 }} ft</p>
-                    <p><strong>Description:</strong> {{ cabin.description|default:"No description available" }}</p>
-                </div>
-            {% empty %}
-                <p>No cabins available for this boat.</p>
-            {% endfor %}
-        </div> {% endcomment %}
-    
-        <div class="summary">
-            <h3>Booking Summary</h3>
-            <div class="summary-box">
-                <p><strong>Boat:</strong> {{ boat.name }}</p>
-                <p><strong>Price (Base):</strong> {{ boat.price }} TK</p>
-                <p><strong>Total Guests:</strong> (select from form in real UI)</p>
-                <p><strong>Grand Total:</strong> (calculated dynamically)</p>
+        <div class="container">
+            <div class="header">
+                <h3>Payment</h3>
             </div>
-
-            <style>
-    .button-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      padding: 20px 0;
-      text-align: center;
-    }
-
-    .action-button {
-      background-color: #E73C17;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 2px;
-      cursor: pointer;
-      text-transform: uppercase;
-      width: 900px;
-    }
-
-    .separator {
-      font-weight: bold;
-      font-size: 14px;
-      color: #000;
-    }
-
-    .action-button i {
-      font-size: 16px;
-    }
-  </style>
-            <div class="button-container" style="justify-content: center;">
-                <a href="{% url 'payment_gateway' %}">
-                    <button class="action-button">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <div style="display: flex; justify-content: center; width: 100%;">Proceed to Payment</div>
-                    </button>
-                </a>
-                <span class="separator">OR</span>
-                <a href="{% url 'payment_gateway' %}">
-                    <button class="action-button">
-                        <i class="fas fa-phone-alt"></i>
-                        <div style="display: flex; justify-content: center; width: 100%;">Call for Reservation</div>
-                    </button>
-                </a>
-              </div>
+            
+            <div class="form-container">
+                <div class="form-section">
+                    <div class="form-title">Contact Information</div>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Full Name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Email">
+                    </div>
+                    
+                    <div class="payment-method">
+                        <div class="payment-method-label">Payment Method</div>
+                        <div class="payment-icons">
+                            <img src="/api/placeholder/60/30" alt="UKash" class="payment-icon">
+                            <img src="/api/placeholder/60/30" alt="Card" class="payment-icon">
+                            <img src="/api/placeholder/60/30" alt="MasterCard" class="payment-icon">
+                            <img src="/api/placeholder/60/30" alt="Visa" class="payment-icon">
+                        </div>
+                    </div>
+                    
+                    <button class="pay-button">Pay</button>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-title">Credit Card Details</div>
+                    
+                    <div class="form-group">
+                        <label for="nameOnCard">Name on card</label>
+                        <input type="text" id="nameOnCard" class="form-control" placeholder="Name on card">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardNumber">Card number</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="0000 0000 0000 0000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardExpiration">Card expiration</label>
+                        <div class="dropdown">
+                            <select id="cardExpirationMonth" class="form-control">
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <select id="cardExpirationYear" class="form-control">
+                                <option value="">Year</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                                <option value="2031">2031</option>
+                                <option value="2032">2032</option>
+                                <option value="2033">2033</option>
+                                <option value="2034">2034</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="securityCode">Card Security Code</label>
+                        <div class="code-input">
+                            <input type="password" id="securityCode" class="form-control" placeholder="Code">
+                            <div class="eye-icon">👁️</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-title" style="margin-top: 30px;">Billing address</div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" class="form-control">
+                            <option value="">Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" class="form-control" placeholder="Address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" class="form-control" placeholder="City">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" class="form-control" placeholder="State">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zipCode">ZIP CODE</label>
+                        <input type="text" id="zipCode" class="form-control" placeholder="ZIP CODE">
+                    </div>
+                </div>
+            </div>
         </div>
-        {% else %}
-            <p>{{ error }}</p>
-        {% endif %}
+
     </main>
+
     <!-- Footer S t a r t -->
     <footer>
         <div class="footer-wrapper footer-bg">
@@ -1141,18 +1042,18 @@
                                     <h4 class="title">Contact</h4>
                                     <ul class="listing">
                                         <li class="single-lsit">
-                                            <a href="index.html#" class="mb-20 d-block">70/A Floor Divo Tower Melbourne,
+                                            <a href="transports-list.html#" class="mb-20 d-block">70/A Floor Divo Tower Melbourne,
                                                 Australia</a>
                                         </li>
                                         <li class="single-lsit">
-                                            <a href="index.html#">
+                                            <a href="transports-list.html#">
                                                 <div class="d-flex gap-12">
                                                     <i class="ri-phone-line"></i> (00) +888 123456 789
                                                 </div>
                                             </a>
                                         </li>
                                         <li class="single-lsit">
-                                            <a href="index.html#">
+                                            <a href="transports-list.html#">
                                                 <div class="d-flex gap-12">
                                                     <i class="ri-mail-line"></i> example@gmail.com
                                                 </div>
@@ -1169,7 +1070,7 @@
                         <div class="footer-content">
                             <div class="d-flex flex-column gap-20">
                                 <div class="logo">
-                                    <img src="assets/images/logo/logo_.png" alt="travello" class="changeLogo">
+                                    <img src="assets/images/logo/logo.png" alt="travello" class="changeLogo">
                                 </div>
                                 <p class="pera">
                                     Travel is a transformative and enriching experience that
@@ -1238,67 +1139,5 @@
     <script src="{% static 'assets/js/plugin.js' %}"></script>
     <!-- Main js-->
     <script src="{% static 'assets/js/main.js' %}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const boatId = "{{ boat.id }}";  // Pass from Django context or URL
-            const structure = document.getElementById("boat-structure");
-            const details = document.getElementById("cabin-details");
-            let selectedCabin = null;
-        
-            function loadCabins() {
-                fetch(`/api/boat/${boatId}/cabins/`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            renderCabins(data.cabins);
-                        }
-                    });
-            }
-        
-            function renderCabins(cabins) {
-                structure.innerHTML = '';
-                cabins.forEach(cabin => {
-                    const box = document.createElement("div");
-                    box.classList.add("cabin-box");
-                    box.classList.add(cabin.booked ? 'booked' : 'available');
-                    box.innerText = `${cabin.name}\n${cabin.booked ? 'Booked' : 'AC'}`;
-                    box.onclick = () => {
-                        if (selectedCabin) {
-                            selectedCabin.style.background = "";
-                        }
-                        selectedCabin = box;
-                        box.style.background = "#E73C17";  // Green
-                        showCabinDetails(cabin);
-                    };
-                    structure.appendChild(box);
-                });
-        
-                // Add a Lobby box
-                const lobby = document.createElement("div");
-                lobby.className = "cabin-box";
-                lobby.style.background = "#ddd";
-                lobby.style.color = "#000";
-                lobby.innerText = "Lobby";
-                lobby.style.gridColumn = "span 2";
-                structure.appendChild(lobby);
-            }
-        
-            function showCabinDetails(cabin) {
-                details.innerHTML = `
-                    <h3>Cabin Details</h3>
-                    <p><strong>Name:</strong> ${cabin.name}</p>
-                    <p><strong>No:</strong> ${cabin.cabin_no}</p>
-                    <p><strong>Price:</strong> ${cabin.price} TK</p>
-                    <p><strong>Status:</strong> ${cabin.booked ? 'Booked' : 'Available'}</p>
-                    <p><strong>Description:</strong> ${cabin.description || 'No description'}</p>
-                `;
-            }
-        
-            loadCabins();
-        });
-        </script>
-        
 </body>
 </html>
-{% endblock %}
-

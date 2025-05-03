@@ -554,3 +554,74 @@ def tour_package_schedule_list_view(request):
     }
     return render(request, 'boats/tour_package_schedule_list.html', context)
 
+# @csrf_exempt
+# def book_date(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         boat_id = data.get('boat_id')
+#         date = data.get('date')
+
+#         schedules = ScheduleCalendar.objects.filter(boat_id=boat_id)
+#         if schedules.exists():
+#             schedule = schedules.first()  # Take the first schedule
+#             reserved = [d.strip() for d in schedule.reserved_dates.split(',')] if schedule.reserved_dates else []
+#             available = [d.strip() for d in schedule.available_dates.split(',')] if schedule.available_dates else []
+
+#             if date in available and date not in reserved:
+#                 reserved.append(date)
+#                 schedule.reserved_dates = ','.join(reserved)
+#                 schedule.available_dates = ','.join([d for d in available if d != date])
+#                 schedule.save()
+#                 return JsonResponse({'status': 'success'})
+#             else:
+#                 return JsonResponse({'status': 'error', 'message': 'Date not available or already booked'})
+#         else:
+#             return JsonResponse({'status': 'error', 'message': 'Schedule not found'})
+
+#     return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+
+# def calendar_data(request, boat_id):
+#     schedules = ScheduleCalendar.objects.filter(boat_id=boat_id)
+#     if schedules.exists():
+#         schedule = schedules.first()  # Take the first schedule
+#         available = [d.strip() for d in schedule.available_dates.split(',')] if schedule.available_dates else []
+#         reserved = [d.strip() for d in schedule.reserved_dates.split(',')] if schedule.reserved_dates else []
+#         return JsonResponse({
+#             'status': 'success',
+#             'available_dates': available,
+#             'reserved_dates': reserved,
+#         })
+#     else:
+#         return JsonResponse({'status': 'success', 'available_dates': [], 'reserved_dates': []})
+    
+    
+def get_boat_cabins(request, boat_id):
+    try:
+        boat = Boat.objects.get(id=boat_id)
+        cabins = boat.cabins.all()
+        cabin_list = []
+        for cabin in cabins:
+            cabin_list.append({
+                'id': cabin.id,
+                'name': cabin.name,
+                'cabin_no': cabin.cabin_no,
+                'description': cabin.description,
+                'price': float(cabin.price),
+                'booked': bool(cabin.booked_dates),  # Adjust logic as needed
+            })
+
+        return JsonResponse({
+            'status': 'success',
+            'boat': {
+                'id': boat.id,
+                'name': boat.name,
+                'price': float(boat.price),
+                'cabin_quantity': boat.cabin_quantity
+            },
+            'cabins': cabin_list
+        })
+    except Boat.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Boat not found'}, status=404)
+    
+def payment_gateway(request):
+    return render(request, 'payment-gateway.html')

@@ -53,5 +53,14 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    
+    
+    # path('calendar/<int:boat_id>/', views.calendar_data, name='calendar_data'),
+    # path('book/', views.book_date, name='book_date'),
+
+    path('api/boat/<int:boat_id>/cabins/', views.get_boat_cabins, name='get_boat_cabins'),
+    path('payment-gateway/', views.payment_gateway, name='payment_gateway'),
+
+
 ]
 
