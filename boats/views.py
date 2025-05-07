@@ -385,7 +385,6 @@ def create_boat_view(request):
             length=request.POST.get("length"),
             width=request.POST.get("width"),
             height=request.POST.get("height"),
-            booked_dates=booked_dates,  # Save the booked_dates
             created_by=request.user.id,
             photos=request.FILES.get("photos")
         )

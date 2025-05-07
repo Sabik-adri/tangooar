@@ -67,7 +67,7 @@
                                 <!-- search box -->
                                 <div class="search-box search-bar d-none d-lg-block">
                                     <div class="header-search">
-                                        <span class="pera">Destination, attraction</span>
+                                        <span class="pera">Find Your Boat</span>
                                         <div class="search-icon">
                                             <i class="ri-search-line"></i>
                                         </div>
@@ -90,7 +90,7 @@
                                             <i class="ri-shopping-cart-line"></i>
                                         </a>
                                         <div class="sign-btn">
-                                            <a href="register.html" class="btn-secondary-sm radius-30">Sign Up</a>
+                                            <a href="{% url 'signup' %}" class="btn-secondary-sm radius-30">Sign Up</a>
                                         </div>
                                         <!-- Theme Mode -->
                                         <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
@@ -130,10 +130,10 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <ul class="listing" id="navigation">
                                                 <li class="single-list">
-                                                    <a href="javascript:void(0)"
-                                                        class="single link-active">Home <i
-                                                            class="ri-arrow-down-s-line"></i></a>
-                                                    <ul class="submenu">
+                                                    <a href="javascript:void(0)" class="single">
+                                                        Home
+                                                    </a>
+                                                    {% comment %} <ul class="submenu">
                                                         <li class="single-list">
                                                             <a href="index.html" class="single">Home 01</a>
                                                         </li>
@@ -143,9 +143,9 @@
                                                         <li class="single-list">
                                                             <a href="index-three.html" class="single">Home 03</a>
                                                         </li>
-                                                    </ul>
+                                                    </ul> {% endcomment %}
                                                 </li>
-                                                <li class="single-list">
+                                                {% comment %} <li class="single-list">
                                                     <a href="javascript:void(0)" class="single">
                                                         Tours <i class="ri-arrow-down-s-line"></i>
                                                     </a>
@@ -203,12 +203,12 @@
                                                             <a href="invoice.html" class="single">View Invoice</a>
                                                         </li>
                                                     </ul>
-                                                </li>
+                                                </li> {% endcomment %}
                                                 <li class="single-list">
-                                                    <a href="javascript:void(0)" class="single">
-                                                        Boats <i class="ri-arrow-down-s-line"></i>
+                                                    <a href="{% url 'boat_list' %}" class="single">
+                                                        Boats
                                                     </a>
-                                                    <ul class="submenu">
+                                                    {% comment %} <ul class="submenu">
                                                         <li class="single-list">
                                                             <a href="{% url 'boat_list_index' %}" class="single">Our Boats</a>
                                                         </li>
@@ -230,13 +230,13 @@
                                                         <li class="single-list">
                                                             <a href="invoice.html" class="single">View Invoice</a>
                                                         </li>
-                                                    </ul>
+                                                    </ul> {% endcomment %}
                                                 </li>
                                                 <li class="single-list">
                                                     <a href="javascript:void(0)" class="single">
-                                                        Restaurants <i class="ri-arrow-down-s-line"></i>
+                                                        Policy
                                                     </a>
-                                                    <ul class="submenu">
+                                                    {% comment %} <ul class="submenu">
                                                         <li class="single-list">
                                                             <a href="restaurant-list.html" class="single">restaurant Category Page</a>
                                                         </li>
@@ -258,13 +258,13 @@
                                                         <li class="single-list">
                                                             <a href="invoice.html" class="single">View Invoice</a>
                                                         </li>
-                                                    </ul>
+                                                    </ul> {% endcomment %}
                                                 </li>
                                                 <li class="single-list">
                                                     <a href="javascript:void(0)" class="single">
-                                                        Pages <i class="ri-arrow-down-s-line"></i>
+                                                        Contact
                                                     </a>
-                                                    <ul class="submenu">
+                                                    {% comment %} <ul class="submenu">
                                                         <li class="single-list">
                                                             <a href="index.html#" class="single"> Dashboard<i class="ri-arrow-right-s-line"></i></a>
                                                             <ul class="submenu">
@@ -370,7 +370,7 @@
                                                                 </li>
                                                             </ul>
                                                         </li>
-                                                    </ul>
+                                                    </ul> {% endcomment %}
                                                 </li>
                                                 <li class="d-block d-lg-none">
                                                     <div class="header-right-three pl-15 mt-10">
@@ -2228,7 +2228,7 @@
                         <div class="section-button d-inline-block">
                             <a href="tour-list.html">
                                 <div class="btn-primary-icon-sm">
-                                    <a href="{% url 'boat_list' %}" class="pera">View All Tour</a>
+                                    <a href="{% url 'boat_list' %}" class="pera">View All Boats</a>
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
                             </a>
