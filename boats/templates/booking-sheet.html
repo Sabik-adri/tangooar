@@ -708,8 +708,8 @@
             }
         </style>
         <div class="row">
-            <div class="col-md-4" id="package">Loading packages...</div>
-            <div class="col-md-4">
+            <div class="col-md-2" id="package">Loading packages...</div>
+            <div class="col-md-3">
                 <div class="calendar">
                     <h3>Booking Calendar - April 2025</h3>
                     <div class="calendar-grid">
@@ -738,6 +738,108 @@
                     <p><strong>Reserved Dates:</strong> {{ boat.reserved_dates|join:", " }}</p>
                     <p><strong>Available Dates:</strong> {{ boat.available_dates|join:", " }}</p>
                 </div>
+            </div>
+            <div class="col-md-4">
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="boat-structure" class="boat-grid"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="cabin-details"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                
+                <div class="invoice">
+                    <h3>Invoice</h3>
+                    <div class="invoice-header">
+                        <div class="invoice-logo">
+                            <img src="https://via.placeholder.com/100x50?text=Tangooar" alt="Tangooar Logo">
+                        </div>
+                        <div class="invoice-details">
+                            <p>Invoice Number: #{{ boat.id }}</p>
+                            <p>Date: {{ now|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                    <div class="invoice-body">
+                        <div class="invoice-item">
+                            <div class="invoice-item-details">
+                                <p>Cabin: {{ boat.name }}</p>
+                                <p>Price: {{ boat.price }} TK</p>
+                            </div>
+                            <div class="invoice-item-total">
+                                <p>{{ boat.price }} TK</p>
+                            </div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-item-details">
+                                <p>Package: Package Name</p>
+                                <p>Price: 5000 TK</p>
+                            </div>
+                            <div class="invoice-item-total">
+                                <p>5000 TK</p>
+                            </div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-item-details">
+                                <p>Dates: 1st April 2025 - 5th April 2025</p>
+                            </div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-item-details">
+                                <p>Discount: 10%</p>
+                            </div>
+                            <div class="invoice-item-total">
+                                <p>-500 TK</p>
+                            </div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-item-details">
+                                <p>Total:</p>
+                            </div>
+                            <div class="invoice-item-total">
+                                <p>{{ boat.price }} TK</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .invoice {
+                        border: 1px solid #ccc;
+                        padding: 15px;
+                        border-radius: 5px;
+                    }
+                    .invoice-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    .invoice-logo {
+                        width: 100px;
+                    }
+                    .invoice-details {
+                        text-align: right;
+                    }
+                    .invoice-body {
+                        margin-top: 15px;
+                    }
+                    .invoice-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 10px;
+                    }
+                    .invoice-item-details {
+                        width: 70%;
+                    }
+                    .invoice-item-total {
+                        width: 30%;
+                        text-align: right;
+                    }
+                </style>
             </div>
         </div>
         
@@ -802,10 +904,7 @@
 
 
         
-<div style="display: flex; justify-content: space-between; width: 600px; margin-left: 200px; padding: 50px;">
-    <div id="boat-structure" class="boat-grid"></div>
-    <div id="cabin-details" style="margin-left: 20px;"></div>
-</div>
+
 
 <style>
     .boat-grid {
