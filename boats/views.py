@@ -624,3 +624,81 @@ def get_boat_cabins(request, boat_id):
     
 def payment_gateway(request):
     return render(request, 'payment-gateway.html')
+
+
+@login_required
+def create_tour_package(request):
+    if request.method == 'POST':
+        boat_id = request.POST.get('boat')
+        start_date = request.POST.get('start_date')
+        start_time = request.POST.get('start_time')
+        end_date = request.POST.get('end_date')
+        end_time = request.POST.get('end_time')
+        start_from = request.POST.get('start_from')
+        destinations = request.POST.get('destinations')
+        guest_amount = request.POST.get('guest_amount')
+        guest_limitation = request.POST.get('guest_limitation')
+        package_name = request.POST.get('package_name')
+        description = request.POST.get('description')
+        cabin_quantity = request.POST.get('cabin_quantity') or None
+        cabin_names = request.POST.get('cabin_names')
+        price = request.POST.get('price')
+
+        TourPackage.objects.create(
+            boat_id=boat_id,
+            start_date=start_date,
+            start_time=start_time,
+            end_date=end_date,
+            end_time=end_time,
+            start_from=start_from,
+            destinations=destinations,
+            guest_amount=guest_amount,
+            guest_limitation=guest_limitation,
+            package_name=package_name,
+            description=description,
+            cabin_quantity=cabin_quantity,
+            cabin_names=cabin_names,
+            price=price,
+            created_by=request.user
+        )
+        return redirect('create_tour_package')
+
+    boats = Boat.objects.all()
+    tour_types = TourType.objects.all()
+    packages = TourPackage.objects.all().order_by('-created_at')
+    return render(request, 'package-create.html', {
+        'boats': boats,
+        'tour_types': tour_types,
+        'packages': packages
+    })
+    
+    
+def tour_package_api(request, boat_id):
+    packages = TourPackage.objects.filter(boat_id=boat_id).order_by('-created_at')
+    package_list = []
+    for package in packages:
+        package_list.append({
+            'id': package.id,
+            'boat_id': package.boat.id,
+            'boat': package.boat.name,
+            'start_date': package.start_date,
+            'start_time': package.start_time,
+            'end_date': package.end_date,
+            'end_time': package.end_time,
+            'start_from': package.start_from,
+            'destinations': package.destinations,
+            'guest_amount': package.guest_amount,
+            'guest_limitation': package.guest_limitation,
+            'package_name': package.package_name,
+            'description': package.description,
+            'cabin_quantity': package.cabin_quantity,
+            'cabin_names': package.cabin_names,
+            'price': float(package.price),
+            'created_at': package.created_at,
+        })
+
+    return JsonResponse({
+        'status': 'success',
+        'packages': package_list
+    })
+

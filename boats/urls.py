@@ -50,6 +50,8 @@ urlpatterns = [
     path('tour-types/', views.tour_type_list_view, name='tour_types'),
     path('tour-packages/', views.tour_package_list_view, name='tour_packages'),
     path('tour-package-schedules/', views.tour_package_schedule_list_view, name='tour_package_schedules'),
+    path('packages/create/', views.create_tour_package, name='create_tour_package'),
+    
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
@@ -61,6 +63,8 @@ urlpatterns = [
     path('api/boat/<int:boat_id>/cabins/', views.get_boat_cabins, name='get_boat_cabins'),
     path('payment-gateway/', views.payment_gateway, name='payment_gateway'),
 
+    path('api/tour-packages/<int:boat_id>/', views.tour_package_api, name='tour_package_api'),
+    
 
 ]
 

@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block extra_head %}
+<!-- Bootstrap 5 CSS CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .form-section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-section h2 {
+        margin-bottom: 20px;
+    }
+
+    .table-section {
+        max-width: 1000px;
+        margin: 50px auto;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="zxx" dir="ltr">
@@ -90,7 +117,7 @@
                                             <i class="ri-shopping-cart-line"></i>
                                         </a>
                                         <div class="sign-btn">
-                                            <a href="register.html" class="btn-secondary-sm radius-30">Sign Up</a>
+                                            <a href="{% url 'signup' %}" class="btn-secondary-sm radius-30">Sign Up</a>
                                         </div>
                                         <!-- Theme Mode -->
                                         <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
@@ -130,7 +157,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <ul class="listing" id="navigation">
                                                 <li class="single-list">
-                                                    <a href="{% url 'dashboard' %}" class="single">
+                                                    <a href="javascript:void(0)" class="single">
                                                         Home
                                                     </a>
                                                 </li>
@@ -165,6 +192,7 @@
                                             </ul>
                                             
                                         <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
+
                                             <div class="top-header-right">
                                                 <div class="contact-section">
                                                     <div class="circle-primary-sm">
@@ -516,402 +544,136 @@
         </div>
         <!-- / End-Search -->
     </header>
-    
     <main>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                background: #f5f5f5;
-            }
-            .boat-header {
-                display: flex;
-                gap: 20px;
-                background: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .boat-image {
-                width: 400px;
-                height: auto;
-                border-radius: 8px;
-            }
-            .image-gallery {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                width: 120px;
-            }
-            .image-gallery img {
-                width: 100%;
-                height: auto;
-                border-radius: 8px;
-                cursor: pointer;
-            }
-            .boat-details {
-                flex: 1;
-            }
-            .boat-details h2 {
-                font-size: 24px;
-                margin: 0 0 10px;
-                color: #333;
-            }
-            .boat-details p {
-                margin: 5px 0;
-                color: #555;
-            }
-            .boat-details p strong {
-                color: #333;
-            }
-            .rating {
-                color: #f5a623;
-                font-size: 18px;
-                margin: 5px 0;
-            }
-            .amenities {
-                margin-top: 10px;
-            }
-            .amenities ul {
-                list-style-type: none;
-                padding: 0;
-            }
-            .amenities ul li {
-                margin: 5px 0;
-                color: #555;
-            }
-            .amenities ul li::before {
-                content: "• ";
-                color: #d32f2f;
-            }
-            .calendar, .cabins, .summary {
-                margin-top: 30px;
-                background: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .calendar h3 {
-                margin-top: 0;
-            }
-            .calendar-grid {
-                display: grid;
-                grid-template-columns: repeat(7, 1fr);
-                gap: 5px;
-                text-align: center;
-            }
-            .calendar-grid div {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-            .calendar-grid .header {
-                background: #f0f0f0;
-                font-weight: bold;
-            }
-            .calendar-grid .day {
-                background: #fafafa;
-            }
-            .calendar-grid .day.reserved {
-                background: #d32f2f;
-                color: white;
-            }
-            .calendar-grid .day.empty {
-                background: #fff;
-                border: none;
-            }
-            .cabins .cabin {
-                border: 1px solid #ddd;
-                padding: 10px;
-                margin-bottom: 10px;
-                border-radius: 4px;
-            }
-            .summary-box {
-                border: 1px solid #aaa;
-                padding: 10px;
-                background: #f9f9f9;
-                border-radius: 4px;
-            }
-            .btn {
-                background: #d32f2f;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                margin-right: 10px;
-                padding-bottom: 20px;
-            }
-            .btn.blue {
-                background: #1976d2;
-            }
-        </style>
-    
-        {% if boat %}
-        <div class="boat-header">
-            <div class="image-gallery">
-                {% if boat.photos %}
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                {% else %}
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                {% endif %}
-            </div>
-            <img src="{{ boat.photos|default:'https://via.placeholder.com/400x300?text=No+Image' }}" class="boat-image" alt="Boat image">
-            <div class="boat-details">
-                <h2>{{ boat.name }}</h2>
-                <div class="rating">★★★★★</div>
-                <p><strong>Owner:</strong> {{ boat.owner_profile.company_name }}</p>
-                <p><strong>ID:</strong> {{ boat.id }}</p>
-                <p><strong>Availability:</strong> {% if boat.is_reserved %}Fully Booked{% else %}Available{% endif %}</p>
-                <div class="amenities">
-                    <ul>
-                        <li><strong>{{ boat.type }}:</strong> Length {{ boat.length|floatformat:1 }} ft, Width {{ boat.width|floatformat:1 }} ft, Height {{ boat.height|floatformat:1 }} ft, {{ boat.cabin_quantity }} Cabins</li>
-                        {% for cabin in boat.cabins %}
-                            <li><strong>{{ cabin.name }} ({{ cabin.cabin_no }}):</strong> {{ cabin.length|floatformat:1 }} X {{ cabin.width|floatformat:1 }} Square feet, Attached Washroom & Balcony</li>
-                        {% endfor %}
-                        <li><strong>Description:</strong> {{ boat.description|default:"No description available" }}</li>
-                        <li><strong>Meal Facilities:</strong> 5 meals, 4 snacks, unlimited tea-coffee</li>
-                        <li><strong>Departure from:</strong> Moddha Nagar</li>
-                        <li><strong>Places to visit:</strong> Watch Tower, Tekarghaat, Jadukata Nodi</li>
-                        <li><strong>Facilities:</strong> Life Jacket, 24/7 Power Supply, Gas Cylinder</li>
-                    </ul>
-                </div>
-
-                
-
-            </div>
-        </div>
-
-<div style="background-color: #E73C17; color: white; padding: 10px; margin: 10px 0; font-size: 20px; letter-spacing: 1px; word-spacing: 3px; text-align: center;">
-    D e t a i l e d       B o o k i n g       S h e e t
-</div>
-
-    
-        <style>
-            .calendar {
-                width: 100%;
-                max-width: 800px;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 15px;
-                padding-top: 15px;
-                background-color: #f8f8f8;
-            }
-        </style>
-        <div class="row">
-            <div class="col-md-4" id="package">Loading packages...</div>
-            <div class="col-md-4">
-                <div class="calendar">
-                    <h3>Booking Calendar - April 2025</h3>
-                    <div class="calendar-grid">
-                        <!-- Weekday headers -->
-                        <div class="header">Sun</div>
-                        <div class="header">Mon</div>
-                        <div class="header">Tue</div>
-                        <div class="header">Wed</div>
-                        <div class="header">Thu</div>
-                        <div class="header">Fri</div>
-                        <div class="header">Sat</div>
+        <div class="form-section" style="padding-left: 100px; padding-right: 100px;">
+            <h2 class="text-center">Create Tour Package</h2>
         
-                        <!-- Empty days (April 1, 2025 is Tuesday) -->
-                        <div class="day empty"></div>
-                        <div class="day empty"></div>
+            <form method="post">
+                {% csrf_token %}
         
-                        <!-- Generate days -->
-                        {% for day in boat.calendar_days %}
-                        {% with date="2025-04-"|add:day|stringformat:"02d" %}
-                            <div class="day {% if date in boat.reserved_dates %}reserved{% elif day == 5 or day == 15 or day == 25 %}orange{% endif %}">
-                                {{ day }}
-                            </div>
-                        {% endwith %}
-                        {% endfor %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Boat</label>
+                        <select name="boat" class="form-select" required>
+                            {% for boat in boats %}
+                            <option value="{{ boat.id }}">{{ boat.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <p><strong>Reserved Dates:</strong> {{ boat.reserved_dates|join:", " }}</p>
-                    <p><strong>Available Dates:</strong> {{ boat.available_dates|join:", " }}</p>
+                    
                 </div>
-            </div>
+        
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" name="start_date" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Start Time</label>
+                        <input type="time" name="start_time" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">End Date</label>
+                        <input type="date" name="end_date" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">End Time</label>
+                        <input type="time" name="end_time" class="form-control" required>
+                    </div>
+                </div>
+        
+                <div class="mb-3">
+                    <label class="form-label">Start From</label>
+                    <input type="text" name="start_from" class="form-control" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label class="form-label">Destinations</label>
+                    <textarea name="destinations" class="form-control" rows="2" required></textarea>
+                </div>
+        
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Guest Amount</label>
+                        <input type="number" name="guest_amount" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Guest Limitation</label>
+                        <input type="number" name="guest_limitation" class="form-control" required>
+                    </div>
+                </div>
+        
+                <div class="mb-3">
+                    <label class="form-label">Package Name</label>
+                    <input type="text" name="package_name" class="form-control" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+        
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Cabin Quantity</label>
+                        <input type="number" name="cabin_quantity" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Cabin Names</label>
+                        <input type="text" name="cabin_names" class="form-control">
+                    </div>
+                </div>
+        
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input type="number" name="price" class="form-control" step="0.01" required>
+                </div>
+        
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Create Package</button>
+                </div>
+            </form>
         </div>
         
-        <style>
-            .calendar-grid .day.orange {
-                background: #E73C17;
-                color: white;
-            }
-        </style>
-        
-        <style>
-            #package {
-                font-size: 1.5rem;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-        </style>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const boatId = "{{ boat.id }}";  // Make sure this is not empty from the Django backend
-        
-                if (boatId) {
-                    fetch(`/api/tour-packages/${boatId}/`)
-                        .then(res => res.json())
-                        .then(data => {
-                            const packageElement = document.getElementById("package");
-                            packageElement.innerHTML = '';
-        
-                            if (data.status === 'success' && data.packages.length > 0) {
-                                data.packages.forEach(pkg => {
-                                    const button = document.createElement("button");
-                                    button.style.fontSize = "1.2rem";
-                                    button.style.backgroundColor = "#5cb85c";
-                                    button.style.borderRadius = "5px";
-                                    button.style.color = "white";
-                                    button.innerText = `${pkg.id} - ${pkg.package_name} - ${pkg.price} Tk`;
-                                    button.addEventListener("click", function () {
-                                        const selected = document.querySelector("#package button.selected");
-                                        if (selected) {
-                                            selected.classList.remove("selected");
-                                            selected.style.backgroundColor = "#5cb85c";
-                                        }
-                                        button.classList.add("selected");
-                                        button.style.backgroundColor = "rgb(231, 60, 23)";
-                                    });
-                                    packageElement.appendChild(button);
-                                });
-                            } else {
-                                packageElement.innerText = "No packages available.";
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching packages:', error);
-                            document.getElementById("package").innerText = "Failed to load packages.";
-                        });
-                } else {
-                    console.warn("Boat ID is missing.");
-                }
-            });
-        </script>
-
-
-        
-<div style="display: flex; justify-content: space-between; width: 600px; margin-left: 200px; padding: 50px;">
-    <div id="boat-structure" class="boat-grid"></div>
-    <div id="cabin-details" style="margin-left: 20px;"></div>
-</div>
-
-<style>
-    .boat-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 120px);
-        grid-auto-rows: 80px;
-        gap: 10px;
-    }
-
-.cabin-box {
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.booked {
-    background-color: #d9534f; /* red */
-}
-
-.available {
-    background-color: #5cb85c; /* green */
-}
-</style>
-    
-        {% comment %} <div class="cabins">
-            <h3>Cabins</h3>
-            {% for cabin in boat.cabins %}
-                <div class="cabin">
-                    <p><strong>Name:</strong> {{ cabin.name }} ({{ cabin.cabin_no }})</p>
-                    <p><strong>Price:</strong> {{ cabin.price }} TK</p>
-                    <p><strong>Dimensions:</strong> {{ cabin.length|floatformat:1 }} ft x {{ cabin.width|floatformat:1 }} ft x {{ cabin.height|floatformat:1 }} ft</p>
-                    <p><strong>Description:</strong> {{ cabin.description|default:"No description available" }}</p>
-                </div>
-            {% empty %}
-                <p>No cabins available for this boat.</p>
-            {% endfor %}
-        </div> {% endcomment %}
-    
-        <div class="summary">
-            <h3>Booking Summary</h3>
-            <div class="summary-box">
-                <p><strong>Boat:</strong> {{ boat.name }}</p>
-                <p><strong>Price (Base):</strong> {{ boat.price }} TK</p>
-                <p><strong>Total Guests:</strong> (select from form in real UI)</p>
-                <p><strong>Grand Total:</strong> (calculated dynamically)</p>
+        <!-- Package List Table -->
+        <div class="table-section">
+            <h3 class="text-center mb-4">Existing Packages</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Package Name</th>
+                            <th>Boat</th>
+                            <th>Type</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Guests</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for package in packages %}
+                        <tr>
+                            <td>{{ package.package_name }}</td>
+                            <td>{{ package.boat.name }}</td>
+                            <td>{{ package.tour_type.name }}</td>
+                            <td>{{ package.start_date }} {{ package.start_time }}</td>
+                            <td>{{ package.end_date }} {{ package.end_time }}</td>
+                            <td>{{ package.guest_amount }}/{{ package.guest_limitation }}</td>
+                            <td>{{ package.price }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">No packages found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
-            <style>
-    .button-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      padding: 20px 0;
-      text-align: center;
-    }
-
-    .action-button {
-      background-color: #E73C17;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 2px;
-      cursor: pointer;
-      text-transform: uppercase;
-      width: 900px;
-    }
-
-    .separator {
-      font-weight: bold;
-      font-size: 14px;
-      color: #000;
-    }
-
-    .action-button i {
-      font-size: 16px;
-    }
-  </style>
-            <div class="button-container" style="justify-content: center;">
-                <a href="{% url 'payment_gateway' %}">
-                    <button class="action-button">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <div style="display: flex; justify-content: center; width: 100%;">Proceed to Payment</div>
-                    </button>
-                </a>
-                <span class="separator">OR</span>
-                <a href="{% url 'payment_gateway' %}">
-                    <button class="action-button">
-                        <i class="fas fa-phone-alt"></i>
-                        <div style="display: flex; justify-content: center; width: 100%;">Call for Reservation</div>
-                    </button>
-                </a>
-              </div>
         </div>
-        {% else %}
-            <p>{{ error }}</p>
-        {% endif %}
-    </main>
+
+    </main> 
+
     <!-- Footer S t a r t -->
     <footer>
         <div class="footer-wrapper footer-bg">
@@ -1072,66 +834,6 @@
     <script src="{% static 'assets/js/plugin.js' %}"></script>
     <!-- Main js-->
     <script src="{% static 'assets/js/main.js' %}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const boatId = "{{ boat.id }}";  // Pass from Django context or URL
-            const structure = document.getElementById("boat-structure");
-            const details = document.getElementById("cabin-details");
-            let selectedCabin = null;
-        
-            function loadCabins() {
-                fetch(`/api/boat/${boatId}/cabins/`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            renderCabins(data.cabins);
-                        }
-                    });
-            }
-        
-            function renderCabins(cabins) {
-                structure.innerHTML = '';
-                cabins.forEach(cabin => {
-                    const box = document.createElement("div");
-                    box.classList.add("cabin-box");
-                    box.classList.add(cabin.booked ? 'booked' : 'available');
-                    box.innerText = `${cabin.name}\n${cabin.booked ? 'Booked' : 'AC'}`;
-                    box.onclick = () => {
-                        if (selectedCabin) {
-                            selectedCabin.style.background = "";
-                        }
-                        selectedCabin = box;
-                        box.style.background = "#E73C17";  // Green
-                        showCabinDetails(cabin);
-                    };
-                    structure.appendChild(box);
-                });
-        
-                // Add a Lobby box
-                const lobby = document.createElement("div");
-                lobby.className = "cabin-box";
-                lobby.style.background = "#ddd";
-                lobby.style.color = "#000";
-                lobby.innerText = "Lobby";
-                lobby.style.gridColumn = "span 2";
-                structure.appendChild(lobby);
-            }
-        
-            function showCabinDetails(cabin) {
-                details.innerHTML = `
-                    <h3>Cabin Details</h3>
-                    <p><strong>Name:</strong> ${cabin.name}</p>
-                    <p><strong>No:</strong> ${cabin.cabin_no}</p>
-                    <p><strong>Price:</strong> ${cabin.price} TK</p>
-                    <p><strong>Status:</strong> ${cabin.booked ? 'Booked' : 'Available'}</p>
-                    <p><strong>Description:</strong> ${cabin.description || 'No description'}</p>
-                `;
-            }
-        
-            loadCabins();
-        });
-        </script>
-        
 </body>
 </html>
 {% endblock %}
