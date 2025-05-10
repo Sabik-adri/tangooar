@@ -646,35 +646,61 @@
             .btn.blue {
                 background: #1976d2;
             }
+            .zoom-modal {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                padding-top: 50px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.8);
+                text-align: center;
+            }
+            
+            .zoomed-image {
+                margin: auto;
+                display: block;
+                max-width: 90%;
+                max-height: 90%;
+                
+            }
+            
+            .close-zoom {
+                position: absolute;
+                top: 30px;
+                right: 50px;
+                color: white;
+                font-size: 35px;
+                font-weight: bold;
+                cursor: pointer;
+            }
         </style>
     
         {% if boat %}
+        <div id="imageZoomModal" class="zoom-modal" onclick="closeImageModal()">
+            <span class="close-zoom">&times;</span>
+            <img class="zoomed-image" id="zoomedImage">
+        </div>
         <div class="boat-header">
-            <div class="image-gallery">
-                {% if boat.photos %}
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                    <img src="{{ boat.photos }}" alt="Boat image">
-                {% else %}
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                    <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
-                {% endif %}
-            </div>
-            <img src="{{ boat.photos|default:'https://via.placeholder.com/400x300?text=No+Image' }}" class="boat-image" alt="Boat image">
             <div class="boat-details">
                 <h2>{{ boat.name }}</h2>
-                <div class="rating">★★★★★</div>
+                {% comment %} <div class="rating">★★★★★</div> {% endcomment %}
                 <p><strong>Owner:</strong> {{ boat.owner_profile.company_name }}</p>
-                <p><strong>ID:</strong> {{ boat.id }}</p>
                 <p><strong>Availability:</strong> {% if boat.is_reserved %}Fully Booked{% else %}Available{% endif %}</p>
                 <div class="amenities">
                     <ul>
                         <li><strong>{{ boat.type }}:</strong> Length {{ boat.length|floatformat:1 }} ft, Width {{ boat.width|floatformat:1 }} ft, Height {{ boat.height|floatformat:1 }} ft, {{ boat.cabin_quantity }} Cabins</li>
                         {% for cabin in boat.cabins %}
-                            <li><strong>{{ cabin.name }} ({{ cabin.cabin_no }}):</strong> {{ cabin.length|floatformat:1 }} X {{ cabin.width|floatformat:1 }} Square feet, Attached Washroom & Balcony</li>
+                            <li><strong>{{ cabin.name }} ({{ cabin.cabin_no }}):</strong> 
+                                {{ cabin.length|floatformat:1 }} X {{ cabin.width|floatformat:1 }} Square feet
+                                {% if cabin.is_ac %}, AC{% endif %}
+                                {% if cabin.is_non_ac %},Non AC{% endif %}
+                                {% if cabin.is_attached_washroom %}, Attached Washroom{% endif %} 
+                                {% if cabin.is_attached_belcony %}, Attached Balcony{% endif %} 
+                            </li>
                         {% endfor %}
                         <li><strong>Description:</strong> {{ boat.description|default:"No description available" }}</li>
                         <li><strong>Meal Facilities:</strong> 5 meals, 4 snacks, unlimited tea-coffee</li>
@@ -683,11 +709,47 @@
                         <li><strong>Facilities:</strong> Life Jacket, 24/7 Power Supply, Gas Cylinder</li>
                     </ul>
                 </div>
-
-                
-
             </div>
+            {% if boat.video %}
+                <video width="600" height="400" loop autoplay muted>
+                    <source src="{{ boat.video }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% else %}
+                <img src="{{ boat.photo|default:'https://via.placeholder.com/400x300?text=No+Image' }}" width="600" height="400" alt="No video available">
+            {% endif %}
+            <div style="padding-top: 3vh;" class="image-gallery">
+                {% if boat.multiple_photos %}
+                    {% for photo_url in boat.multiple_photos %}
+                        <img src="{{ photo_url }}" class="boat-image" alt="Boat image" width="120" height="80" onclick="openImageModal(this.src)">
+                    {% endfor %}
+                {% else %}
+                    {% for i in "1234" %}
+                        <img src="https://via.placeholder.com/120x80?text=No+Image" alt="No image available">
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <img style="padding-top: 3vh;" src="{{ boat.photo|default:'https://via.placeholder.com/400x300?text=No+Image' }}" width="500" height="300" onclick="openImageModal(this.src)">
+            
+            
         </div>
+
+        <script>
+            function openImageModal(src) {
+                const zoomedImage = document.getElementById("zoomedImage");
+                zoomedImage.src = src;
+                zoomedImage.style.height = "60vh"; // Set fixed height for the photo
+                zoomedImage.style.display = "block"; // Ensure the image is displayed
+                zoomedImage.style.margin = "auto"; // Center the image
+                document.getElementById("imageZoomModal").style.display = "flex"; // Use flex to center modal content
+                document.getElementById("imageZoomModal").style.justifyContent = "center"; // Center horizontally
+                document.getElementById("imageZoomModal").style.alignItems = "center"; // Center vertically
+            }
+            
+            function closeImageModal() {
+                document.getElementById("imageZoomModal").style.display = "none";
+            }
+        </script>
 
 <div style="background-color: #E73C17; color: white; padding: 10px; margin: 10px 0; font-size: 20px; letter-spacing: 1px; word-spacing: 3px; text-align: center;">
     D e t a i l e d       B o o k i n g       S h e e t
@@ -1177,7 +1239,7 @@
             const structure = document.getElementById("boat-structure");
             const details = document.getElementById("cabin-details");
             let selectedCabin = null;
-        
+
             function loadCabins() {
                 fetch(`/api/boat/${boatId}/cabins/`)
                     .then(res => res.json())
@@ -1187,25 +1249,30 @@
                         }
                     });
             }
-        
+
             function renderCabins(cabins) {
                 structure.innerHTML = '';
                 cabins.forEach(cabin => {
                     const box = document.createElement("div");
                     box.classList.add("cabin-box");
                     box.classList.add(cabin.booked ? 'booked' : 'available');
-                    box.innerText = `${cabin.name}\n${cabin.booked ? 'Booked' : 'AC'}`;
+
+                    let typeLabel = '';
+                    if (cabin.is_ac) typeLabel = 'AC';
+                    else if (cabin.is_non_ac) typeLabel = 'Non AC';
+
+                    box.innerText = `${cabin.name}\n${cabin.booked ? 'Booked' : typeLabel}`;
                     box.onclick = () => {
                         if (selectedCabin) {
                             selectedCabin.style.background = "";
                         }
                         selectedCabin = box;
-                        box.style.background = "#E73C17";  // Green
+                        box.style.background = "#E73C17";
                         showCabinDetails(cabin);
                     };
                     structure.appendChild(box);
                 });
-        
+
                 // Add a Lobby box
                 const lobby = document.createElement("div");
                 lobby.className = "cabin-box";
@@ -1215,18 +1282,28 @@
                 lobby.style.gridColumn = "span 2";
                 structure.appendChild(lobby);
             }
-        
+
             function showCabinDetails(cabin) {
+                const isBooked = cabin.booked ? 'Booked' : 'Available';
+                const isAc = cabin.is_ac ? 'Yes' : 'No';
+                const isNonAc = cabin.is_non_ac ? 'Yes' : 'No';
+                const isAttachedWashroom = cabin.is_attached_washroom ? 'Yes' : 'No';
+                const isAttachedBalcony = cabin.is_attached_belcony ? 'Yes' : 'No'; // Fixed typo
+
                 details.innerHTML = `
                     <h3>Cabin Details</h3>
                     <p><strong>Name:</strong> ${cabin.name}</p>
-                    <p><strong>No:</strong> ${cabin.cabin_no}</p>
                     <p><strong>Price:</strong> ${cabin.price} TK</p>
-                    <p><strong>Status:</strong> ${cabin.booked ? 'Booked' : 'Available'}</p>
+                    <p><strong>Status:</strong> ${isBooked}</p>
                     <p><strong>Description:</strong> ${cabin.description || 'No description'}</p>
+                    <p><strong>AC:</strong> ${isAc}</p>
+                    <p><strong>Non AC:</strong> ${isNonAc}</p>
+                    <p><strong>Attached Washroom:</strong> ${isAttachedWashroom}</p>
+                    <p><strong>Attached Balcony:</strong> ${isAttachedBalcony}</p>
+                    <p><strong>Dimensions:</strong> ${cabin.length} ft x ${cabin.width} ft x ${cabin.height} ft</p>
                 `;
             }
-        
+
             loadCabins();
         });
         </script>

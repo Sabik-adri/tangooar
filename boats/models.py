@@ -65,12 +65,18 @@ class Boat(models.Model):
     width = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     height = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     photos = models.ImageField(upload_to='images/', blank=True, null=True)
+    videos = models.FileField(upload_to='videos/', blank=True, null=True)
+    multiple_photos = models.ManyToManyField('Photo', blank=True)
     created_by = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.IntegerField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_by = models.IntegerField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
+
+
+class Photo(models.Model):
+    image = models.ImageField(upload_to='images/')
 
 class Cabin(models.Model):
     boat = models.ForeignKey(Boat, on_delete=models.CASCADE, related_name='cabins')
@@ -83,6 +89,10 @@ class Cabin(models.Model):
     width = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     height = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     photos = models.TextField(blank=True, null=True)
+    is_ac = models.BooleanField(default=False)
+    is_non_ac = models.BooleanField(default=False)
+    is_attached_washroom = models.BooleanField(default=False)
+    is_attached_belcony = models.BooleanField(default=False)
     created_by = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.IntegerField(blank=True, null=True)

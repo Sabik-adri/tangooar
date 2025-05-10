@@ -35,6 +35,19 @@
         <label for="height">Height:</label>
         <input type="number" name="height" id="height" value="{{ cabin.height }}" step="0.01"><br>
 
+        <label for="is_ac">Is AC:</label>
+        <input type="checkbox" name="is_ac" id="is_ac" {% if cabin.is_ac %}checked{% endif %}><br>
+
+        <label for="is_non_ac">Is Non AC:</label>
+        <input type="checkbox" name="is_non_ac" id="is_non_ac" {% if cabin.is_non_ac %}checked{% endif %}><br>
+
+        <label for="is_attached_washroom">Is Attached Washroom:</label>
+        <input type="checkbox" name="is_attached_washroom" id="is_attached_washroom" {% if cabin.is_attached_washroom %}checked{% endif %}><br>
+
+        <label for="is_attached_belcony">Is Attached Belcony:</label>
+        <input type="checkbox" name="is_attached_belcony" id="is_attached_belcony" {% if cabin.is_attached_belcony %}checked{% endif %}><br>
+
         <button type="submit">Update</button>
     </form>
 {% endblock %}
+

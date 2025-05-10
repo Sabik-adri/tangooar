@@ -2172,12 +2172,12 @@
                                             <img src="{% static 'assets/images/default-boat.png' %}" alt="{{ boat.name }}">
                                             {% endif %}
                                         </a>
-                                        <div class="rating-badge-car">
+                                        {% comment %} <div class="rating-badge-car">
                                             <div class="rating">
                                                 <i class="ri-star-s-fill"></i>
                                                 <p class="pera">5 (20 Reviews)</p>
                                             </div>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </div>
                                     <div class="transports-content">
                                         <h4 class="area-name">
@@ -2190,26 +2190,26 @@
                                         <div class="transports-person">
                                             <div class="count">
                                                 <div class="icon text-primary">
-                                                    <i class="ri-speed-up-line"></i>
+                                                    <i class="ri-ruler-2-line"></i>
                                                 </div>
                                                 <p class="pera">{{ boat.length|default:'N/A' }} ft</p>
                                             </div>
                                             <div class="count">
                                                 <div class="icon text-primary">
-                                                    <i class="ri-tools-fill"></i>
+                                                    <i class="ri-ship-line"></i>
                                                 </div>
                                                 <p class="pera text-capitalize">{{ boat.type }}</p>
                                             </div>
                                             <div class="count">
                                                 <div class="icon text-primary">
-                                                    <i class="ri-bus-2-line"></i>
+                                                    <i class="ri-home-line"></i>
                                                 </div>
                                                 <p class="pera text-capitalize">{{ boat.cabin_quantity }} Cabins</p>
                                             </div>
                                         </div>
                                         <div class="cart-footer d-flex flex-wrap justify-content-between">
                                             <div class="d-flex gap-6 align-items-center">
-                                                <p class="pera">${{ boat.price }}</p>
+                                                <p class="pera">৳{{ boat.price }}</p>
                                                 <p class="sub-pera text-12 text-capitalize">/trip</p>
                                             </div>
                                             <a href="{% url 'boat_details' boat.id %}" class="browse-btn">Book Now</a>

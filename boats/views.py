@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 from .form import BoatForm
 
-from .models import Manager
+from .models import Manager, Photo
 from .models import BoatOwnerProfile, Boat, Cabin, ScheduleCalendar, Customer, Booking, TourType, TourPackage, TourPackageSchedule
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -311,40 +311,44 @@ def boat_list_view_index(request):
     return render(request, 'index.html', context)
 
 def get_boat_details(request, boat_id):
-    try:
-        boat = Boat.objects.prefetch_related('cabins', 'schedules').get(id=boat_id)
+    boat = get_object_or_404(Boat.objects.prefetch_related('cabins', 'schedules', 'multiple_photos'), id=boat_id)
 
-        # Get schedule info (assuming boat-based schedules)
-        schedule = boat.schedules.first()
-        available_dates = schedule.available_dates.split(',') if schedule and schedule.available_dates else []
-        reserved_dates = schedule.reserved_dates.split(',') if schedule and schedule.reserved_dates else []
-        calendar_days = list(range(1, 31))  # [1, 2, ..., 30]
+    schedule = boat.schedules.first()
+    available_dates = schedule.available_dates.split(',') if schedule and schedule.available_dates else []
+    reserved_dates = schedule.reserved_dates.split(',') if schedule and schedule.reserved_dates else []
+    calendar_days = list(range(1, 31))
 
-        data = {
-            'id': boat.id,
-            'name': boat.name,
-            'description': boat.description,
-            'price': boat.price,
-            'type': boat.type,
-            'cabin_quantity': boat.cabin_quantity,
-            'is_reserved': boat.is_reserved,
-            'length': boat.length,
-            'width': boat.width,
-            'height': boat.height,
-            'photos': request.build_absolute_uri(boat.photos.url) if boat.photos else '',
-            'owner_profile': {
-                'company_name': boat.owner_profile.company_name
-            },
-            'cabins': boat.cabins.all(),
-            'available_dates': available_dates,
-            'reserved_dates': reserved_dates,
-            'booked_dates' : boat.booked_dates,
-            'calendar_days': calendar_days  # Add the list of days to the context
-        }
+    # Convert multiple photos to full URLs
+    multiple_photo_urls = [
+        request.build_absolute_uri(photo.image.url)
+        for photo in boat.multiple_photos.all()
+    ]
 
-        return render(request, 'booking-sheet.html', {'boat': data})
-    except Boat.DoesNotExist:
-        return render(request, 'booking-sheet.html', {'error': 'Boat not found'})
+    data = {
+        'id': boat.id,
+        'name': boat.name,
+        'description': boat.description,
+        'price': float(boat.price),
+        'type': boat.type,
+        'cabin_quantity': boat.cabin_quantity,
+        'is_reserved': boat.is_reserved,
+        'length': float(boat.length) if boat.length else None,
+        'width': float(boat.width) if boat.width else None,
+        'height': float(boat.height) if boat.height else None,
+        'photo': request.build_absolute_uri(boat.photos.url) if boat.photos else '',
+        'video': request.build_absolute_uri(boat.videos.url) if boat.videos else '',
+        'multiple_photos': multiple_photo_urls,
+        'owner_profile': {
+            'company_name': boat.owner_profile.company_name
+        },
+        'cabins': list(boat.cabins.all().values()),  # Adjust based on your model fields
+        'available_dates': available_dates,
+        'reserved_dates': reserved_dates,
+        'booked_dates': boat.booked_dates,
+        'calendar_days': calendar_days
+    }
+
+    return render(request, 'booking-sheet.html', {'boat': data})
 
 @csrf_exempt
 def create_boat_view(request):
@@ -352,18 +356,16 @@ def create_boat_view(request):
         owner_id = request.POST.get("owner_profile")
         owner_profile = get_object_or_404(BoatOwnerProfile, id=owner_id)
         
-        # Validate booked_dates format (e.g., "2025-05-01:2025-05-05,2025-06-01:2025-06-07")
+        # Validate booked_dates format
         booked_dates = request.POST.get("booked_dates")
         if booked_dates:
             try:
-                # Simple validation: check if dates match YYYY-MM-DD:YYYY-MM-DD format
                 date_ranges = booked_dates.split(",")
                 date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}:\d{4}-\d{2}-\d{2}$")
                 for date_range in date_ranges:
                     if not date_pattern.match(date_range):
                         raise ValidationError(f"Invalid date range format: {date_range}")
                     start_date, end_date = date_range.split(":")
-                    # Optionally, validate that dates are valid and start_date <= end_date
                     from datetime import datetime
                     start = datetime.strptime(start_date, "%Y-%m-%d")
                     end = datetime.strptime(end_date, "%Y-%m-%d")
@@ -374,7 +376,7 @@ def create_boat_view(request):
                     'owners': BoatOwnerProfile.objects.all(),
                     'error': str(e)
                 })
-
+        
         boat = Boat.objects.create(
             owner_profile=owner_profile,
             name=request.POST.get("name"),
@@ -385,9 +387,18 @@ def create_boat_view(request):
             length=request.POST.get("length"),
             width=request.POST.get("width"),
             height=request.POST.get("height"),
+            booked_dates=booked_dates,
             created_by=request.user.id,
-            photos=request.FILES.get("photos")
+            photos=request.FILES.get("photos"),
+            videos=request.FILES.get("videos"),  # Corrected: single video file
         )
+        
+        # Handle multiple photos
+        photo_files = request.FILES.getlist("multiple_photos")
+        for photo_file in photo_files:
+            photo_instance = Photo.objects.create(image=photo_file)
+            boat.multiple_photos.add(photo_instance)
+        
         return redirect('boat_list')
 
     owners = BoatOwnerProfile.objects.all()
@@ -455,6 +466,10 @@ def get_cabin_details(request, cabin_id):
             'width': str(cabin.width) if cabin.width else None,
             'height': str(cabin.height) if cabin.height else None,
             'photos': cabin.photos,
+            'is_ac': cabin.is_ac,
+            'is_non_ac': cabin.is_non_ac,
+            'is_attached_washroom': cabin.is_attached_washroom,
+            'is_attached_belcony': cabin.is_attached_belcony,
             'created_at': cabin.created_at.isoformat(),
         }
         return JsonResponse(data)
@@ -476,6 +491,10 @@ def create_cabin_view(request):
             length=request.POST.get("length"),
             width=request.POST.get("width"),
             height=request.POST.get("height"),
+            is_ac=bool(request.POST.get("is_ac")),
+            is_non_ac=bool(request.POST.get("is_non_ac")),
+            is_attached_washroom=bool(request.POST.get("is_attached_washroom")),
+            is_attached_belcony=bool(request.POST.get("is_attached_belcony")),
             created_by=request.user.id
         )
         return redirect('cabins')
@@ -483,6 +502,7 @@ def create_cabin_view(request):
     boats = Boat.objects.all()
     context = {'boats': boats}
     return render(request, 'boats/cabin_create.html', context)
+
 
 @csrf_exempt
 def update_cabin_view(request, pk):
@@ -496,6 +516,10 @@ def update_cabin_view(request, pk):
         cabin.length = request.POST.get("length")
         cabin.width = request.POST.get("width")
         cabin.height = request.POST.get("height")
+        cabin.is_ac = bool(request.POST.get("is_ac"))
+        cabin.is_non_ac = bool(request.POST.get("is_non_ac"))
+        cabin.is_attached_washroom = bool(request.POST.get("is_attached_washroom"))
+        cabin.is_attached_belcony = bool(request.POST.get("is_attached_belcony"))
         cabin.updated_by = request.user.id
         cabin.save()
         return redirect('cabins')
@@ -606,6 +630,14 @@ def get_boat_cabins(request, boat_id):
                 'cabin_no': cabin.cabin_no,
                 'description': cabin.description,
                 'price': float(cabin.price),
+                'length': float(cabin.length) if cabin.length else None,
+                'width': float(cabin.width) if cabin.width else None,
+                'height': float(cabin.height) if cabin.height else None,
+                'is_ac': cabin.is_ac,
+                'is_non_ac': cabin.is_non_ac,
+                'is_attached_washroom': cabin.is_attached_washroom,
+                'is_attached_belcony': cabin.is_attached_belcony,
+                'photos': json.loads(cabin.photos) if cabin.photos else [],
                 'booked': bool(cabin.booked_dates),  # Adjust logic as needed
             })
 
