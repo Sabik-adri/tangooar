@@ -14,11 +14,10 @@
     </script>
     <meta logo="{% static 'images/logo/logo.png' %}">
     <meta white-logo="{% static 'images/logo/logo-white.png' %}">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Travello - Multipurpose travel and tour booking. This template is suitable for travel agency, tour, travel website, tour operator, tourism, booking trip or adventure website.">
-    <meta name="keywords" content="travel, trip booking, tour, hotel, tour guide, tourism, blog, flight, travel agency, tourism agency, accommodation, tour website">
+    <meta name="description" content="Travello - Multipurpose travel and tour booking.">
+    <meta name="keywords" content="travel, trip booking, tour, hotel, tour guide, tourism, blog, flight, travel agency">
     <meta name="author" content="inittheme">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:type" content="website">
@@ -31,25 +30,17 @@
     <meta name="twitter:description" content="Multipurpose travel and tour booking, multipurpose template">
     <meta name="twitter:image" content="https://twitter.com/inittheme/photo">
     <meta name="twitter:card" content="summary">
-    <!-- Google site verification -->
     <meta name="google-site-verification" content="...">
     <meta name="facebook-domain-verification" content="...">
     <meta name="csrf-token" content="...">
     <meta name="currency" content="$">
-    <!-- Title -->
     <title>Multipurpose travel and tour booking</title>
     <link rel="icon" type="image/x-icon" sizes="20x20" href="{% static 'images/icon/favicon.png' %}">
-    <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-5.3.0.min.css' %}">
-    <!-- Fonts & icon -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/remixicon.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/fonts-icon.css' %}">
-    <!-- Plugin -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/plugin.css' %}">
-    <!-- Main CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main-style.css' %}">
-    <!-- RTL CSS::When Need RTL Uncomments File -->
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/rtl.css' %}"> -->
 </head>
 <body>
     <header class="header-area-three">
@@ -90,7 +81,7 @@
                                             <i class="ri-shopping-cart-line"></i>
                                         </a>
                                         <div class="sign-btn">
-                                            <a href="register.html" class="btn-secondary-sm radius-30">Sign Up</a>
+                                            <a href="{% url 'signup' %}" class="btn-secondary-sm radius-30">Sign Up</a>
                                         </div>
                                         <!-- Theme Mode -->
                                         <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
@@ -130,7 +121,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <ul class="listing" id="navigation">
                                                 <li class="single-list">
-                                                    <a href="{% url 'dashboard' %}" class="single">
+                                                    <a href="javascript:void(0)" class="single">
                                                         Home
                                                     </a>
                                                 </li>
@@ -165,6 +156,7 @@
                                             </ul>
                                             
                                         <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
+
                                             <div class="top-header-right">
                                                 <div class="contact-section">
                                                     <div class="circle-primary-sm">
@@ -516,7 +508,6 @@
         </div>
         <!-- / End-Search -->
     </header>
-    
     <main>
         <style>
             body {
@@ -527,48 +518,50 @@
             }
             .boat-header {
                 display: flex;
-                gap: 20px;
+                flex-wrap: wrap;
+                gap: 15px;
                 background: #fff;
-                padding: 20px;
+                padding: 15px;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
             .boat-image {
-                width: 400px;
+                width: 100%;
+                max-width: 400px;
                 height: auto;
                 border-radius: 8px;
             }
             .image-gallery {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 gap: 10px;
-                width: 120px;
+                overflow-x: auto;
+                width: 100%;
+                max-width: 500px;
             }
             .image-gallery img {
-                width: 100%;
-                height: auto;
+                width: 120px;
+                height: 80px;
                 border-radius: 8px;
                 cursor: pointer;
+                flex-shrink: 0;
             }
             .boat-details {
                 flex: 1;
+                min-width: 300px;
             }
             .boat-details h2 {
-                font-size: 24px;
+                font-size: clamp(20px, 5vw, 24px);
                 margin: 0 0 10px;
                 color: #333;
             }
             .boat-details p {
                 margin: 5px 0;
                 color: #555;
+                font-size: clamp(14px, 4vw, 16px);
             }
             .boat-details p strong {
                 color: #333;
-            }
-            .rating {
-                color: #f5a623;
-                font-size: 18px;
-                margin: 5px 0;
             }
             .amenities {
                 margin-top: 10px;
@@ -580,71 +573,84 @@
             .amenities ul li {
                 margin: 5px 0;
                 color: #555;
+                font-size: clamp(14px, 4vw, 16px);
             }
             .amenities ul li::before {
                 content: "• ";
                 color: #d32f2f;
             }
-            .calendar, .cabins, .summary {
-                margin-top: 30px;
+            .calendar, .cabins, .summary, .invoice {
+                margin-top: 20px;
                 background: #fff;
-                padding: 20px;
+                padding: 15px;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
             .calendar h3 {
                 margin-top: 0;
+                font-size: clamp(18px, 5vw, 20px);
             }
             .calendar-grid {
                 display: grid;
                 grid-template-columns: repeat(7, 1fr);
-                gap: 5px;
+                gap: 4px;
+                margin-top: 1rem;
+            }
+            .calendar-day {
+                padding: 6px;
                 text-align: center;
-            }
-            .calendar-grid div {
-                padding: 10px;
-                border: 1px solid #ddd;
+                border: 1px solid #ccc;
                 border-radius: 4px;
+                font-size: clamp(12px, 3vw, 14px);
             }
-            .calendar-grid .header {
-                background: #f0f0f0;
-                font-weight: bold;
-            }
-            .calendar-grid .day {
-                background: #fafafa;
-            }
-            .calendar-grid .day.reserved {
-                background: #d32f2f;
+            .highlight {
+                background-color: #E73C17;
                 color: white;
             }
-            .calendar-grid .day.empty {
-                background: #fff;
-                border: none;
+            .invoice {
+                border: 1px solid #ccc;
+                padding: 15px;
+                border-radius: 5px;
             }
-            .cabins .cabin {
-                border: 1px solid #ddd;
-                padding: 10px;
+            .invoice-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            .invoice-logo {
+                width: 80px;
+            }
+            .invoice-details {
+                text-align: right;
+                font-size: clamp(12px, 3vw, 14px);
+            }
+            .invoice-body {
+                margin-top: 15px;
+            }
+            .invoice-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 margin-bottom: 10px;
-                border-radius: 4px;
+                flex-wrap: wrap;
             }
-            .summary-box {
-                border: 1px solid #aaa;
-                padding: 10px;
-                background: #f9f9f9;
-                border-radius: 4px;
+            .invoice-item-details {
+                width: 70%;
+            }
+            .invoice-item-total {
+                width: 30%;
+                text-align: right;
             }
             .btn {
                 background: #d32f2f;
                 color: white;
-                padding: 10px 20px;
+                padding: 8px 16px;
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
-                margin-right: 10px;
-                padding-bottom: 20px;
-            }
-            .btn.blue {
-                background: #1976d2;
+                margin-right: 8px;
+                font-size: clamp(14px, 4vw, 16px);
             }
             .zoom-modal {
                 display: none;
@@ -659,36 +665,261 @@
                 background-color: rgba(0,0,0,0.8);
                 text-align: center;
             }
-            
             .zoomed-image {
                 margin: auto;
                 display: block;
                 max-width: 90%;
-                max-height: 90%;
-                
+                max-height: 80vh;
             }
-            
             .close-zoom {
                 position: absolute;
-                top: 30px;
-                right: 50px;
+                top: 20px;
+                right: 20px;
                 color: white;
-                font-size: 35px;
+                font-size: 30px;
                 font-weight: bold;
                 cursor: pointer;
             }
+            .boat-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+            }
+            .cabin-box {
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: clamp(12px, 3vw, 14px);
+            }
+            .booked {
+                background-color: #d9534f;
+            }
+            .available {
+                background-color: #5cb85c;
+            }
+            .selected {
+                background-color: #E73C17 !important;
+            }
+            .guest-selector {
+                margin: 10px 0;
+            }
+            .guest-selector label {
+                margin-right: 8px;
+                font-weight: bold;
+                font-size: clamp(14px, 4vw, 16px);
+            }
+            .guest-selector select {
+                padding: 5px;
+                border-radius: 4px;
+                border: 1px solid #ccc;
+                width: 100%;
+                max-width: 200px;
+                font-size: clamp(14px, 4vw, 16px);
+            }
+            .button-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 15px;
+                padding: 15px 0;
+                text-align: center;
+                flex-wrap: wrap;
+            }
+            .action-button {
+                background-color: #E73C17;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                font-size: clamp(12px, 3vw, 14px);
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border-radius: 2px;
+                cursor: pointer;
+                text-transform: uppercase;
+                width: 100%;
+                max-width: 600px;
+                justify-content: center;
+            }
+            .separator {
+                font-weight: bold;
+                font-size: clamp(12px, 3vw, 14px);
+                color: #000;
+            }
+            .action-button i {
+                font-size: clamp(14px, 4vw, 16px);
+            }
+            video, img {
+                max-width: 100%;
+                height: auto;
+                width: 40%;
+            }
+            @media (max-width: 767px) {
+                video, img {
+                    width: 100%;
+                }
+            }
+            .mobile-menu {
+                display: none;
+            }
+            .mobile-menu.active {
+                display: block;
+            }
+            .hamburger-menu {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+            }
+
+            /* Mobile Responsiveness */
+            @media (max-width: 576px) {
+                body {
+                    padding: 10px;
+                }
+                .boat-header {
+                    flex-direction: column;
+                    padding: 10px;
+                }
+                .boat-details {
+                    min-width: 100%;
+                }
+                .image-gallery {
+                    flex-direction: row;
+                    overflow-x: auto;
+                }
+                .calendar-grid {
+                    grid-template-columns: repeat(7, 1fr);
+                    gap: 2px;
+                }
+                .calendar-day {
+                    padding: 4px;
+                    font-size: 12px;
+                }
+                .invoice-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .invoice-details {
+                    text-align: left;
+                    margin-top: 10px;
+                }
+                .invoice-item-details, .invoice-item-total {
+                    width: 100%;
+                    text-align: left;
+                }
+                .action-button {
+                    padding: 8px 10px;
+                    font-size: 12px;
+                }
+                .zoomed-image {
+                    max-height: 70vh;
+                }
+                .footer-area .row {
+                    flex-direction: column;
+                }
+                .footer-area .col-sm-6 {
+                    width: 100%;
+                }
+                .header-top .top-menu-wrapper {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .header-right-three {
+                    display: none;
+                }
+                .search-header-position {
+                    width: 100%;
+                    justify-content: space-between;
+                }
+                .main-menu {
+                    display: none;
+                }
+                .mobile-menu.active {
+                    display: block;
+                }
+                .mobile-menu ul {
+                    flex-direction: column;
+                    padding: 10px;
+                }
+                .mobile-menu li {
+                    margin: 5px 0;
+                }
+            }
+
+            /* Tablet Responsiveness */
+            @media (max-width: 768px) {
+                .boat-header {
+                    flex-direction: column;
+                }
+                .boat-details {
+                    min-width: 100%;
+                }
+                .image-gallery {
+                    flex-direction: row;
+                    overflow-x: auto;
+                }
+                .boat-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .calendar-grid {
+                    gap: 3px;
+                }
+                .calendar-day {
+                    padding: 5px;
+                    font-size: 13px;
+                }
+                .action-button {
+                    max-width: 400px;
+                }
+                .invoice-logo {
+                    width: 60px;
+                }
+                .main-menu {
+                    display: none;
+                }
+                .mobile-menu.active {
+                    display: block;
+                }
+            }
+
+            /* PC Responsiveness */
+            @media (min-width: 1200px) {
+                .container {
+                    max-width: 1140px;
+                }
+                .boat-header {
+                    flex-wrap: nowrap;
+                }
+                .boat-image {
+                    max-width: 600px;
+                }
+                .image-gallery {
+                    flex-direction: column;
+                    overflow-x: hidden;
+                    max-width: 120px;
+                }
+                .action-button {
+                    max-width: 900px;
+                }
+                .boat-grid {
+                    grid-template-columns: repeat(2, 120px);
+                }
+            }
         </style>
-    
         {% if boat %}
         <div id="imageZoomModal" class="zoom-modal" onclick="closeImageModal()">
-            <span class="close-zoom">&times;</span>
+            <span class="close-zoom">×</span>
             <img class="zoomed-image" id="zoomedImage">
         </div>
         <div class="boat-header">
             <div class="boat-details">
                 <h2>{{ boat.name }}</h2>
-                {% comment %} <div class="rating">★★★★★</div> {% endcomment %}
-                <p><strong>Owner:</strong> {{ boat.owner_profile.company_name }}</p>
+                <p style="font-size: 1.2em;"><strong>Owner:</strong> {{ boat.owner_profile.company_name }}</p>
                 <p><strong>Availability:</strong> {% if boat.is_reserved %}Fully Booked{% else %}Available{% endif %}</p>
                 <div class="amenities">
                     <ul>
@@ -697,31 +928,27 @@
                             <li><strong>{{ cabin.name }} ({{ cabin.cabin_no }}):</strong> 
                                 {{ cabin.length|floatformat:1 }} X {{ cabin.width|floatformat:1 }} Square feet
                                 {% if cabin.is_ac %}, AC{% endif %}
-                                {% if cabin.is_non_ac %},Non AC{% endif %}
+                                {% if cabin.is_non_ac %}, Non AC{% endif %}
                                 {% if cabin.is_attached_washroom %}, Attached Washroom{% endif %} 
                                 {% if cabin.is_attached_belcony %}, Attached Balcony{% endif %} 
                             </li>
                         {% endfor %}
                         <li><strong>Description:</strong> {{ boat.description|default:"No description available" }}</li>
-                        <li><strong>Meal Facilities:</strong> 5 meals, 4 snacks, unlimited tea-coffee</li>
-                        <li><strong>Departure from:</strong> Moddha Nagar</li>
-                        <li><strong>Places to visit:</strong> Watch Tower, Tekarghaat, Jadukata Nodi</li>
-                        <li><strong>Facilities:</strong> Life Jacket, 24/7 Power Supply, Gas Cylinder</li>
                     </ul>
                 </div>
             </div>
             {% if boat.video %}
-                <video width="600" height="400" loop autoplay muted>
+                <video width="40%" height="auto" loop autoplay muted>
                     <source src="{{ boat.video }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             {% else %}
-                <img src="{{ boat.photo|default:'https://via.placeholder.com/400x300?text=No+Image' }}" width="600" height="400" alt="No video available">
+                <img src="{{ boat.photo|default:'https://via.placeholder.com/400x300?text=No+Image' }}" alt="No video available" class="boat-image">
             {% endif %}
-            <div style="padding-top: 3vh;" class="image-gallery">
+            <div class="image-gallery">
                 {% if boat.multiple_photos %}
                     {% for photo_url in boat.multiple_photos %}
-                        <img src="{{ photo_url }}" class="boat-image" alt="Boat image" width="120" height="80" onclick="openImageModal(this.src)">
+                        <img src="{{ photo_url }}" class="boat-image" alt="Boat image" onclick="openImageModal(this.src)">
                     {% endfor %}
                 {% else %}
                     {% for i in "1234" %}
@@ -729,351 +956,122 @@
                     {% endfor %}
                 {% endif %}
             </div>
-            <img style="padding-top: 3vh;" src="{{ boat.photo|default:'https://via.placeholder.com/400x300?text=No+Image' }}" width="500" height="300" onclick="openImageModal(this.src)">
-            
-            
+            <img src="{{ boat.photo|default:'https://via.placeholder.com/400x300?text=No+Image' }}" class="boat-image" onclick="openImageModal(this.src)">
         </div>
-
         <script>
             function openImageModal(src) {
                 const zoomedImage = document.getElementById("zoomedImage");
                 zoomedImage.src = src;
-                zoomedImage.style.height = "60vh"; // Set fixed height for the photo
-                zoomedImage.style.display = "block"; // Ensure the image is displayed
-                zoomedImage.style.margin = "auto"; // Center the image
-                document.getElementById("imageZoomModal").style.display = "flex"; // Use flex to center modal content
-                document.getElementById("imageZoomModal").style.justifyContent = "center"; // Center horizontally
-                document.getElementById("imageZoomModal").style.alignItems = "center"; // Center vertically
+                zoomedImage.style.display = "block";
+                document.getElementById("imageZoomModal").style.display = "flex";
+                document.getElementById("imageZoomModal").style.justifyContent = "center";
+                document.getElementById("imageZoomModal").style.alignItems = "center";
             }
-            
             function closeImageModal() {
                 document.getElementById("imageZoomModal").style.display = "none";
             }
-        </script>
-
-<div style="background-color: #E73C17; color: white; padding: 10px; margin: 10px 0; font-size: 20px; letter-spacing: 1px; word-spacing: 3px; text-align: center;">
-    D e t a i l e d       B o o k i n g       S h e e t
-</div>
-
-    
-        <style>
-            .calendar {
-                width: 100%;
-                max-width: 800px;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 15px;
-                padding-top: 15px;
-                background-color: #f8f8f8;
+            function toggleMobileMenu() {
+                const mobileMenu = document.getElementById("mobile-menu");
+                mobileMenu.classList.toggle("active");
             }
-        </style>
+        </script>
+        <div style="background-color: #E73C17; color: white; padding: 10px; margin: 10px 0; font-size: clamp(16px, 5vw, 20px); letter-spacing: 1px; word-spacing: 3px; text-align: center;">
+            D e t a i l e d       B o o k i n g       S h e e t
+        </div>
         <div class="row">
-            <div class="col-md-2" id="package">Loading packages...</div>
-            <div class="col-md-3">
-                <div class="calendar">
-                    <h3>Booking Calendar - April 2025</h3>
-                    <div class="calendar-grid">
-                        <!-- Weekday headers -->
-                        <div class="header">Sun</div>
-                        <div class="header">Mon</div>
-                        <div class="header">Tue</div>
-                        <div class="header">Wed</div>
-                        <div class="header">Thu</div>
-                        <div class="header">Fri</div>
-                        <div class="header">Sat</div>
-        
-                        <!-- Empty days (April 1, 2025 is Tuesday) -->
-                        <div class="day empty"></div>
-                        <div class="day empty"></div>
-        
-                        <!-- Generate days -->
-                        {% for day in boat.calendar_days %}
-                        {% with date="2025-04-"|add:day|stringformat:"02d" %}
-                            <div class="day {% if date in boat.reserved_dates %}reserved{% elif day == 5 or day == 15 or day == 25 %}orange{% endif %}">
-                                {{ day }}
-                            </div>
-                        {% endwith %}
-                        {% endfor %}
-                    </div>
-                    <p><strong>Reserved Dates:</strong> {{ boat.reserved_dates|join:", " }}</p>
-                    <p><strong>Available Dates:</strong> {{ boat.available_dates|join:", " }}</p>
-                </div>
+            <div class="col-12 col-md-6 col-lg-2" id="package">Loading packages...</div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="calendar" id="calendar"></div>
             </div>
-            <div class="col-md-4">
-                
+            <div class="col-12 col-md-12 col-lg-4">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div id="boat-structure" class="boat-grid"></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div id="cabin-details"></div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-3">
-                
+            <div class="col-12 col-md-6 col-lg-3">
                 <div class="invoice">
                     <h3>Invoice</h3>
                     <div class="invoice-header">
                         <div class="invoice-logo">
-                            <img src="https://via.placeholder.com/100x50?text=Tangooar" alt="Tangooar Logo">
                         </div>
                         <div class="invoice-details">
                             <p>Invoice Number: #{{ boat.id }}</p>
                             <p>Date: {{ now|date:"d/m/Y" }}</p>
                         </div>
                     </div>
-                    <div class="invoice-body">
-                        <div class="invoice-item">
+                    <div class="guest-selector">
+                        <label for="guestCount">Number of Guests:</label>
+                        <select id="guestCount" onchange="updateInvoice()">
+                            {% for i in "12345678910" %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="invoice-body" id="invoiceBody">
+                        <div class="invoice-item" id="packageItem" style="display: none;">
                             <div class="invoice-item-details">
-                                <p>Cabin: {{ boat.name }}</p>
-                                <p>Price: {{ boat.price }} TK</p>
+                                <p>Package: <span id="packageName"></span></p>
+                                <p>Price: <span id="packagePrice"></span> TK</p>
                             </div>
                             <div class="invoice-item-total">
-                                <p>{{ boat.price }} TK</p>
+                                <p id="packageTotal"></p>
+                            </div>
+                        </div>
+                        <div class="invoice-item" id="cabinItem" style="display: none;">
+                            <div class="invoice-item-details">
+                                <p>Cabin: <span id="cabinName"></span></p>
+                                <p>Price: <span id="cabinPrice"></span> TK</p>
+                            </div>
+                            <div class="invoice-item-total">
+                                <p id="cabinTotal"></p>
                             </div>
                         </div>
                         <div class="invoice-item">
                             <div class="invoice-item-details">
-                                <p>Package: Package Name</p>
-                                <p>Price: 5000 TK</p>
+                                <p>Subtotal:</p>
                             </div>
                             <div class="invoice-item-total">
-                                <p>5000 TK</p>
+                                <p id="subtotal">0 TK</p>
                             </div>
                         </div>
                         <div class="invoice-item">
                             <div class="invoice-item-details">
-                                <p>Dates: 1st April 2025 - 5th April 2025</p>
-                            </div>
-                        </div>
-                        <div class="invoice-item">
-                            <div class="invoice-item-details">
-                                <p>Discount: 10%</p>
+                                <p>Total (x<span id="guestMultiplier">1</span> Guests):</p>
                             </div>
                             <div class="invoice-item-total">
-                                <p>-500 TK</p>
-                            </div>
-                        </div>
-                        <div class="invoice-item">
-                            <div class="invoice-item-details">
-                                <p>Total:</p>
-                            </div>
-                            <div class="invoice-item-total">
-                                <p>{{ boat.price }} TK</p>
+                                <p id="grandTotal">0 TK</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <style>
-                    .invoice {
-                        border: 1px solid #ccc;
-                        padding: 15px;
-                        border-radius: 5px;
-                    }
-                    .invoice-header {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
-                    .invoice-logo {
-                        width: 100px;
-                    }
-                    .invoice-details {
-                        text-align: right;
-                    }
-                    .invoice-body {
-                        margin-top: 15px;
-                    }
-                    .invoice-item {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 10px;
-                    }
-                    .invoice-item-details {
-                        width: 70%;
-                    }
-                    .invoice-item-total {
-                        width: 30%;
-                        text-align: right;
-                    }
-                </style>
             </div>
         </div>
-        
-        <style>
-            .calendar-grid .day.orange {
-                background: #E73C17;
-                color: white;
-            }
-        </style>
-        
-        <style>
-            #package {
-                font-size: 1.5rem;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-        </style>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const boatId = "{{ boat.id }}";  // Make sure this is not empty from the Django backend
-        
-                if (boatId) {
-                    fetch(`/api/tour-packages/${boatId}/`)
-                        .then(res => res.json())
-                        .then(data => {
-                            const packageElement = document.getElementById("package");
-                            packageElement.innerHTML = '';
-        
-                            if (data.status === 'success' && data.packages.length > 0) {
-                                data.packages.forEach(pkg => {
-                                    const button = document.createElement("button");
-                                    button.style.fontSize = "1.2rem";
-                                    button.style.backgroundColor = "#5cb85c";
-                                    button.style.borderRadius = "5px";
-                                    button.style.color = "white";
-                                    button.innerText = `${pkg.id} - ${pkg.package_name} - ${pkg.price} Tk`;
-                                    button.addEventListener("click", function () {
-                                        const selected = document.querySelector("#package button.selected");
-                                        if (selected) {
-                                            selected.classList.remove("selected");
-                                            selected.style.backgroundColor = "#5cb85c";
-                                        }
-                                        button.classList.add("selected");
-                                        button.style.backgroundColor = "rgb(231, 60, 23)";
-                                    });
-                                    packageElement.appendChild(button);
-                                });
-                            } else {
-                                packageElement.innerText = "No packages available.";
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching packages:', error);
-                            document.getElementById("package").innerText = "Failed to load packages.";
-                        });
-                } else {
-                    console.warn("Boat ID is missing.");
-                }
-            });
-        </script>
-
-
-        
-
-
-<style>
-    .boat-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 120px);
-        grid-auto-rows: 80px;
-        gap: 10px;
-    }
-
-.cabin-box {
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.booked {
-    background-color: #d9534f; /* red */
-}
-
-.available {
-    background-color: #5cb85c; /* green */
-}
-</style>
-    
-        {% comment %} <div class="cabins">
-            <h3>Cabins</h3>
-            {% for cabin in boat.cabins %}
-                <div class="cabin">
-                    <p><strong>Name:</strong> {{ cabin.name }} ({{ cabin.cabin_no }})</p>
-                    <p><strong>Price:</strong> {{ cabin.price }} TK</p>
-                    <p><strong>Dimensions:</strong> {{ cabin.length|floatformat:1 }} ft x {{ cabin.width|floatformat:1 }} ft x {{ cabin.height|floatformat:1 }} ft</p>
-                    <p><strong>Description:</strong> {{ cabin.description|default:"No description available" }}</p>
-                </div>
-            {% empty %}
-                <p>No cabins available for this boat.</p>
-            {% endfor %}
-        </div> {% endcomment %}
-    
         <div class="summary">
-            <h3>Booking Summary</h3>
-            <div class="summary-box">
+            <div class="summary-box" style="display: none;">
                 <p><strong>Boat:</strong> {{ boat.name }}</p>
-                <p><strong>Price (Base):</strong> {{ boat.price }} TK</p>
-                <p><strong>Total Guests:</strong> (select from form in real UI)</p>
-                <p><strong>Grand Total:</strong> (calculated dynamically)</p>
+                <p><strong>Package:</strong> <span id="summaryPackage">Not selected</span></p>
+                <p><strong>Cabin:</strong> <span id="summaryCabin">Not selected</span></p>
+                <p><strong>Total Guests:</strong> <span id="summaryGuests">1</span></p>
+                <p><strong>Grand Total:</strong> <span id="summaryTotal">0 TK</span></p>
             </div>
-
-            <style>
-    .button-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      padding: 20px 0;
-      text-align: center;
-    }
-
-    .action-button {
-      background-color: #E73C17;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 2px;
-      cursor: pointer;
-      text-transform: uppercase;
-      width: 900px;
-    }
-
-    .separator {
-      font-weight: bold;
-      font-size: 14px;
-      color: #000;
-    }
-
-    .action-button i {
-      font-size: 16px;
-    }
-  </style>
-            <div class="button-container" style="justify-content: center;">
+            <div class="button-container">
                 <a href="{% url 'payment_gateway' %}">
                     <button class="action-button">
                         <i class="fas fa-money-bill-wave"></i>
                         <div style="display: flex; justify-content: center; width: 100%;">Proceed to Payment</div>
                     </button>
                 </a>
-                <span class="separator">OR</span>
-                <a href="{% url 'payment_gateway' %}">
-                    <button class="action-button">
-                        <i class="fas fa-phone-alt"></i>
-                        <div style="display: flex; justify-content: center; width: 100%;">Call for Reservation</div>
-                    </button>
-                </a>
-              </div>
+            </div>
         </div>
         {% else %}
             <p>{{ error }}</p>
         {% endif %}
     </main>
-    <!-- Footer S t a r t -->
     <footer>
         <div class="footer-wrapper footer-bg">
             <div class="container">
@@ -1084,16 +1082,10 @@
                                 <div class="footer-tittle">
                                     <h4 class="title">Company</h4>
                                     <ul class="listing">
-                                        <li class="single-lsit">
-                                            <a href="about.html">About Us</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="news.html">News</a>
-                                        </li>
+                                        <li class="single-lsit"><a href="about.html">About Us</a></li>
+                                        <li class="single-lsit"><a href="news.html">News</a></li>
                                         <li class="single-lsit"><a href="faq.html">Faq</a></li>
-                                        <li class="single-lsit">
-                                            <a href="contact.html">Contact</a>
-                                        </li>
+                                        <li class="single-lsit"><a href="contact.html">Contact</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1104,12 +1096,8 @@
                                     <h4 class="title">Explore</h4>
                                     <ul class="listing">
                                         <li class="single-lsit"><a href="faq.html">Faq</a></li>
-                                        <li class="single-lsit">
-                                            <a href="tour-list.html">Tour Listings</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="destination.html">Destination</a>
-                                        </li>
+                                        <li class="single-lsit"><a href="tour-list.html">Tour Listings</a></li>
+                                        <li class="single-lsit"><a href="destination.html">Destination</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1120,12 +1108,8 @@
                                     <h4 class="title">Quick Links</h4>
                                     <ul class="listing">
                                         <li class="single-lsit"><a href="index.html">Home</a></li>
-                                        <li class="single-lsit">
-                                            <a href="about.html">About Us</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="contact.html">Contact Us</a>
-                                        </li>
+                                        <li class="single-lsit"><a href="about.html">About Us</a></li>
+                                        <li class="single-lsit"><a href="contact.html">Contact Us</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1136,8 +1120,7 @@
                                     <h4 class="title">Contact</h4>
                                     <ul class="listing">
                                         <li class="single-lsit">
-                                            <a href="index.html#" class="mb-20 d-block">70/A Floor Divo Tower Melbourne,
-                                                Australia</a>
+                                            <a href="index.html#" class="mb-20 d-block">70/A Floor Divo Tower Melbourne, Australia</a>
                                         </li>
                                         <li class="single-lsit">
                                             <a href="index.html#">
@@ -1167,16 +1150,13 @@
                                     <img src="assets/images/logo/logo_.png" alt="travello" class="changeLogo">
                                 </div>
                                 <p class="pera">
-                                    Travel is a transformative and enriching experience that
-                                    allows individuals to explore new destinations, cultures,
-                                    and landscapes.
+                                    Travel is a transformative and enriching experience that allows individuals to explore new destinations, cultures, and landscapes.
                                 </p>
                             </div>
                             <div class="footer-right">
                                 <h4 class="title">Subscribe Our Newsletter</h4>
                                 <div class="subscribe-wraper">
-                                    <input class="footer-search" type="search" name="footer"
-                                        placeholder="Enter Your Email">
+                                    <input class="footer-search" type="search" name="footer" placeholder="Enter Your Email">
                                     <button class="subscribe-btn">Subscribe</button>
                                 </div>
                             </div>
@@ -1184,29 +1164,19 @@
                     </div>
                     <div class="footer-bottom">
                         <ul class="listing">
-                            <li class="single-list">
-                                <a href="terms-condition.html" class="single">Terms of usa</a>
-                            </li>
-                            <li class="single-list">
-                                <a href="privacy-policy.html" class="single">Privacy and Cookies Statement</a>
-                            </li>
-                            <li class="single-list">
-                                <a href="contact.html" class="single">How the site works</a>
-                            </li>
+                            <li class="single-list"><a href="terms-condition.html" class="single">Terms of usa</a></li>
+                            <li class="single-list"><a href="privacy-policy.html" class="single">Privacy and Cookies Statement</a></li>
+                            <li class="single-list"><a href="contact.html" class="single">How the site works</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- footer-bottom area -->
             <div class="footer-bottom-area">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-between gap-14 flex-wrap">
-                                <p class="pera">
-                                    © <span class="current-year">2025</span> initTheme. All rights
-                                    reserved
-                                </p>
+                                <p class="pera">© <span class="current-year">2025</span> initTheme. All rights reserved</p>
                                 <p class="pera">Powered by @Travello</p>
                             </div>
                         </div>
@@ -1215,40 +1185,179 @@
             </div>
         </div>
     </footer>
-    <!--/ End-of Footer -->
-
-    <!-- Scroll Up  -->
     <div class="progressParent" id="back-top">
         <svg class="backCircle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
     </div>
-    <!-- Add an search-overlay element -->
     <div class="search-overlay"></div>
-    <!-- jquery-->
     <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'assets/js/popper.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap-5.3.0.min.js' %}"></script>
-    <!-- Plugin -->
     <script src="{% static 'assets/js/plugin.js' %}"></script>
-    <!-- Main js-->
     <script src="{% static 'assets/js/main.js' %}"></script>
     <script>
+        let selectedPackage = null;
+        let selectedCabin = null;
+        let guestCount = 1;
+
+        function updateInvoice() {
+            guestCount = parseInt(document.getElementById("guestCount").value);
+            document.getElementById("guestMultiplier").innerText = guestCount;
+            document.getElementById("summaryGuests").innerText = guestCount;
+
+            let subtotal = 0;
+            let packagePrice = 0;
+            let cabinPrice = 0;
+
+            if (selectedPackage) {
+                packagePrice = selectedPackage.price;
+                document.getElementById("packageItem").style.display = "block";
+                document.getElementById("packageName").innerText = selectedPackage.package_name;
+                document.getElementById("packagePrice").innerText = packagePrice;
+                document.getElementById("packageTotal").innerText = packagePrice + " TK";
+                document.getElementById("summaryPackage").innerText = selectedPackage.package_name;
+                subtotal += packagePrice;
+            } else {
+                document.getElementById("packageItem").style.display = "none";
+                document.getElementById("summaryPackage").innerText = "Not selected";
+            }
+
+            if (selectedCabin) {
+                cabinPrice = selectedCabin.price;
+                document.getElementById("cabinItem").style.display = "block";
+                document.getElementById("cabinName").innerText = selectedCabin.name;
+                document.getElementById("cabinPrice").innerText = cabinPrice;
+                document.getElementById("cabinTotal").innerText = cabinPrice + " TK";
+                document.getElementById("summaryCabin").innerText = selectedCabin.name;
+                subtotal += cabinPrice;
+            } else {
+                document.getElementById("cabinItem").style.display = "none";
+                document.getElementById("summaryCabin").innerText = "Not selected";
+            }
+
+            document.getElementById("subtotal").innerText = subtotal + " TK";
+            const grandTotal = subtotal * guestCount;
+            document.getElementById("grandTotal").innerText = grandTotal + " TK";
+            document.getElementById("summaryTotal").innerText = grandTotal + " TK";
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
-            const boatId = "{{ boat.id }}";  // Pass from Django context or URL
+            const boatId = "{{ boat.id }}";
+            const packageElement = document.getElementById("package");
+            const calendarElement = document.getElementById("calendar");
             const structure = document.getElementById("boat-structure");
             const details = document.getElementById("cabin-details");
-            let selectedCabin = null;
 
-            function loadCabins() {
-                fetch(`/api/boat/${boatId}/cabins/`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            renderCabins(data.cabins);
-                        }
-                    });
+            // Load Packages
+            packageElement.innerHTML = "Loading packages...";
+            fetch(`/api/tour-packages/${boatId}/`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    packageElement.innerHTML = '';
+                    calendarElement.innerHTML = '';
+                    if (data.status === 'success' && data.packages && data.packages.length > 0) {
+                        data.packages.forEach(pkg => {
+                            const button = document.createElement("button");
+                            button.style.fontSize = "1.2rem";
+                            button.style.backgroundColor = "#5cb85c";
+                            button.style.borderRadius = "5px";
+                            button.style.color = "white";
+                            button.style.marginBottom = "10px";
+                            button.style.width = "100%";
+                            button.style.padding = "10px";
+                            button.style.border = "none";
+                            button.style.cursor = "pointer";
+                            button.innerText = `${pkg.id} - ${pkg.package_name} - ${pkg.price} Tk`;
+                            button.addEventListener("click", function () {
+                                const selected = document.querySelector("#package button.selected");
+                                if (selected) {
+                                    selected.classList.remove("selected");
+                                    selected.style.backgroundColor = "#5cb85c";
+                                }
+                                button.classList.add("selected");
+                                button.style.backgroundColor = "#E73C17";
+                                selectedPackage = pkg;
+                                const start = new Date(pkg.start_date);
+                                const end = new Date(pkg.end_date);
+                                const highlights = [];
+                                let current = new Date(start);
+                                while (current <= end) {
+                                    highlights.push(current.toISOString().split('T')[0]);
+                                    current.setDate(current.getDate() + 1);
+                                }
+                                renderCalendar(start.getFullYear(), start.getMonth(), highlights);
+                                updateInvoice();
+                            });
+                            packageElement.appendChild(button);
+                        });
+                    } else {
+                        packageElement.innerText = "No packages available.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching packages:', error);
+                    packageElement.innerText = "Failed to load packages. Please try again later.";
+                    calendarElement.innerText = "";
+                });
+
+            function renderCalendar(year, month, highlights) {
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const startDay = firstDay.getDay();
+                const daysInMonth = lastDay.getDate();
+                const calendarGrid = document.createElement("div");
+                calendarGrid.className = "calendar-grid";
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                days.forEach(day => {
+                    const cell = document.createElement("div");
+                    cell.className = "calendar-day";
+                    cell.style.fontWeight = "bold";
+                    cell.innerText = day;
+                    calendarGrid.appendChild(cell);
+                });
+                for (let i = 0; i < startDay; i++) {
+                    calendarGrid.appendChild(document.createElement("div"));
+                }
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(year, month, day);
+                    const dateString = date.toISOString().split('T')[0];
+                    const cell = document.createElement("div");
+                    cell.className = "calendar-day";
+                    cell.innerText = day;
+                    if (highlights.includes(dateString)) {
+                        cell.classList.add("highlight");
+                    }
+                    calendarGrid.appendChild(cell);
+                }
+                calendarElement.innerHTML = `<h3>${firstDay.toLocaleString('default', { month: 'long' })} ${year}</h3>`;
+                calendarElement.appendChild(calendarGrid);
             }
+
+            // Load Cabins
+            fetch(`/api/boat/${boatId}/cabins/`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status === 'success' && data.cabins) {
+                        renderCabins(data.cabins);
+                    } else {
+                        structure.innerHTML = "<p>No cabins available.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching cabins:', error);
+                    structure.innerHTML = "<p>Failed to load cabins. Please try again later.</p>";
+                });
 
             function renderCabins(cabins) {
                 structure.innerHTML = '';
@@ -1256,24 +1365,26 @@
                     const box = document.createElement("div");
                     box.classList.add("cabin-box");
                     box.classList.add(cabin.booked ? 'booked' : 'available');
-
                     let typeLabel = '';
                     if (cabin.is_ac) typeLabel = 'AC';
                     else if (cabin.is_non_ac) typeLabel = 'Non AC';
-
                     box.innerText = `${cabin.name}\n${cabin.booked ? 'Booked' : typeLabel}`;
-                    box.onclick = () => {
-                        if (selectedCabin) {
-                            selectedCabin.style.background = "";
+                    box.addEventListener("click", () => {
+                        if (!cabin.booked) {
+                            const previouslySelected = document.querySelector(".cabin-box.selected");
+                            if (previouslySelected) {
+                                previouslySelected.classList.remove("selected");
+                                previouslySelected.style.backgroundColor = cabin.booked ? "#d9534f" : "#5cb85c";
+                            }
+                            box.classList.add("selected");
+                            box.style.backgroundColor = "#E73C17";
+                            selectedCabin = cabin;
+                            showCabinDetails(cabin);
+                            updateInvoice();
                         }
-                        selectedCabin = box;
-                        box.style.background = "#E73C17";
-                        showCabinDetails(cabin);
-                    };
+                    });
                     structure.appendChild(box);
                 });
-
-                // Add a Lobby box
                 const lobby = document.createElement("div");
                 lobby.className = "cabin-box";
                 lobby.style.background = "#ddd";
@@ -1288,8 +1399,7 @@
                 const isAc = cabin.is_ac ? 'Yes' : 'No';
                 const isNonAc = cabin.is_non_ac ? 'Yes' : 'No';
                 const isAttachedWashroom = cabin.is_attached_washroom ? 'Yes' : 'No';
-                const isAttachedBalcony = cabin.is_attached_belcony ? 'Yes' : 'No'; // Fixed typo
-
+                const isAttachedBalcony = cabin.is_attached_belcony ? 'Yes' : 'No';
                 details.innerHTML = `
                     <h3>Cabin Details</h3>
                     <p><strong>Name:</strong> ${cabin.name}</p>
@@ -1303,12 +1413,8 @@
                     <p><strong>Dimensions:</strong> ${cabin.length} ft x ${cabin.width} ft x ${cabin.height} ft</p>
                 `;
             }
-
-            loadCabins();
         });
-        </script>
-        
+    </script>
 </body>
 </html>
 {% endblock %}
-

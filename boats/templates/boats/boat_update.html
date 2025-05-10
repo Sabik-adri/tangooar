@@ -58,7 +58,6 @@
         <label for="multiple_photos">Additional Photos:</label>
         <input type="file" name="multiple_photos" id="multiple_photos" accept="image/*" multiple><br>
 
-
         <label for="booked_dates">Reserved Dates (e.g., 2025-05-01:2025-05-05,2025-06-01:2025-06-07):</label>
         <input type="text" name="booked_dates" id="booked_dates" value="{{ boat.booked_dates|default_if_none:"" }}"><br>
         <div id="selected-ranges">

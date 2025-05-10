@@ -410,15 +410,41 @@ def update_boat_view(request, pk):
     if request.method == "POST":
         form = BoatForm(request.POST, request.FILES, instance=boat)
         if form.is_valid():
+            # Validate booked_dates format
+            booked_dates = form.cleaned_data.get("booked_dates")
+            if booked_dates:
+                try:
+                    date_ranges = booked_dates.split(",")
+                    date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}:\d{4}-\d{2}-\d{2}$")
+                    for date_range in date_ranges:
+                        if not date_pattern.match(date_range):
+                            raise ValidationError(f"Invalid date range format: {date_range}")
+                        start_date, end_date = date_range.split(":")
+                        from datetime import datetime
+                        start = datetime.strptime(start_date, "%Y-%m-%d")
+                        end = datetime.strptime(end_date, "%Y-%m-%d")
+                        if start > end:
+                            raise ValidationError(f"Start date must be before end date in range: {date_range}")
+                except ValidationError as e:
+                    context = {
+                        'boat': boat,
+                        'owners': BoatOwnerProfile.objects.all(),
+                        'form': form,
+                        'error': str(e)
+                    }
+                    return render(request, 'boats/boat_update.html', context)
+
             form.instance.updated_by = request.user.id
             form.save()
             return redirect('boat_list')
+
         context = {
             'boat': boat,
             'owners': BoatOwnerProfile.objects.all(),
             'form': form
         }
         return render(request, 'boats/boat_update.html', context)
+
     form = BoatForm(instance=boat)
     context = {
         'boat': boat,
