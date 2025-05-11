@@ -1060,13 +1060,52 @@
                 <p><strong>Grand Total:</strong> <span id="summaryTotal">0 TK</span></p>
             </div>
             <div class="button-container">
-                <a href="{% url 'payment_gateway' %}">
-                    <button class="action-button">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <div style="display: flex; justify-content: center; width: 100%;">Proceed to Payment</div>
-                    </button>
-                </a>
+                <button class="action-button" id="proceedToPaymentButton">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div style="display: flex; justify-content: center; width: 100%;">Proceed to Payment</div>
+                </button>
             </div>
+
+            <!-- Create Account Modal -->
+            <div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createAccountModalLabel">Create Account</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'payment_gateway' %}" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create Account</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById("proceedToPaymentButton").addEventListener("click", function(){
+                    var modal = new bootstrap.Modal(document.getElementById("createAccountModal"));
+                    modal.show();
+                });
+            </script>
         </div>
         {% else %}
             <p>{{ error }}</p>
