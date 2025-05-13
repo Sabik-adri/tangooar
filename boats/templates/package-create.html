@@ -1,840 +1,278 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block extra_head %}
-<!-- Bootstrap 5 CSS CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    .form-section {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 30px;
-        background: #f9f9f9;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .form-section h2 {
-        margin-bottom: 20px;
-    }
-
-    .table-section {
-        max-width: 1000px;
-        margin: 50px auto;
-    }
-
-    .table th, .table td {
-        vertical-align: middle;
-    }
-</style>
-{% endblock %}
-{% block content %}
 <!DOCTYPE html>
-<html lang="zxx" dir="ltr">
+<html lang="en">
 <head>
-    <script>
-        const setTheme = (theme) => {
-            theme ??= localStorage.theme || "light";
-            document.documentElement.dataset.theme = theme;
-            localStorage.theme = theme;
-        };
-        setTheme();
-    </script>
-    <meta logo="{% static 'images/logo/logo.png' %}">
-    <meta white-logo="{% static 'images/logo/logo-white.png' %}">
-
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Travello - Multipurpose travel and tour booking. This template is suitable for travel agency, tour, travel website, tour operator, tourism, booking trip or adventure website.">
-    <meta name="keywords" content="travel, trip booking, tour, hotel, tour guide, tourism, blog, flight, travel agency, tourism agency, accommodation, tour website">
-    <meta name="author" content="inittheme">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Multipurpose travel and tour booking">
-    <meta property="og:site_name" content="Travello">
-    <meta property="og:url" content="https://inittheme.com">
-    <meta property="og:image" content="{% static 'images/selfie.jpg' %}">
-    <meta property="og:description" content="Multipurpose travel and tour booking, multipurpose template">
-    <meta name="twitter:title" content="Multipurpose travel and tour booking">
-    <meta name="twitter:description" content="Multipurpose travel and tour booking, multipurpose template">
-    <meta name="twitter:image" content="https://twitter.com/inittheme/photo">
-    <meta name="twitter:card" content="summary">
-    <!-- Google site verification -->
-    <meta name="google-site-verification" content="...">
-    <meta name="facebook-domain-verification" content="...">
-    <meta name="csrf-token" content="...">
-    <meta name="currency" content="$">
-    <!-- Title -->
-    <title>Multipurpose travel and tour booking</title>
-    <link rel="icon" type="image/x-icon" sizes="20x20" href="{% static 'images/icon/favicon.png' %}">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-5.3.0.min.css' %}">
-    <!-- Fonts & icon -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/remixicon.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/fonts-icon.css' %}">
-    <!-- Plugin -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/plugin.css' %}">
-    <!-- Main CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main-style.css' %}">
-    <!-- RTL CSS::When Need RTL Uncomments File -->
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/rtl.css' %}"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Tour Package</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <header class="header-area-three">
-        <div class="main-header">
-            <!-- Header Top -->
-            <div class="header-top">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
-                                <div class="logo">
-                                    <a href="{% url 'dashboard' %}"><img src="{% static 'images/logo/logo_.png' %}" alt="logo" class="changeLogo" width="130"></a>
-                                </div>
-                                
-                                <!-- search box -->
-                                <div class="search-box search-bar d-none d-lg-block">
-                                    <div class="header-search">
-                                        <span class="pera">Find Your Boat</span>
-                                        <div class="search-icon">
-                                            <i class="ri-search-line"></i>
-                                        </div>
-                                        <kbd class="light-text">
-                                            <abbr title="Ctrl">Ctrl +</abbr> k
-                                        </kbd>
-                                    </div>
-                                </div>
-                                <!-- Top Left Side -->
-                                <!-- Logo-->
-                                
-                                <div class="header-right-three pl-15 d-none d-lg-flex">
-                                    <div class="lang">
-                                        <i class="ri-global-line"></i>
-                                        <p class="pera">English</p>
-                                    </div>
-                                    <div class="divider gradient-divider"></div>
-                                    <div class="d-flex gap-20 align-items-center">
-                                        <a href="tour-cart-page.html" class="cart signin">
-                                            <i class="ri-shopping-cart-line"></i>
-                                        </a>
-                                        <div class="sign-btn">
-                                            <a href="{% url 'signup' %}" class="btn-secondary-sm radius-30">Sign Up</a>
-                                        </div>
-                                        <!-- Theme Mode -->
-                                        <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
-                                            <i class="ri-sun-line"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- Mobile Device Search & Theme Mode -->
-                                <div class="search-header-position d-block d-lg-none">
-                                    <div class="d-flex gap-15">
-                                        <div class="search-bar">
-                                            <a href="javascript:void(0)" class="rounded-btn">
-                                                <i  class="ri-search-line"></i>
-                                            </a>
-                                        </div>
-                                        <!-- Theme Mode -->
-                                        <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
-                                            <i class="ri-sun-line"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- / Mobile Device Search & Theme Mode-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Header Bottom -->
-            <div class="header-bottom header-sticky">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="menu-wrapper">
-                                <!-- Main-menu for desktop -->
-                                <div class="main-menu d-none d-lg-block">
-                                    <nav>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <ul class="listing" id="navigation">
-                                                <li class="single-list">
-                                                    <a href="javascript:void(0)" class="single">
-                                                        Home
-                                                    </a>
-                                                </li>
-                                                <li class="single-list">
-                                                    <a href="{% url 'boat_list' %}" class="single">
-                                                        Boats
-                                                    </a>
-                                                </li>
-                                                <li class="single-list">
-                                                    <a href="javascript:void(0)" class="single">
-                                                        Policy
-                                                    </a>
-                                                </li>
-                                                <li class="single-list">
-                                                    <a href="javascript:void(0)" class="single">
-                                                        Contact
-                                                    </a>
-                                                </li>
-                                                <li class="d-block d-lg-none">
-                                                    <div class="header-right-three pl-15 mt-10">
-                                                        <div class="sign-btn">
-                                                            <a href="login.html" class="btn-secondary-sm m-0">Sign In</a>
-                                                        </div>
-                                                        <div class="d-flex align-items-center gap-12">
-                                                            <div class="lang">
-                                                                <i class="ri-global-line"></i>
-                                                                <p class="pera">English</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            
-                                        <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Create Tour Package</h1>
 
-                                            <div class="top-header-right">
-                                                <div class="contact-section">
-                                                    <div class="circle-primary-sm">
-                                                        <i class="ri-phone-line"></i>
-                                                    </div>
-                                                    <div class="info">
-                                                        <p class="pera">Call Anytime</p>
-                                                        <h4 class="title">
-                                                            <a href="javascript:void(0)">+880 1400913327</a>
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-4 mb-2 rounded {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-                                    </nav>
-                                </div>
-                            </div>
-                            <!-- Mobile Menu -->
-                            <div class="div">
-                                <div class="mobile_menu d-block d-lg-none"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Search box -->
-        <div class="search-container">
-            <div class="top-section">
-                <div class="search-icon">
-                    <i class="ri-search-line"></i>
-                </div>
-                <div class="modal-search-box">
-                    <input type="text" id="searchField" class="search-field"
-                        placeholder="Destination, Agency, Country">
-                    <button id="closeSearch" class="close-search-btn">
-                        <kbd class="light-text"> ESC </kbd>
-                    </button>
-                </div>
-            </div>
-            <div class="body-section">
-                <div class="row">
-                    <div class="col-md-8">
-                        <ul class="listing">
-                            <li>
-                                <h4 class="search-label">Recent</h4>
-                            </li>
-                            <li class="single-list">
-                                <a href="details-with-slider.html">
-                                    <div class="search-flex">
-                                        <div class="content-img">
-                                            <img src="{% static 'images/gallery/search-img-1.jpeg' %}" alt="travello">
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title line-clamp-1">
-                                                Dubai by Night City Tour with Fountain show
-                                            </h4>
-                                            <p class="pera line-clamp-2">
-                                                Wonderful evening escapade starting at Madinat
-                                                Jumeirah to the musical fountains to see another.
-                                                Wonderful evening escapade starting at Madinat
-                                                Jumeirah to the musical fountains to see another
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="single-list">
-                                <a href="details-with-slider.html">
-                                    <div class="search-flex">
-                                        <div class="content-img">
-                                            <img src="{% static 'images/gallery/search-img-2.jpeg' %}" alt="travello">
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title line-clamp-1">
-                                                Dubai: Premium Red Dunes, Camels, Stargazing & 5*
-                                                BBQ at Al Khayma Camp™️
-                                            </h4>
-                                            <p class="pera line-clamp-2">
-                                                Give a great end to your day in Dubai with our
-                                                premium evening Red Dune Desert Safari. Give a great
-                                                end to your day in Dubai with our premium evening
-                                                Red Dune Desert Safari.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="single-list">
-                                <a href="details-with-slider.html">
-                                    <div class="search-flex">
-                                        <div class="content-img">
-                                            <img src="{% static 'images/gallery/search-img-3.jpeg' %}" alt="travello">
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title line-clamp-1">
-                                                Admission to Global Village in Dubai
-                                            </h4>
-                                            <p class="pera line-clamp-2">
-                                                Admission to Dubai’s biggest, multicultural festival
-                                                park with replicas of iconic landmarks. Admission to
-                                                Dubai’s biggest, multicultural festival park with
-                                                replicas of iconic landmarks
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <h4 class="search-label">Recent</h4>
-                            </li>
-                            <li class="single-list">
-                                <a href="details-with-slider.html">
-                                    <div class="search-flex">
-                                        <div class="content-img">
-                                            <img src="{% static 'images/gallery/search-img-1.jpeg' %}" alt="travello">
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title line-clamp-1">
-                                                Dubai by Night City Tour with Fountain show
-                                            </h4>
-                                            <p class="pera line-clamp-2">
-                                                Wonderful evening escapade starting at Madinat
-                                                Jumeirah to the musical fountains to see another.
-                                                Wonderful evening escapade starting at Madinat
-                                                Jumeirah to the musical fountains to see another
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="single-list">
-                                <a href="details-with-slider.html">
-                                    <div class="search-flex">
-                                        <div class="content-img">
-                                            <img src="{% static 'images/gallery/search-img-2.jpeg' %}" alt="travello">
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title line-clamp-1">
-                                                Dubai: Premium Red Dunes, Camels, Stargazing & 5*
-                                                BBQ at Al Khayma Camp™️
-                                            </h4>
-                                            <p class="pera line-clamp-2">
-                                                Give a great end to your day in Dubai with our
-                                                premium evening Red Dune Desert Safari. Give a great
-                                                end to your day in Dubai with our premium evening
-                                                Red Dune Desert Safari.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="single-list">
-                                <a href="details-with-slider.html">
-                                    <div class="search-flex">
-                                        <div class="content-img">
-                                            <img src="{% static 'images/gallery/search-img-3.jpeg' %}" alt="travello">
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title line-clamp-1">
-                                                Admission to Global Village in Dubai
-                                            </h4>
-                                            <p class="pera line-clamp-2">
-                                                Admission to Dubai’s biggest, multicultural festival
-                                                park with replicas of iconic landmarks. Admission to
-                                                Dubai’s biggest, multicultural festival park with
-                                                replicas of iconic landmarks
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="right-section" id="filterMenu">
-                            <h4 class="title">Filter Options</h4>
-                            <!-- List of Filter -->
-                            <ul class="listing">
-                                <li>
-                                    <h4 class="search-label">Post Type</h4>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Posts (3)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Posts (3)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Links (44)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Blogs (23)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- List of Filter -->
-                            <ul class="listing">
-                                <li>
-                                    <h4 class="search-label">Categories</h4>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Articles (3)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Poll (3)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Article (44)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Blogs (23)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- List of Filter -->
-                            <ul class="listing">
-                                <li>
-                                    <h4 class="search-label">Travel</h4>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Articles (3)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Poll (3)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Article (44)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="single-list">
-                                    <div class="d-flex align-items-center gap-8">
-                                        <label class="checkbox-label">
-                                            <input class="checkbox-style" type="checkbox" value="remember"
-                                                name="remember">
-                                            <span class="checkmark-style"></span>
-                                        </label>
-                                        <div class="content">
-                                            <p class="pera">Blogs (23)</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="div">
-                        <div class="filter_menu"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- / End-Search -->
-    </header>
-    <main>
-        <div class="form-section" style="padding-left: 100px; padding-right: 100px;">
-            <h2 class="text-center">Create Tour Package</h2>
-        
-            <form method="post">
-                {% csrf_token %}
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Boat</label>
-                        <select name="boat" class="form-select" required>
-                            {% for boat in boats %}
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Boat Selection -->
+                <div>
+                    <label for="boat" class="block text-sm font-medium text-gray-700">Boat</label>
+                    <select id="boat" name="boat" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        <option value="">Select a boat</option>
+                        {% for boat in boats %}
                             <option value="{{ boat.id }}">{{ boat.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label class="form-label">Start Date</label>
-                        <input type="date" name="start_date" class="form-control" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Start Time</label>
-                        <input type="time" name="start_time" class="form-control" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">End Date</label>
-                        <input type="date" name="end_date" class="form-control" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">End Time</label>
-                        <input type="time" name="end_time" class="form-control" required>
-                    </div>
-                </div>
-        
-                <div class="mb-3">
-                    <label class="form-label">Start From</label>
-                    <input type="text" name="start_from" class="form-control" required>
-                </div>
-        
-                <div class="mb-3">
-                    <label class="form-label">Destinations</label>
-                    <textarea name="destinations" class="form-control" rows="2" required></textarea>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Guest Amount</label>
-                        <input type="number" name="guest_amount" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Guest Limitation</label>
-                        <input type="number" name="guest_limitation" class="form-control" required>
-                    </div>
-                </div>
-        
-                <div class="mb-3">
-                    <label class="form-label">Package Name</label>
-                    <input type="text" name="package_name" class="form-control" required>
-                </div>
-        
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control" rows="3"></textarea>
-                </div>
-        
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Cabin Quantity</label>
-                        <input type="number" name="cabin_quantity" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Cabin Names</label>
-                        <input type="text" name="cabin_names" class="form-control">
-                    </div>
-                </div>
-        
-                <div class="mb-3">
-                    <label class="form-label">Price</label>
-                    <input type="number" name="price" class="form-control" step="0.01" required>
-                </div>
-        
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Create Package</button>
-                </div>
-            </form>
-        </div>
-        
-        <!-- Package List Table -->
-        <div class="table-section">
-            <h3 class="text-center mb-4">Existing Packages</h3>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Package Name</th>
-                            <th>Boat</th>
-                            <th>Type</th>
-                            <th>Start</th>
-                            <th>End</th>
-                            <th>Guests</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for package in packages %}
-                        <tr>
-                            <td>{{ package.package_name }}</td>
-                            <td>{{ package.boat.name }}</td>
-                            <td>{{ package.tour_type.name }}</td>
-                            <td>{{ package.start_date }} {{ package.start_time }}</td>
-                            <td>{{ package.end_date }} {{ package.end_time }}</td>
-                            <td>{{ package.guest_amount }}/{{ package.guest_limitation }}</td>
-                            <td>{{ package.price }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center">No packages found.</td>
-                        </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
+                    </select>
+                </div>
+
+                <!-- Tour Type Selection -->
+                <div>
+                    <label for="tour_type" class="block text-sm font-medium text-gray-700">Tour Type (Optional)</label>
+                    <select id="tour_type" name="tour_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <option value="">Select a tour type</option>
+                        {% for tour_type in tour_types %}
+                            <option value="{{ tour_type.id }}">{{ tour_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Package Name -->
+                <div>
+                    <label for="package_name" class="block text-sm font-medium text-gray-700">Package Name</label>
+                    <input type="text" id="package_name" name="package_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Start From -->
+                <div>
+                    <label for="start_from" class="block text-sm font-medium text-gray-700">Start From</label>
+                    <input type="text" id="start_from" name="start_from" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Destinations -->
+                <div>
+                    <label for="destinations" class="block text-sm font-medium text-gray-700">Destinations</label>
+                    <input type="text" id="destinations" name="destinations" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Guest Amount -->
+                <div>
+                    <label for="guest_amount" class="block text-sm font-medium text-gray-700">Guest Amount</label>
+                    <input type="number" id="guest_amount" name="guest_amount" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Guest Limitation -->
+                <div>
+                    <label for="guest_limitation" class="block text-sm font-medium text-gray-700">Guest Limitation</label>
+                    <input type="number" id="guest_limitation" name="guest_limitation" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Price -->
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                    <input type="number" id="price" name="price" min="0" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Cabin Quantity -->
+                <div>
+                    <label for="cabin_quantity" class="block text-sm font-medium text-gray-700">Cabin Quantity (Optional)</label>
+                    <input type="number" id="cabin_quantity" name="cabin_quantity" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Cabin Names -->
+                <div>
+                    <label for="cabin_names" class="block text-sm font-medium text-gray-700">Cabin Names (Optional)</label>
+                    <input type="text" id="cabin_names" name="cabin_names" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Description -->
+                <div class="col-span-2">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="description" name="description" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                </div>
+
+                <!-- Photos Upload -->
+                <div class="col-span-2">
+                    <label for="photos" class="block text-sm font-medium text-gray-700">Upload Photos (Optional)</label>
+                    <input type="file" id="photos" name="photos" multiple accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <div id="photo-preview" class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                </div>
+
+                <!-- Tour Dates -->
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Tour Dates</label>
+                    <div id="tour-dates-container" class="space-y-4">
+                        <div class="tour-date grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
+                            <div>
+                                <label for="start_date_0" class="block text-sm text-gray-600">Start Date</label>
+                                <input type="date" id="start_date_0" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            </div>
+                            <div>
+                                <label for="end_date_0" class="block text-sm text-gray-600">End Date (Optional)</label>
+                                <input type="date" id="end_date_0" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div>
+                                <label for="start_time_0" class="block text-sm text-gray-600">Start Time (Optional)</label>
+                                <input type="time" id="start_time_0" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div>
+                                <label for="end_time_0" class="block text-sm text-gray-600">End Time (Optional)</label>
+                                <input type="time" id="end_time_0" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <button type="button" class="remove-date bg-red-500 text-white px-2 py-1 rounded mt-2 w-full">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="add-tour-date" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Add Tour Date</button>
+                </div>
+
+                <!-- Tour Dates List -->
+                <div class="col-span-2 mt-4">
+                    <h3 class="text-lg font-semibold">Added Tour Dates</h3>
+                    <ul id="tour-dates-list" class="list-disc pl-5 mt-2"></ul>
+                </div>
             </div>
+
+            <div class="mt-6">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Create Tour Package</button>
+            </div>
+        </form>
+
+        <!-- Existing Packages -->
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold mb-4">Existing Tour Packages</h2>
+            {% if packages %}
+                <ul class="space-y-4">
+                    {% for package in packages %}
+                        <li class="bg-white p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold">{{ package.package_name }}</h3>
+                            <p><strong>Boat:</strong> {{ package.boat.name }}</p>
+                            <p><strong>Start From:</strong> {{ package.start_from }}</p>
+                            <p><strong>Destinations:</strong> {{ package.destinations }}</p>
+                            <p><strong>Price:</strong> ${{ package.price }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tour packages available.</p>
+            {% endif %}
         </div>
-
-    </main> 
-
-    <!-- Footer S t a r t -->
-    <footer>
-        <div class="footer-wrapper footer-bg">
-            <div class="container">
-                <div class="footer-area">
-                    <div class="row g-4">
-                        <div class="col-xl-3 col-lg-4 col-sm-6">
-                            <div class="single-footer-caption">
-                                <div class="footer-tittle">
-                                    <h4 class="title">Company</h4>
-                                    <ul class="listing">
-                                        <li class="single-lsit">
-                                            <a href="about.html">About Us</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="news.html">News</a>
-                                        </li>
-                                        <li class="single-lsit"><a href="faq.html">Faq</a></li>
-                                        <li class="single-lsit">
-                                            <a href="contact.html">Contact</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-sm-6">
-                            <div class="single-footer-caption">
-                                <div class="footer-tittle">
-                                    <h4 class="title">Explore</h4>
-                                    <ul class="listing">
-                                        <li class="single-lsit"><a href="faq.html">Faq</a></li>
-                                        <li class="single-lsit">
-                                            <a href="tour-list.html">Tour Listings</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="destination.html">Destination</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-sm-6">
-                            <div class="single-footer-caption">
-                                <div class="footer-tittle">
-                                    <h4 class="title">Quick Links</h4>
-                                    <ul class="listing">
-                                        <li class="single-lsit"><a href="index.html">Home</a></li>
-                                        <li class="single-lsit">
-                                            <a href="about.html">About Us</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="contact.html">Contact Us</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-sm-6">
-                            <div class="single-footer-caption">
-                                <div class="footer-tittle">
-                                    <h4 class="title">Contact</h4>
-                                    <ul class="listing">
-                                        <li class="single-lsit">
-                                            <a href="index.html#" class="mb-20 d-block">70/A Floor Divo Tower Melbourne,
-                                                Australia</a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="index.html#">
-                                                <div class="d-flex gap-12">
-                                                    <i class="ri-phone-line"></i> (00) +888 123456 789
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="single-lsit">
-                                            <a href="index.html#">
-                                                <div class="d-flex gap-12">
-                                                    <i class="ri-mail-line"></i> example@gmail.com
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-middle-area">
-                    <div class="footer-body">
-                        <div class="footer-content">
-                            <div class="d-flex flex-column gap-20">
-                                <div class="logo">
-                                    <img src="assets/images/logo/logo_.png" alt="travello" class="changeLogo">
-                                </div>
-                                <p class="pera">
-                                    Travel is a transformative and enriching experience that
-                                    allows individuals to explore new destinations, cultures,
-                                    and landscapes.
-                                </p>
-                            </div>
-                            <div class="footer-right">
-                                <h4 class="title">Subscribe Our Newsletter</h4>
-                                <div class="subscribe-wraper">
-                                    <input class="footer-search" type="search" name="footer"
-                                        placeholder="Enter Your Email">
-                                    <button class="subscribe-btn">Subscribe</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer-bottom">
-                        <ul class="listing">
-                            <li class="single-list">
-                                <a href="terms-condition.html" class="single">Terms of usa</a>
-                            </li>
-                            <li class="single-list">
-                                <a href="privacy-policy.html" class="single">Privacy and Cookies Statement</a>
-                            </li>
-                            <li class="single-list">
-                                <a href="contact.html" class="single">How the site works</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- footer-bottom area -->
-            <div class="footer-bottom-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="d-flex justify-content-between gap-14 flex-wrap">
-                                <p class="pera">
-                                    © <span class="current-year">2025</span> initTheme. All rights
-                                    reserved
-                                </p>
-                                <p class="pera">Powered by @Travello</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--/ End-of Footer -->
-
-    <!-- Scroll Up  -->
-    <div class="progressParent" id="back-top">
-        <svg class="backCircle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
-            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-        </svg>
     </div>
-    <!-- Add an search-overlay element -->
-    <div class="search-overlay"></div>
-    <!-- jquery-->
-    <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
-    <script src="{% static 'assets/js/popper.min.js' %}"></script>
-    <script src="{% static 'assets/js/bootstrap-5.3.0.min.js' %}"></script>
-    <!-- Plugin -->
-    <script src="{% static 'assets/js/plugin.js' %}"></script>
-    <!-- Main js-->
-    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <script>
+        // Counter for unique IDs
+        let dateCounter = 1;
+
+        // Add new tour date input fields
+        document.getElementById('add-tour-date').addEventListener('click', function() {
+            const container = document.getElementById('tour-dates-container');
+            const newDateDiv = document.createElement('div');
+            newDateDiv.className = 'tour-date grid grid-cols-1 md:grid-cols-4 gap-2 items-end';
+            
+            // Use unique IDs for each new set of inputs
+            newDateDiv.innerHTML = `
+                <div>
+                    <label for="start_date_${dateCounter}" class="block text-sm text-gray-600">Start Date</label>
+                    <input type="date" id="start_date_${dateCounter}" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+                <div>
+                    <label for="end_date_${dateCounter}" class="block text-sm text-gray-600">End Date (Optional)</label>
+                    <input type="date" id="end_date_${dateCounter}" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="start_time_${dateCounter}" class="block text-sm text-gray-600">Start Time (Optional)</label>
+                    <input type="time" id="start_time_${dateCounter}" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="end_time_${dateCounter}" class="block text-sm text-gray-600">End Time (Optional)</label>
+                    <input type="time" id="end_time_${dateCounter}" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <button type="button" class="remove-date bg-red-500 text-white px-2 py-1 rounded mt-2 w-full">Remove</button>
+                </div>
+            `;
+            container.appendChild(newDateDiv);
+            dateCounter++;
+            updateTourDatesList();
+        });
+
+        // Remove tour date input fields
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-date')) {
+                if (document.querySelectorAll('.tour-date').length > 1) {
+                    e.target.closest('.tour-date').remove();
+                    updateTourDatesList();
+                } else {
+                    alert('At least one tour date is required.');
+                }
+            }
+        });
+
+        // Update tour dates list
+        function updateTourDatesList() {
+            const container = document.getElementById('tour-dates-container');
+            const dateBlocks = container.querySelectorAll('.tour-date');
+            const tourDatesList = document.getElementById('tour-dates-list');
+            
+            tourDatesList.innerHTML = ''; // Clear displayed list
+
+            dateBlocks.forEach((block, index) => {
+                const startDateInput = block.querySelector('input[name="start_date[]"]');
+                const endDateInput = block.querySelector('input[name="end_date[]"]');
+                const startTimeInput = block.querySelector('input[name="start_time[]"]');
+                const endTimeInput = block.querySelector('input[name="end_time[]"]');
+                
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+                const startTime = startTimeInput.value;
+                const endTime = endTimeInput.value;
+
+                // Only display if start_date is not empty
+                if (startDate) {
+                    // Update displayed list
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Start: ${startDate}${startTime ? ' ' + startTime : ''}${endDate ? ' - End: ' + endDate : ''}${endTime ? ' ' + endTime : ''}`;
+                    tourDatesList.appendChild(listItem);
+                }
+            });
+        }
+
+        // Initialize tour dates list on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTourDatesList();
+            
+            // Add change event listeners to all date/time fields
+            document.querySelectorAll('input[name="start_date[]"], input[name="end_date[]"], input[name="start_time[]"], input[name="end_time[]"]').forEach(input => {
+                input.addEventListener('change', updateTourDatesList);
+            });
+        });
+
+        // Photo preview functionality
+        document.getElementById('photos').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('photo-preview');
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            const files = e.target.files;
+            if (files) {
+                Array.from(files).forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'w-full h-32 object-cover rounded';
+                            previewContainer.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-{% endblock %}
-

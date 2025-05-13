@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %} {% endcomment %}
 {% load static %}
 {% block content %}
 <!DOCTYPE html>
@@ -547,6 +547,13 @@
                                     justify-content: center;
                                     margin: 0;
                                     padding: 0;
+                                    text-align: center;
+                                }
+                                
+                                @media (max-width: 767px) {
+                                    .logo-title {
+                                        font-size: 50px;
+                                    }
                                 }
                                 
                                 .gray-text {
@@ -643,7 +650,7 @@
                                     <div class="transports-img imgEffect4">
                                         <a href="{% url 'boat_details' boat.id %}">
                                             {% if boat.photos %}
-                                            <img src="{{ boat.photos.url }}" alt="{{ boat.name }}">
+                                            <img src="{{ boat.photos.url }}" alt="{{ boat.name }}" style="object-fit: cover; width: 100%; height: 250px;">
                                             {% else %}
                                             <img src="{% static 'assets/images/default-boat.png' %}" alt="{{ boat.name }}">
                                             {% endif %}
