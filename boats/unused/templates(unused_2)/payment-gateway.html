@@ -1,0 +1,921 @@
+{% load static %}
+<div style="height: 70px; background-color: #2F333A; line-height: 70px; text-align: left; padding-left: 50px; padding-right: 50px;"><span style="color: white; font-size: 15px;">Welcome to Tangooar.com</span></div>
+
+<!DOCTYPE html>
+<html lang="zxx" dir="ltr">
+<head>
+    <script>
+        const setTheme = (theme) => {
+            theme ??= localStorage.theme || "light";
+            document.documentElement.dataset.theme = theme;
+            localStorage.theme = theme;
+        };
+        setTheme();
+    </script>
+{% load static %}
+    <meta logo="{% static 'images/logo/logo.png' %}">
+    <meta white-logo="{% static 'images/logo/logo-white.png' %}">
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Travello - Multipurpose travel and tour booking.These template is suitable for  travel agency , tour, travel website , tour operator , tourism , booking  trip or adventure website. ">
+    <meta name="keywords" content="travel, trip booking,tour, hotel, tour guide, tourism, blog, flight, travel agency, tourism agency, accommodation, tour website">
+    <meta name="author" content="inittheme">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Multipurpose travel and tour booking">
+    <meta property="og:site_name" content="Travello">
+    <meta property="og:url" content="https://inittheme.com">
+    <meta property="og:image" content="https://inittheme.com/images/selfie.jpg">
+    <meta property="og:description" content="Multipurpose travel and tour booking, multipurpose template">
+    <meta name="twitter:title" content="Multipurpose travel and tour booking">
+    <meta name="twitter:description" content="Multipurpose travel and tour booking, multipurpose template">
+    <meta name="twitter:image" content="https://twitter.com/inittheme/photo">
+    <meta name="twitter:card" content="summary">
+    <!-- Google site verification -->
+    <meta name="google-site-verification" content="...">
+    <meta name="facebook-domain-verification" content="...">
+    <meta name="csrf-token" content="...">
+    <meta name="currency" content="$">
+    <!-- Title -->
+    <title>Multipurpose travel and tour booking </title>
+    <link rel="icon" type="image/x-icon" sizes="20x20" href="{% static 'images/icon/favicon.png' %}">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-5.3.0.min.css' %}">
+    <!-- Fonts & icon -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/remixicon.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/fonts-icon.css' %}">
+    <!-- Plugin -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/plugin.css' %}">
+    <!-- Main CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main-style.css' %}">
+    <!-- RTL CSS::When Need RTL Uncomments File -->
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/rtl.css' %}"> -->
+</head>
+<body>
+    <header class="header-area-three">
+        <div class="main-header">
+            <!-- Header Top -->
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
+                                <div class="logo">
+                                    <a href="{% url 'dashboard' %}"><img src="{% static 'images/logo/logo_.png' %}" alt="logo" class="changeLogo" width="130"></a>
+                                </div>
+                                
+                                <!-- search box -->
+                                <div class="search-box search-bar d-none d-lg-block">
+                                    <div class="header-search">
+                                        <span class="pera">Find Your Boat</span>
+                                        <div class="search-icon">
+                                            <i class="ri-search-line"></i>
+                                        </div>
+                                        <kbd class="light-text">
+                                            <abbr title="Ctrl">Ctrl +</abbr> k
+                                        </kbd>
+                                    </div>
+                                </div>
+                                <!-- Top Left Side -->
+                                <!-- Logo-->
+                                
+                                <div class="header-right-three pl-15 d-none d-lg-flex">
+                                    <div class="lang">
+                                        <i class="ri-global-line"></i>
+                                        <p class="pera">English</p>
+                                    </div>
+                                    <div class="divider gradient-divider"></div>
+                                    <div class="d-flex gap-20 align-items-center">
+                                        <a href="tour-cart-page.html" class="cart signin">
+                                            <i class="ri-shopping-cart-line"></i>
+                                        </a>
+                                        <div class="sign-btn">
+                                            <a href="register.html" class="btn-secondary-sm radius-30">Sign Up</a>
+                                        </div>
+                                        <!-- Theme Mode -->
+                                        <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
+                                            <i class="ri-sun-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Mobile Device Search & Theme Mode -->
+                                <div class="search-header-position d-block d-lg-none">
+                                    <div class="d-flex gap-15">
+                                        <div class="search-bar">
+                                            <a href="javascript:void(0)" class="rounded-btn">
+                                                <i  class="ri-search-line"></i>
+                                            </a>
+                                        </div>
+                                        <!-- Theme Mode -->
+                                        <button class="ToggleThemeButton change-theme-mode m-0 p-0 border-0">
+                                            <i class="ri-sun-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- / Mobile Device Search & Theme Mode-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header Bottom -->
+            <div class="header-bottom header-sticky">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="menu-wrapper">
+                                <!-- Main-menu for desktop -->
+                                <div class="main-menu d-none d-lg-block">
+                                    <nav>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <ul class="listing" id="navigation">
+                                                <li class="single-list">
+                                                    <a href="{% url 'dashboard' %}" class="single">
+                                                        Home
+                                                    </a>
+                                                </li>
+                                                <li class="single-list">
+                                                    <a href="{% url 'boat_list' %}" class="single">
+                                                        Boats
+                                                    </a>
+                                                </li>
+                                                <li class="single-list">
+                                                    <a href="javascript:void(0)" class="single">
+                                                        Policy
+                                                    </a>
+                                                </li>
+                                                <li class="single-list">
+                                                    <a href="javascript:void(0)" class="single">
+                                                        Contact
+                                                    </a>
+                                                    
+                                                </li>
+                                                <li class="d-block d-lg-none">
+                                                    <div class="header-right-three pl-15 mt-10">
+                                                        <div class="sign-btn">
+                                                            <a href="login.html" class="btn-secondary-sm m-0">Sign In</a>
+                                                        </div>
+                                                        <div class="d-flex align-items-center gap-12">
+                                                            <div class="lang">
+                                                                <i class="ri-global-line"></i>
+                                                                <p class="pera">English</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            
+                                        <div class="top-menu-wrapper d-flex align-items-center justify-content-between">
+
+                                            <div class="top-header-right">
+                                                <div class="contact-section">
+                                                    <div class="circle-primary-sm">
+                                                        <i class="ri-phone-line"></i>
+                                                    </div>
+                                                    <div class="info">
+                                                        <p class="pera">Call Anytime</p>
+                                                        <h4 class="title">
+                                                            <a href="javascript:void(0)">+880 1400913327</a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </nav>
+                                </div>
+                            </div>
+                            <!-- Mobile Menu -->
+                            <div class="div">
+                                <div class="mobile_menu d-block d-lg-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Search box -->
+        <div class="search-container">
+            <div class="top-section">
+                <div class="search-icon">
+                    <i class="ri-search-line"></i>
+                </div>
+                <div class="modal-search-box">
+                    <input type="text" id="searchField" class="search-field"
+                        placeholder="Destination, Agency, Country">
+                    <button id="closeSearch" class="close-search-btn">
+                        <kbd class="light-text"> ESC </kbd>
+                    </button>
+                </div>
+            </div>
+            <div class="body-section">
+                <div class="row">
+                    <div class="col-md-8">
+                        <ul class="listing">
+                            <li>
+                                <h4 class="search-label">Recent</h4>
+                            </li>
+                            <li class="single-list">
+                                <a href="details-with-slider.html">
+                                    <div class="search-flex">
+                                        <div class="content-img">
+                                            <img src="{% static 'images/gallery/search-img-1.jpeg' %}" alt="travello">
+                                        </div>
+                                        <div class="content">
+                                            <h4 class="title line-clamp-1">
+                                                Dubai by Night City Tour with Fountain show
+                                            </h4>
+                                            <p class="pera line-clamp-2">
+                                                Wonderful evening escapade starting at Madinat
+                                                Jumeirah to the musical fountains to see another.
+                                                Wonderful evening escapade starting at Madinat
+                                                Jumeirah to the musical fountains to see another
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="single-list">
+                                <a href="details-with-slider.html">
+                                    <div class="search-flex">
+                                        <div class="content-img">
+                                            <img src="{% static 'images/gallery/search-img-2.jpeg' %}" alt="travello">
+                                        </div>
+                                        <div class="content">
+                                            <h4 class="title line-clamp-1">
+                                                Dubai: Premium Red Dunes, Camels, Stargazing & 5*
+                                                BBQ at Al Khayma Camp™️
+                                            </h4>
+                                            <p class="pera line-clamp-2">
+                                                Give a great end to your day in Dubai with our
+                                                premium evening Red Dune Desert Safari. Give a great
+                                                end to your day in Dubai with our premium evening
+                                                Red Dune Desert Safari.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="single-list">
+                                <a href="details-with-slider.html">
+                                    <div class="search-flex">
+                                        <div class="content-img">
+                                            <img src="{% static 'images/gallery/search-img-3.jpeg' %}" alt="travello">
+                                        </div>
+                                        <div class="content">
+                                            <h4 class="title line-clamp-1">
+                                                Admission to Global Village in Dubai
+                                            </h4>
+                                            <p class="pera line-clamp-2">
+                                                Admission to Dubai’s biggest, multicultural festival
+                                                park with replicas of iconic landmarks. Admission to
+                                                Dubai’s biggest, multicultural festival park with
+                                                replicas of iconic landmarks
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <h4 class="search-label">Recent</h4>
+                            </li>
+                            <li class="single-list">
+                                <a href="details-with-slider.html">
+                                    <div class="search-flex">
+                                        <div class="content-img">
+                                            <img src="{% static 'images/gallery/search-img-1.jpeg' %}" alt="travello">
+                                        </div>
+                                        <div class="content">
+                                            <h4 class="title line-clamp-1">
+                                                Dubai by Night City Tour with Fountain show
+                                            </h4>
+                                            <p class="pera line-clamp-2">
+                                                Wonderful evening escapade starting at Madinat
+                                                Jumeirah to the musical fountains to see another.
+                                                Wonderful evening escapade starting at Madinat
+                                                Jumeirah to the musical fountains to see another
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="single-list">
+                                <a href="details-with-slider.html">
+                                    <div class="search-flex">
+                                        <div class="content-img">
+                                            <img src="{% static 'images/gallery/search-img-2.jpeg' %}" alt="travello">
+                                        </div>
+                                        <div class="content">
+                                            <h4 class="title line-clamp-1">
+                                                Dubai: Premium Red Dunes, Camels, Stargazing & 5*
+                                                BBQ at Al Khayma Camp™️
+                                            </h4>
+                                            <p class="pera line-clamp-2">
+                                                Give a great end to your day in Dubai with our
+                                                premium evening Red Dune Desert Safari. Give a great
+                                                end to your day in Dubai with our premium evening
+                                                Red Dune Desert Safari.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="single-list">
+                                <a href="details-with-slider.html">
+                                    <div class="search-flex">
+                                        <div class="content-img">
+                                            <img src="{% static 'images/gallery/search-img-3.jpeg' %}" alt="travello">
+                                        </div>
+                                        <div class="content">
+                                            <h4 class="title line-clamp-1">
+                                                Admission to Global Village in Dubai
+                                            </h4>
+                                            <p class="pera line-clamp-2">
+                                                Admission to Dubai’s biggest, multicultural festival
+                                                park with replicas of iconic landmarks. Admission to
+                                                Dubai’s biggest, multicultural festival park with
+                                                replicas of iconic landmarks
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="right-section" id="filterMenu">
+                            <h4 class="title">Filter Options</h4>
+                            <!-- List of Filter -->
+                            <ul class="listing">
+                                <li>
+                                    <h4 class="search-label">Post Type</h4>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Posts (3)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Posts (3)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Links (44)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Blogs (23)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- List of Filter -->
+                            <ul class="listing">
+                                <li>
+                                    <h4 class="search-label">Categories</h4>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Articles (3)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Poll (3)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Article (44)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Blogs (23)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- List of Filter -->
+                            <ul class="listing">
+                                <li>
+                                    <h4 class="search-label">Travel</h4>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Articles (3)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Poll (3)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Article (44)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="single-list">
+                                    <div class="d-flex align-items-center gap-8">
+                                        <label class="checkbox-label">
+                                            <input class="checkbox-style" type="checkbox" value="remember"
+                                                name="remember">
+                                            <span class="checkmark-style"></span>
+                                        </label>
+                                        <div class="content">
+                                            <p class="pera">Blogs (23)</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="div">
+                        <div class="filter_menu"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / End-Search -->
+    </header>
+    <main>
+        
+
+        <style>
+            
+            .header {
+                padding: 20px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .form-container {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 20px 0;
+            }
+            .form-section {
+                width: 48%;
+                padding-right: 2%;
+            }
+            .form-title {
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-size: 14px;
+            }
+            .form-control {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 14px;
+            }
+            .dropdown {
+                display: flex;
+                gap: 10px;
+            }
+            .dropdown select {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+                background-size: 1em;
+            }
+            .payment-method {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .payment-method-label {
+                font-weight: bold;
+                margin-right: 20px;
+                font-size: 14px;
+            }
+            .payment-icons {
+                display: flex;
+                gap: 10px;
+            }
+            .payment-icon {
+                height: 30px;
+                border-radius: 4px;
+                padding: 5px;
+                background-color: white;
+                border: 1px solid #eee;
+            }
+            .pay-button {
+                background-color: #000;
+                color: white;
+                border: none;
+                padding: 15px;
+                width: 100%;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 4px;
+                margin-top: 20px;
+            }
+            .code-input {
+                position: relative;
+            }
+            .code-input input {
+                padding-right: 40px;
+            }
+            .eye-icon {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+                border: 1px solid #ddd;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+
+        <div class="container">
+            <div class="header">
+                <h3>Payment</h3>
+            </div>
+            
+            <div class="form-container">
+                <div class="form-section">
+                    <div class="form-title">Contact Information</div>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Full Name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Email">
+                    </div>
+                    
+                    <div class="payment-method">
+                        <div class="payment-method-label">Payment Method</div>
+                        <div class="payment-icons">
+                            <img src="/api/placeholder/60/30" alt="UKash" class="payment-icon">
+                            <img src="/api/placeholder/60/30" alt="Card" class="payment-icon">
+                            <img src="/api/placeholder/60/30" alt="MasterCard" class="payment-icon">
+                            <img src="/api/placeholder/60/30" alt="Visa" class="payment-icon">
+                        </div>
+                    </div>
+                    
+                    <button class="pay-button">Pay</button>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-title">Credit Card Details</div>
+                    
+                    <div class="form-group">
+                        <label for="nameOnCard">Name on card</label>
+                        <input type="text" id="nameOnCard" class="form-control" placeholder="Name on card">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardNumber">Card number</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="0000 0000 0000 0000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardExpiration">Card expiration</label>
+                        <div class="dropdown">
+                            <select id="cardExpirationMonth" class="form-control">
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <select id="cardExpirationYear" class="form-control">
+                                <option value="">Year</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                                <option value="2031">2031</option>
+                                <option value="2032">2032</option>
+                                <option value="2033">2033</option>
+                                <option value="2034">2034</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="securityCode">Card Security Code</label>
+                        <div class="code-input">
+                            <input type="password" id="securityCode" class="form-control" placeholder="Code">
+                            <div class="eye-icon">👁️</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-title" style="margin-top: 30px;">Billing address</div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" class="form-control">
+                            <option value="">Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" class="form-control" placeholder="Address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" class="form-control" placeholder="City">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" class="form-control" placeholder="State">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zipCode">ZIP CODE</label>
+                        <input type="text" id="zipCode" class="form-control" placeholder="ZIP CODE">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer S t a r t -->
+    <footer>
+        <div class="footer-wrapper footer-bg">
+            <div class="container">
+                <div class="footer-area">
+                    <div class="row g-4">
+                        <div class="col-xl-3 col-lg-4 col-sm-6">
+                            <div class="single-footer-caption">
+                                <div class="footer-tittle">
+                                    <h4 class="title">Company</h4>
+                                    <ul class="listing">
+                                        <li class="single-lsit">
+                                            <a href="about.html">About Us</a>
+                                        </li>
+                                        <li class="single-lsit">
+                                            <a href="news.html">News</a>
+                                        </li>
+                                        <li class="single-lsit"><a href="faq.html">Faq</a></li>
+                                        <li class="single-lsit">
+                                            <a href="contact.html">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-sm-6">
+                            <div class="single-footer-caption">
+                                <div class="footer-tittle">
+                                    <h4 class="title">Explore</h4>
+                                    <ul class="listing">
+                                        <li class="single-lsit"><a href="faq.html">Faq</a></li>
+                                        <li class="single-lsit">
+                                            <a href="tour-list.html">Tour Listings</a>
+                                        </li>
+                                        <li class="single-lsit">
+                                            <a href="destination.html">Destination</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-sm-6">
+                            <div class="single-footer-caption">
+                                <div class="footer-tittle">
+                                    <h4 class="title">Quick Links</h4>
+                                    <ul class="listing">
+                                        <li class="single-lsit"><a href="index.html">Home</a></li>
+                                        <li class="single-lsit">
+                                            <a href="about.html">About Us</a>
+                                        </li>
+                                        <li class="single-lsit">
+                                            <a href="contact.html">Contact Us</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-sm-6">
+                            <div class="single-footer-caption">
+                                <div class="footer-tittle">
+                                    <h4 class="title">Contact</h4>
+                                    <ul class="listing">
+                                        <li class="single-lsit">
+                                            <a href="transports-list.html#" class="mb-20 d-block">70/A Floor Divo Tower Melbourne,
+                                                Australia</a>
+                                        </li>
+                                        <li class="single-lsit">
+                                            <a href="transports-list.html#">
+                                                <div class="d-flex gap-12">
+                                                    <i class="ri-phone-line"></i> (00) +888 123456 789
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="single-lsit">
+                                            <a href="transports-list.html#">
+                                                <div class="d-flex gap-12">
+                                                    <i class="ri-mail-line"></i> example@gmail.com
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-middle-area">
+                    <div class="footer-body">
+                        <div class="footer-content">
+                            <div class="d-flex flex-column gap-20">
+                                <div class="logo">
+                                    <img src="assets/images/logo/logo.png" alt="travello" class="changeLogo">
+                                </div>
+                                <p class="pera">
+                                    Travel is a transformative and enriching experience that
+                                    allows individuals to explore new destinations, cultures,
+                                    and landscapes.
+                                </p>
+                            </div>
+                            <div class="footer-right">
+                                <h4 class="title">Subscribe Our Newsletter</h4>
+                                <div class="subscribe-wraper">
+                                    <input class="footer-search" type="search" name="footer"
+                                        placeholder="Enter Your Email">
+                                    <button class="subscribe-btn">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <ul class="listing">
+                            <li class="single-list">
+                                <a href="terms-condition.html" class="single">Terms of usa</a>
+                            </li>
+                            <li class="single-list">
+                                <a href="privacy-policy.html" class="single">Privacy and Cookies Statement</a>
+                            </li>
+                            <li class="single-list">
+                                <a href="contact.html" class="single">How the site works</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- footer-bottom area -->
+            <div class="footer-bottom-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="d-flex justify-content-between gap-14 flex-wrap">
+                                <p class="pera">
+                                    © <span class="current-year">2025</span> initTheme. All rights
+                                    reserved
+                                </p>
+                                <p class="pera">Powered by @Travello</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--/ End-of Footer -->
+
+    <!-- Scroll Up  -->
+    <div class="progressParent" id="back-top">
+        <svg class="backCircle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- Add an search-overlay element -->
+    <div class="search-overlay"></div>
+    <!-- jquery-->
+    <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-5.3.0.min.js' %}"></script>
+    <!-- Plugin -->
+    <script src="{% static 'assets/js/plugin.js' %}"></script>
+    <!-- Main js-->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+</html>

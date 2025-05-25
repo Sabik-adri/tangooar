@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %} {% endcomment %}
 {% load static %}
 {% block content %}
 <!DOCTYPE html>
@@ -52,7 +52,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/rtl.css' %}"> -->
 </head>
 <body>
-    <header class="header-area-three">
+    <header class="header-area-three d-none d-md-block">
         <div class="main-header">
             <!-- Header Top -->
             <div class="header-top">
@@ -519,7 +519,8 @@
     </header>
     <main>
         <!-- Hero area S t a r t-->
-        <section class="hero-padding-for-three video-overlay position-relative">
+        <section class="hero-padding-for-three video-overlay position-relative"
+            style="height:22vh;@media(min-width:768px){height:auto;}">
             <!-- Video -->
             <div class="hero-bg-video">
                 <video class="hero-slider-video video-cover" 
@@ -532,6 +533,9 @@
                 <div class="row align-items-center justify-content-between g-4">
                     <div class="col-xl-12">
                         <div class="hero-caption-three position-relative z-3">
+                            <div class="logo d-block d-sm-none d-flex justify-content-center">
+                                <a href="{% url 'dashboard' %}"><img src="{% static 'images/logo/logo_.png' %}" alt="logo" class="changeLogo" width="90"></a>
+                            </div>
                             <h1 class="logo-title">
                                 <span class="light-text">Tang</span><span class="gradient-text">oo</span><span class="light-text">ar</span><span class="light-text">.com</span>
                             </h1>
@@ -547,6 +551,13 @@
                                     justify-content: center;
                                     margin: 0;
                                     padding: 0;
+                                    text-align: center;
+                                }
+                                
+                                @media (max-width: 767px) {
+                                    .logo-title {
+                                        font-size: 50px;
+                                    }
                                 }
                                 
                                 .gray-text {
@@ -564,14 +575,15 @@
                                     font-weight: 800;
                                 }                                
                             </style>
-                            <p class="pera wow fadeInUp" data-wow-delay="0.0s">
-                                "Discover Tangooar Haor’s Hidden Wonders – Your Journey Begins Here!"
+                            <p class="pera wow fadeInUp text-center text-lg-start" data-wow-delay="0.0s" style="margin-top: 10px;">
+                                {% comment %} "Discover Tangooar Haor’s Hidden Wonders – Your Journey Begins Here!" {% endcomment %}
+                                Best Deal - Best Service at Haor
                             </p>
-                            <p class="pera wow fadeInUp" data-wow-delay="0.1s">
+                            {% comment %} <p class="pera wow fadeInUp" data-wow-delay="0.1s">
                                 Get ready to explore the beautiful waters of Tanguar Haor. Whether you're here to enjoy the calm, see amazing wildlife, or take an exciting trip, we’re here to make sure you have a great time. Our boats are ready to take you on a peaceful ride through stunning nature. Book your trip today and start your adventure!
-                            </p>
+                            </p> {% endcomment %}
                         </div>
-                        <div class="hero-footer position-relative z-3 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="hero-footer position-relative z-3 d-none d-lg-block wow fadeInUp" data-wow-delay="0.3s">
                             <div class="all-user">
                                 <div class="happy-user">
                                     <img src="{% static 'images/hero/user-1.jpeg' %}" alt="travello">
@@ -601,7 +613,7 @@
 
 
         <!-- Call-to-Action -->
-        <section style="background-color: #2F333A; padding-top: 30px; padding-bottom: 50px; margin-top: 20px; margin-bottom: 50px;">
+        {% comment %} <section style="background-color: #2F333A; padding-top: 30px; padding-bottom: 50px; margin-top: 20px; margin-bottom: 50px;">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                         <div class="text-center">
@@ -613,7 +625,7 @@
                         </div>
                 </div>
             </div>
-        </section>
+        </section> {% endcomment %}
         <!--/ End-of Hero-->
 
         <!-- Plan area S t a r t -->
@@ -631,8 +643,8 @@
         <!-- Packages S t a r t -->
         <section class="package-area section-padding2">
             <div class="container">
-                <h6 style="font-size: 24px; font-weight: bold; margin: 18px 0;">Featured Boats</h6>
-                <div class="row">
+                <h6 class="d-none d-md-block" style="font-size: 24px; font-weight: bold; margin: 18px 0;">Featured Boats</h6>
+                {% comment %} <div class="row">
                     <div class="col-lg-12">
 
 
@@ -643,17 +655,17 @@
                                     <div class="transports-img imgEffect4">
                                         <a href="{% url 'boat_details' boat.id %}">
                                             {% if boat.photos %}
-                                            <img src="{{ boat.photos.url }}" alt="{{ boat.name }}">
+                                            <img src="{{ boat.photos.url }}" alt="{{ boat.name }}" style="object-fit: cover; width: 100%; height: 250px;">
                                             {% else %}
                                             <img src="{% static 'assets/images/default-boat.png' %}" alt="{{ boat.name }}">
                                             {% endif %}
                                         </a>
-                                        {% comment %} <div class="rating-badge-car">
+                                        <div class="rating-badge-car">
                                             <div class="rating">
                                                 <i class="ri-star-s-fill"></i>
                                                 <p class="pera">5 (20 Reviews)</p>
                                             </div>
-                                        </div> {% endcomment %}
+                                        </div>
                                     </div>
                                     <div class="transports-content">
                                         <h4 class="area-name">
@@ -698,7 +710,53 @@
                             {% endfor %}
                         </div>
                     </div>
+                </div> {% endcomment %}
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row g-4">
+                            {% for boat in boats|slice:":6" %}
+                            <div class="col-xl-4 col-lg-4 col-sm-6">
+                                <div class="transports-card" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; background: white;">
+                                    <div class="transports-img" style="position: relative;">
+                                        <a href="{% url 'boat_details' boat.id %}">
+                                            {% if boat.photos %}
+                                            <img src="{{ boat.photos.url }}" alt="{{ boat.name }}" style="object-fit: cover; width: 100%; border-radius: 15px;">
+                                            {% else %}
+                                            <img src="{% static 'assets/images/default-boat.png' %}" alt="{{ boat.name }}" style="object-fit: cover; width: 100%; border-radius: 15px;">
+                                            {% endif %}
+                                        </a>
+                                        <div style="position: absolute; top: 20px; left: 0; right: 0; text-align: center; color: white; font-size: 24px; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                            {{ boat.name }}
+                                        </div>
+                                    </div>
+                                    <div class="transports-content" style="padding: 15px; margin-top: 10px;">
+                                        <h4 class="area-name" style="font-size: 16px; font-weight: bold; margin-bottom: 6px;">
+                                            <a href="{% url 'boat_details' boat.id %}" style="color: #333; text-decoration: none;">{{ boat.name }}</a>
+                                            <span style="display: inline; font-size: 14px; color: #666; font-weight: bold;">&nbsp;&nbsp; {{ boat.owner_profile.company_name }}</span>
+                                        </h4>    
+                                        <div style="display: flex; gap: 15px; font-size: 11px; color: #666; margin-bottom: 3px;">
+                                            <span>{{ boat.type }}&nbsp;&nbsp; • &nbsp;{{ boat.length|floatformat:"g" }}ft/{{ boat.width|floatformat:"g" }}ft&nbsp;&nbsp; • &nbsp;{{ boat.guest_capacity|default:'N/A' }} guests&nbsp;&nbsp; • &nbsp;{{ boat.cabin_quantity }} cabins</span>
+                                        </div>
+                                        <div class="cart-footer d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div style="display: flex; align-items: baseline; gap: 5px; color: #333;">
+                                                    <p style="font-size: 14px; margin: 0;">Starts from</p>
+                                                    <p style="font-size: 14px; font-weight: bold; margin: 0;">BDT {{ boat.price|floatformat:"g" }}</p>
+                                                </div>
+                                            </div>
+                                            <a href="{% url 'boat_details' boat.id %}" class="browse-btn" style="background: #57a3cf; color: white; padding: 8px 20px; border-radius: 13px; text-decoration: none; font-size: 14px;">Book Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <p>No boats available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
+
                 <div class="row">
                     <div class="col-12 text-center">
                         <div class="section-button d-inline-block">

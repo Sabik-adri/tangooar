@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Manager{% endblock %}
+
+{% block content %}
+    <h1>Delete Manager</h1>
+    <p>Are you sure you want to delete the manager <strong>{{ manager.user.username }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="{% url 'manager_list' %}">Cancel</a>
+    </form>
+{% endblock %}
+

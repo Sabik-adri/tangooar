@@ -20,7 +20,7 @@
             </div>
         {% endif %}
 
-        <form method="POST" class="bg-white p-6 rounded-lg shadow-md">
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
             {% csrf_token %}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Boat Selection -->
@@ -99,26 +99,33 @@
                     <textarea id="description" name="description" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
                 </div>
 
+                <!-- Photos Upload -->
+                <div class="col-span-2">
+                    <label for="photos" class="block text-sm font-medium text-gray-700">Upload Photos (Optional)</label>
+                    <input type="file" id="photos" name="photos" multiple accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <div id="photo-preview" class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                </div>
+
                 <!-- Tour Dates -->
                 <div class="col-span-2">
                     <label class="block text-sm font-medium text-gray-700">Tour Dates</label>
                     <div id="tour-dates-container" class="space-y-4">
                         <div class="tour-date grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
                             <div>
-                                <label for="start_date" class="block text-sm text-gray-600">Start Date</label>
-                                <input type="date" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                                <label for="start_date_0" class="block text-sm text-gray-600">Start Date</label>
+                                <input type="date" id="start_date_0" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                             </div>
                             <div>
-                                <label for="end_date" class="block text-sm text-gray-600">End Date (Optional)</label>
-                                <input type="date" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <label for="end_date_0" class="block text-sm text-gray-600">End Date (Optional)</label>
+                                <input type="date" id="end_date_0" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                             </div>
                             <div>
-                                <label for="start_time" class="block text-sm text-gray-600">Start Time (Optional)</label>
-                                <input type="time" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <label for="start_time_0" class="block text-sm text-gray-600">Start Time (Optional)</label>
+                                <input type="time" id="start_time_0" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                             </div>
                             <div>
-                                <label for="end_time" class="block text-sm text-gray-600">End Time (Optional)</label>
-                                <input type="time" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <label for="end_time_0" class="block text-sm text-gray-600">End Time (Optional)</label>
+                                <input type="time" id="end_time_0" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                                 <button type="button" class="remove-date bg-red-500 text-white px-2 py-1 rounded mt-2 w-full">Remove</button>
                             </div>
                         </div>
@@ -160,76 +167,110 @@
     </div>
 
     <script>
+        // Counter for unique IDs
+        let dateCounter = 1;
+
         // Add new tour date input fields
         document.getElementById('add-tour-date').addEventListener('click', function() {
             const container = document.getElementById('tour-dates-container');
             const newDateDiv = document.createElement('div');
             newDateDiv.className = 'tour-date grid grid-cols-1 md:grid-cols-4 gap-2 items-end';
+            
+            // Use unique IDs for each new set of inputs
             newDateDiv.innerHTML = `
                 <div>
-                    <label for="start_date" class="block text-sm text-gray-600">Start Date</label>
-                    <input type="date" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                    <label for="start_date_${dateCounter}" class="block text-sm text-gray-600">Start Date</label>
+                    <input type="date" id="start_date_${dateCounter}" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                 </div>
                 <div>
-                    <label for="end_date" class="block text-sm text-gray-600">End Date (Optional)</label>
-                    <input type="date" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <label for="end_date_${dateCounter}" class="block text-sm text-gray-600">End Date (Optional)</label>
+                    <input type="date" id="end_date_${dateCounter}" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label for="start_time" class="block text-sm text-gray-600">Start Time (Optional)</label>
-                    <input type="time" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <label for="start_time_${dateCounter}" class="block text-sm text-gray-600">Start Time (Optional)</label>
+                    <input type="time" id="start_time_${dateCounter}" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label for="end_time" class="block text-sm text-gray-600">End Time (Optional)</label>
-                    <input type="time" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <label for="end_time_${dateCounter}" class="block text-sm text-gray-600">End Time (Optional)</label>
+                    <input type="time" id="end_time_${dateCounter}" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                     <button type="button" class="remove-date bg-red-500 text-white px-2 py-1 rounded mt-2 w-full">Remove</button>
                 </div>
             `;
             container.appendChild(newDateDiv);
+            dateCounter++;
             updateTourDatesList();
         });
 
         // Remove tour date input fields
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-date')) {
-                e.target.parentElement.parentElement.remove();
-                updateTourDatesList();
+                if (document.querySelectorAll('.tour-date').length > 1) {
+                    e.target.closest('.tour-date').remove();
+                    updateTourDatesList();
+                } else {
+                    alert('At least one tour date is required.');
+                }
             }
         });
 
-        // Update tour dates list display
+        // Update tour dates list
         function updateTourDatesList() {
+            const container = document.getElementById('tour-dates-container');
+            const dateBlocks = container.querySelectorAll('.tour-date');
             const tourDatesList = document.getElementById('tour-dates-list');
-            tourDatesList.innerHTML = '';
+            
+            tourDatesList.innerHTML = ''; // Clear displayed list
 
-            const startDates = document.getElementsByName('start_date[]');
-            const endDates = document.getElementsByName('end_date[]');
-            const startTimes = document.getElementsByName('start_time[]');
-            const endTimes = document.getElementsByName('end_time[]');
+            dateBlocks.forEach((block, index) => {
+                const startDateInput = block.querySelector('input[name="start_date[]"]');
+                const endDateInput = block.querySelector('input[name="end_date[]"]');
+                const startTimeInput = block.querySelector('input[name="start_time[]"]');
+                const endTimeInput = block.querySelector('input[name="end_time[]"]');
+                
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+                const startTime = startTimeInput.value;
+                const endTime = endTimeInput.value;
 
-            for (let i = 0; i < startDates.length; i++) {
-                const startDate = startDates[i].value; // Already in YYYY-MM-DD
-                const endDate = endDates[i].value;
-                const startTime = startTimes[i].value;
-                const endTime = endTimes[i].value;
-
+                // Only display if start_date is not empty
                 if (startDate) {
-                    let displayText = `Start: ${startDate}`;
-                    if (startTime) displayText += ` ${startTime}`;
-                    if (endDate) displayText += ` - End: ${endDate}`;
-                    if (endTime && endDate) displayText += ` ${endTime}`;
-
-                    const li = document.createElement('li');
-                    li.textContent = displayText;
-                    tourDatesList.appendChild(li);
+                    // Update displayed list
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Start: ${startDate}${startTime ? ' ' + startTime : ''}${endDate ? ' - End: ' + endDate : ''}${endTime ? ' ' + endTime : ''}`;
+                    tourDatesList.appendChild(listItem);
                 }
-            }
+            });
         }
 
-        // Update list when inputs change
-        document.addEventListener('input', function(e) {
-            if (e.target.name && (e.target.name.includes('start_date') || e.target.name.includes('end_date') || 
-                e.target.name.includes('start_time') || e.target.name.includes('end_time'))) {
-                updateTourDatesList();
+        // Initialize tour dates list on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTourDatesList();
+            
+            // Add change event listeners to all date/time fields
+            document.querySelectorAll('input[name="start_date[]"], input[name="end_date[]"], input[name="start_time[]"], input[name="end_time[]"]').forEach(input => {
+                input.addEventListener('change', updateTourDatesList);
+            });
+        });
+
+        // Photo preview functionality
+        document.getElementById('photos').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('photo-preview');
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            const files = e.target.files;
+            if (files) {
+                Array.from(files).forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'w-full h-32 object-cover rounded';
+                            previewContainer.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
             }
         });
     </script>

@@ -705,92 +705,149 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
-from .models import TourPackage, Boat, TourType, TourPackageSchedule
+from .models import TourPackage, Boat, TourType, TourPackageSchedule, Photos
+from django.core.exceptions import ValidationError
+from datetime import datetime
 
 @login_required
 def create_tour_package(request):
     if request.method == 'POST':
+        boat_id = request.POST.get('boat')
+        tour_type_id = request.POST.get('tour_type') or None
+        start_from = request.POST.get('start_from')
+        destinations = request.POST.get('destinations')
+        guest_amount = request.POST.get('guest_amount')
+        guest_limitation = request.POST.get('guest_limitation')
+        package_name = request.POST.get('package_name')
+        description = request.POST.get('description')
+        cabin_quantity = request.POST.get('cabin_quantity') or None
+        cabin_names = request.POST.get('cabin_names')
+        price = request.POST.get('price')
+        photos = request.FILES.getlist('photos')
+
+        # Validate required fields
+        if not all([boat_id, start_from, destinations, guest_amount, guest_limitation, package_name, price]):
+            messages.error(request, "All required fields must be filled.")
+            return redirect('create_tour_package')
+
+        # Validate numeric fields
         try:
-            user = get_user(request)
-            boat_id = request.POST.get('boat')
-            tour_type_id = request.POST.get('tour_type') or None
-            start_from = request.POST.get('start_from')
-            destinations = request.POST.get('destinations')
-            guest_amount = request.POST.get('guest_amount')
-            guest_limitation = request.POST.get('guest_limitation')
-            package_name = request.POST.get('package_name')
-            description = request.POST.get('description')
-            cabin_quantity = request.POST.get('cabin_quantity') or None
-            cabin_names = request.POST.get('cabin_names')
-            price = request.POST.get('price')
+            guest_amount = int(guest_amount)
+            guest_limitation = int(guest_limitation)
+            price = Decimal(price)
+            if guest_amount < 0 or guest_limitation < 0 or price < 0:
+                raise ValueError("Numeric fields cannot be negative.")
+            if cabin_quantity:
+                cabin_quantity = int(cabin_quantity)
+                if cabin_quantity < 0:
+                    raise ValueError("Cabin quantity cannot be negative.")
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid numeric values provided.")
+            return redirect('create_tour_package')
 
-            if not all([boat_id, start_from, destinations, guest_amount, guest_limitation, package_name, price]):
-                messages.error(request, "All required fields must be filled.")
-                return redirect('create_tour_package')
+        # Validate boat and tour type
+        try:
+            boat = Boat.objects.get(id=boat_id)
+            tour_type = TourType.objects.get(id=tour_type_id) if tour_type_id else None
+        except (Boat.DoesNotExist, TourType.DoesNotExist):
+            messages.error(request, "Invalid boat or tour type selected.")
+            return redirect('create_tour_package')
 
+        # Create tour package
+        user = get_user(request)
+        tour_package = TourPackage.objects.create(
+            boat=boat,
+            tour_type=tour_type,
+            start_from=start_from,
+            destinations=destinations,
+            guest_amount=guest_amount,
+            guest_limitation=guest_limitation,
+            package_name=package_name,
+            description=description,
+            cabin_quantity=cabin_quantity,
+            cabin_names=cabin_names,
+            price=price,
+            created_by=user.id
+        )
+
+        # Handle photos
+        if photos:
+            for photo in photos:
+                Photos.objects.create(package=tour_package, image=photo)
+
+        # Process tour dates - using direct array inputs instead of processed hidden fields
+        start_dates = request.POST.getlist('start_date[]')
+        end_dates = request.POST.getlist('end_date[]')
+        start_times = request.POST.getlist('start_time[]') 
+        end_times = request.POST.getlist('end_time[]')
+        
+        valid_dates = False
+        first_schedule = None
+        
+        # Make sure we have at least one valid start date
+        if not start_dates or not any(start_dates):
+            messages.error(request, "At least one valid tour date is required.")
+            tour_package.delete()  # Roll back if no valid dates
+            return redirect('create_tour_package')
+            
+        # Process each date set
+        for i in range(len(start_dates)):
             try:
-                guest_amount = int(guest_amount)
-                guest_limitation = int(guest_limitation)
-                price = Decimal(price)
-                if guest_amount < 0 or guest_limitation < 0 or price < 0:
-                    raise ValueError("Numeric fields cannot be negative.")
-                if cabin_quantity:
-                    cabin_quantity = int(cabin_quantity)
-                    if cabin_quantity < 0:
-                        raise ValueError("Cabin quantity cannot be negative.")
-            except (ValueError, TypeError):
-                messages.error(request, "Invalid numeric values provided.")
-                return redirect('create_tour_package')
-
-            try:
-                boat = Boat.objects.get(id=boat_id)
-                tour_type = TourType.objects.get(id=tour_type_id) if tour_type_id else None
-            except (Boat.DoesNotExist, TourType.DoesNotExist):
-                messages.error(request, "Invalid boat or tour type selected.")
-                return redirect('create_tour_package')
-
-            tour_package = TourPackage.objects.create(
-                boat=boat,
-                tour_type=tour_type,
-                start_from=start_from,
-                destinations=destinations,
-                guest_amount=guest_amount,
-                guest_limitation=guest_limitation,
-                package_name=package_name,
-                description=description,
-                cabin_quantity=cabin_quantity,
-                cabin_names=cabin_names,
-                price=price,
-                created_by=user.id
-            )
-
-            tour_dates = request.POST.getlist('tour_dates')
-            for date_str in tour_dates:
+                start_date = start_dates[i].strip() if i < len(start_dates) else None
+                end_date = end_dates[i].strip() if i < len(end_dates) else None
+                start_time = start_times[i].strip() if i < len(start_times) else None
+                end_time = end_times[i].strip() if i < len(end_times) else None
+                
+                # Skip if no start date provided
+                if not start_date:
+                    continue
+                    
+                # Validate start_date format
                 try:
-                    start_date, end_date, start_time, end_time = date_str.split(',')
-                    # start_date = start_date.strip()
-                    # end_date = end_date.strip() if end_date.strip() else None
-                    # start_time = start_time.strip() if start_time.strip() else None
-                    # end_time = end_time.strip() if end_time.strip() else None
-
-                    TourPackageSchedule.objects.create(
-                        package=tour_package,
-                        start_date=start_date,
-                        start_time=start_time,
-                        end_date=end_date,
-                        end_time=end_time,
-                        created_by=user.id
-                    )
-                except (ValueError, TypeError):
-                    messages.error(request, f"Invalid date format for: {date_str}")
+                    datetime.strptime(start_date, '%Y-%m-%d')
+                except ValueError:
+                    messages.error(request, f"Invalid start date format: {start_date}")
                     continue
 
-            messages.success(request, "Tour package created successfully!")
-            return redirect(reverse('tour_packages'))
+                # Validate end_date if provided
+                if end_date:
+                    try:
+                        datetime.strptime(end_date, '%Y-%m-%d')
+                    except ValueError:
+                        messages.error(request, f"Invalid end date format: {end_date}")
+                        continue
 
-        except Exception as e:
-            messages.error(request, f"An error occurred: {str(e)}")
-            return redirect(reverse('create_tour_package'))
+                # Create schedule
+                schedule = TourPackageSchedule.objects.create(
+                    package=tour_package,
+                    start_date=start_date,
+                    start_time=start_time or None,
+                    end_date=end_date or None,
+                    end_time=end_time or None,
+                    created_by=user.id
+                )
+                
+                # Store the first valid schedule to link to the package
+                if not first_schedule:
+                    first_schedule = schedule
+                
+                valid_dates = True
+            except Exception as e:
+                messages.error(request, f"Error processing date entry: {str(e)}")
+                continue
+
+        if not valid_dates:
+            messages.error(request, "No valid tour dates were created. Please check your date entries.")
+            tour_package.delete()  # Roll back if no valid dates created
+            return redirect('create_tour_package')
+            
+        # Link the first schedule to the tour package
+        if first_schedule:
+            tour_package.tour_date = first_schedule
+            tour_package.save()
+
+        messages.success(request, "Tour package created successfully!")
+        return redirect(reverse('tour_packages'))
 
     boats = Boat.objects.all()
     tour_types = TourType.objects.all()
@@ -807,16 +864,21 @@ def tour_package_api(request, boat_id):
     packages = TourPackage.objects.filter(boat_id=boat_id, deleted_at__isnull=True).order_by('-created_at')
     package_list = []
     for package in packages:
-        schedule = package.tour_date
+        schedules = package.schedules.all()
+        schedule_list = []
+        for schedule in schedules:
+            schedule_list.append({
+                'start_date': schedule.start_date,
+                'start_time': schedule.start_time,
+                'end_date': schedule.end_date,
+                'end_time': schedule.end_time,
+            })
         package_list.append({
             'id': package.id,
             'boat_id': package.boat.id,
             'boat': package.boat.name,
             'tour_type': package.tour_type.name if package.tour_type else None,
-            'start_date': schedule.start_date if schedule else None,
-            'start_time': schedule.start_time if schedule else None,
-            'end_date': schedule.end_date if schedule else None,
-            'end_time': schedule.end_time if schedule else None,
+            'schedules': schedule_list,
             'start_from': package.start_from,
             'destinations': package.destinations,
             'guest_amount': package.guest_amount,
@@ -827,9 +889,11 @@ def tour_package_api(request, boat_id):
             'cabin_names': package.cabin_names,
             'price': float(package.price),
             'created_at': package.created_at,
+            'photos': [photo.image.url for photo in package.photos.all()],
         })
 
     return JsonResponse({
         'status': 'success',
         'packages': package_list
     })
+

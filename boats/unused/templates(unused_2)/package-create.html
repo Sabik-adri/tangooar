@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Tour Package</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Create Tour Package</h1>
+
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-4 mb-2 rounded {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="bg-white p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Boat Selection -->
+                <div>
+                    <label for="boat" class="block text-sm font-medium text-gray-700">Boat</label>
+                    <select id="boat" name="boat" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        <option value="">Select a boat</option>
+                        {% for boat in boats %}
+                            <option value="{{ boat.id }}">{{ boat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Tour Type Selection -->
+                <div>
+                    <label for="tour_type" class="block text-sm font-medium text-gray-700">Tour Type (Optional)</label>
+                    <select id="tour_type" name="tour_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <option value="">Select a tour type</option>
+                        {% for tour_type in tour_types %}
+                            <option value="{{ tour_type.id }}">{{ tour_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Package Name -->
+                <div>
+                    <label for="package_name" class="block text-sm font-medium text-gray-700">Package Name</label>
+                    <input type="text" id="package_name" name="package_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Start From -->
+                <div>
+                    <label for="start_from" class="block text-sm font-medium text-gray-700">Start From</label>
+                    <input type="text" id="start_from" name="start_from" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Destinations -->
+                <div>
+                    <label for="destinations" class="block text-sm font-medium text-gray-700">Destinations</label>
+                    <input type="text" id="destinations" name="destinations" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Guest Amount -->
+                <div>
+                    <label for="guest_amount" class="block text-sm font-medium text-gray-700">Guest Amount</label>
+                    <input type="number" id="guest_amount" name="guest_amount" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Guest Limitation -->
+                <div>
+                    <label for="guest_limitation" class="block text-sm font-medium text-gray-700">Guest Limitation</label>
+                    <input type="number" id="guest_limitation" name="guest_limitation" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Price -->
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                    <input type="number" id="price" name="price" min="0" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Cabin Quantity -->
+                <div>
+                    <label for="cabin_quantity" class="block text-sm font-medium text-gray-700">Cabin Quantity (Optional)</label>
+                    <input type="number" id="cabin_quantity" name="cabin_quantity" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Cabin Names -->
+                <div>
+                    <label for="cabin_names" class="block text-sm font-medium text-gray-700">Cabin Names (Optional)</label>
+                    <input type="text" id="cabin_names" name="cabin_names" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Description -->
+                <div class="col-span-2">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="description" name="description" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                </div>
+
+                <!-- Tour Dates -->
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Tour Dates</label>
+                    <div id="tour-dates-container" class="space-y-4">
+                        <div class="tour-date grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
+                            <div>
+                                <label for="start_date" class="block text-sm text-gray-600">Start Date</label>
+                                <input type="date" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            </div>
+                            <div>
+                                <label for="end_date" class="block text-sm text-gray-600">End Date (Optional)</label>
+                                <input type="date" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div>
+                                <label for="start_time" class="block text-sm text-gray-600">Start Time (Optional)</label>
+                                <input type="time" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div>
+                                <label for="end_time" class="block text-sm text-gray-600">End Time (Optional)</label>
+                                <input type="time" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <button type="button" class="remove-date bg-red-500 text-white px-2 py-1 rounded mt-2 w-full">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="add-tour-date" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Add Tour Date</button>
+                </div>
+
+                <!-- Tour Dates List -->
+                <div class="col-span-2 mt-4">
+                    <h3 class="text-lg font-semibold">Added Tour Dates</h3>
+                    <ul id="tour-dates-list" class="list-disc pl-5 mt-2"></ul>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Create Tour Package</button>
+            </div>
+        </form>
+
+        <!-- Existing Packages -->
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold mb-4">Existing Tour Packages</h2>
+            {% if packages %}
+                <ul class="space-y-4">
+                    {% for package in packages %}
+                        <li class="bg-white p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold">{{ package.package_name }}</h3>
+                            <p><strong>Boat:</strong> {{ package.boat.name }}</p>
+                            <p><strong>Start From:</strong> {{ package.start_from }}</p>
+                            <p><strong>Destinations:</strong> {{ package.destinations }}</p>
+                            <p><strong>Price:</strong> ${{ package.price }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tour packages available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Add new tour date input fields
+        document.getElementById('add-tour-date').addEventListener('click', function() {
+            const container = document.getElementById('tour-dates-container');
+            const newDateDiv = document.createElement('div');
+            newDateDiv.className = 'tour-date grid grid-cols-1 md:grid-cols-4 gap-2 items-end';
+            newDateDiv.innerHTML = `
+                <div>
+                    <label for="start_date" class="block text-sm text-gray-600">Start Date</label>
+                    <input type="date" name="start_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
+                <div>
+                    <label for="end_date" class="block text-sm text-gray-600">End Date (Optional)</label>
+                    <input type="date" name="end_date[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="start_time" class="block text-sm text-gray-600">Start Time (Optional)</label>
+                    <input type="time" name="start_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="end_time" class="block text-sm text-gray-600">End Time (Optional)</label>
+                    <input type="time" name="end_time[]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <button type="button" class="remove-date bg-red-500 text-white px-2 py-1 rounded mt-2 w-full">Remove</button>
+                </div>
+            `;
+            container.appendChild(newDateDiv);
+            updateTourDatesList();
+        });
+
+        // Remove tour date input fields
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-date')) {
+                e.target.parentElement.parentElement.remove();
+                updateTourDatesList();
+            }
+        });
+
+        // Update tour dates list display
+        function updateTourDatesList() {
+            const tourDatesList = document.getElementById('tour-dates-list');
+            tourDatesList.innerHTML = '';
+
+            const startDates = document.getElementsByName('start_date[]');
+            const endDates = document.getElementsByName('end_date[]');
+            const startTimes = document.getElementsByName('start_time[]');
+            const endTimes = document.getElementsByName('end_time[]');
+
+            for (let i = 0; i < startDates.length; i++) {
+                const startDate = startDates[i].value; // Already in YYYY-MM-DD
+                const endDate = endDates[i].value;
+                const startTime = startTimes[i].value;
+                const endTime = endTimes[i].value;
+
+                if (startDate) {
+                    let displayText = `Start: ${startDate}`;
+                    if (startTime) displayText += ` ${startTime}`;
+                    if (endDate) displayText += ` - End: ${endDate}`;
+                    if (endTime && endDate) displayText += ` ${endTime}`;
+
+                    const li = document.createElement('li');
+                    li.textContent = displayText;
+                    tourDatesList.appendChild(li);
+                }
+            }
+        }
+
+        // Update list when inputs change
+        document.addEventListener('input', function(e) {
+            if (e.target.name && (e.target.name.includes('start_date') || e.target.name.includes('end_date') || 
+                e.target.name.includes('start_time') || e.target.name.includes('end_time'))) {
+                updateTourDatesList();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Manager{% endblock %}
+
+{% block content %}
+    <h1>Update Manager</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="user">User:</label>
+        <select name="user" id="user">
+            {% for user in users %}
+            <option value="{{ user.id }}" {% if user == manager.user %}selected{% endif %}>
+                {{ user.username }}
+            </option>
+            {% endfor %}
+        </select>
+        <br>
+        
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" value="{{ manager.name }}">
+        <br>
+        
+        <label for="owner_profile">Owner Profile:</label>
+        <select name="owner_profile" id="owner_profile">
+            {% for owner_profile in owner_profiles %}
+            <option value="{{ owner_profile.id }}" {% if owner_profile == manager.owner_profile %}selected{% endif %}>
+                {{ owner_profile.company_name }}
+            </option>
+            {% endfor %}
+        </select>
+        <br>
+        
+        <label for="assigned_boats">Assigned Boats:</label>
+        <textarea name="assigned_boats" id="assigned_boats">{{ manager.assigned_boats }}</textarea>
+        <br>
+        
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}
+

@@ -166,6 +166,7 @@ class TourType(models.Model):
     deleted_by = models.IntegerField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
 
+
 class TourPackage(models.Model):
     boat = models.ForeignKey('Boat', on_delete=models.CASCADE, related_name='packages')
     created_by = models.IntegerField(blank=True, null=True)
@@ -193,8 +194,16 @@ class TourPackage(models.Model):
     def __str__(self):
         return self.package_name
 
+class Photos(models.Model):
+    package = models.ForeignKey(TourPackage, on_delete=models.CASCADE, related_name='photos')
+    image = models.ImageField(upload_to='images/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Photo for {self.package.package_name}"
+
 class TourPackageSchedule(models.Model):
-    package = models.ForeignKey('TourPackage', on_delete=models.CASCADE, related_name='schedules')  # <-- add this line
+    package = models.ForeignKey('TourPackage', on_delete=models.CASCADE, related_name='schedules')
     start_date = models.DateField(default=datetime.date.today)
     start_time = models.TimeField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)

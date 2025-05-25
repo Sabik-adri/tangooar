@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Cabin{% endblock %}
+
+{% block content %}
+    <h1>Update Cabin</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="boat">Boat:</label>
+        <select name="boat" id="boat">
+            {% for boat in boats %}
+            <option value="{{ boat.id }}" {% if boat.id == cabin.boat.id %}selected{% endif %}>{{ boat.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" value="{{ cabin.name }}"><br>
+
+        <label for="cabin_no">Cabin No:</label>
+        <input type="text" name="cabin_no" id="cabin_no" value="{{ cabin.cabin_no }}"><br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description">{{ cabin.description }}</textarea><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" value="{{ cabin.price }}" step="0.01"><br>
+
+        <label for="length">Length:</label>
+        <input type="number" name="length" id="length" value="{{ cabin.length }}" step="0.01"><br>
+
+        <label for="width">Width:</label>
+        <input type="number" name="width" id="width" value="{{ cabin.width }}" step="0.01"><br>
+
+        <label for="height">Height:</label>
+        <input type="number" name="height" id="height" value="{{ cabin.height }}" step="0.01"><br>
+
+        <label for="is_ac">Is AC:</label>
+        <input type="checkbox" name="is_ac" id="is_ac" {% if cabin.is_ac %}checked{% endif %}><br>
+
+        <label for="is_non_ac">Is Non AC:</label>
+        <input type="checkbox" name="is_non_ac" id="is_non_ac" {% if cabin.is_non_ac %}checked{% endif %}><br>
+
+        <label for="is_attached_washroom">Is Attached Washroom:</label>
+        <input type="checkbox" name="is_attached_washroom" id="is_attached_washroom" {% if cabin.is_attached_washroom %}checked{% endif %}><br>
+
+        <label for="is_attached_belcony">Is Attached Belcony:</label>
+        <input type="checkbox" name="is_attached_belcony" id="is_attached_belcony" {% if cabin.is_attached_belcony %}checked{% endif %}><br>
+
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}
+

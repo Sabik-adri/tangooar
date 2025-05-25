@@ -1,0 +1,73 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.dashboard_view, name='dashboard'),
+    
+    # User
+    path('users/create/', views.user_create_view, name='user_create'),
+    path('users/update/<int:pk>/', views.user_update_view, name='user_update'),
+    path('users/delete/<int:pk>/', views.user_delete_view, name='user_delete'),
+    
+    # Boat Owner Profile
+    path('boat-owner-profiles/', views.boat_owner_profile_list_view, name='boat_owner_profiles'),
+    path('boat-owner-profiles/create/', views.create_boat_owner_profile_view, name='create_boat_owner_profile'),
+    path('boat-owner-profiles/update/<int:pk>/', views.update_boat_owner_profile_view, name='update_boat_owner_profile'),
+    path('boat-owner-profiles/delete/<int:pk>/', views.delete_boat_owner_profile_view, name='delete_boat_owner_profile'),
+    
+    # Manager
+    path('managers/', views.manager_list_view, name='manager_list'),
+    path('managers/create/', views.create_manager_view, name='create_manager'),
+    path('managers/update/<int:pk>/', views.update_manager_view, name='update_manager'),
+    path('managers/delete/<int:pk>/', views.delete_manager_view, name='delete_manager'),
+    
+    # Customer
+    path('customers/', views.customer_list_view, name='customer_list'),
+    path('customers/create/', views.create_customer_view, name='create_customer'),
+    path('customers/update/<int:pk>/', views.update_customer_view, name='update_customer'),
+    path('customers/delete/<int:pk>/', views.delete_customer_view, name='delete_customer'),
+    
+    # Boats
+    path('boats/', views.boat_list_view, name='boat_list'),
+    path('', views.boat_list_view_index, name='boat_list_index'),
+    path('api/boat-details/<int:boat_id>/', views.get_boat_details, name='get_boat_details'),
+    
+    path('api/boats/<int:boat_id>/', views.get_boat_details, name='boat_details'),
+    path('boats/create/', views.create_boat_view, name='create_boat'),
+    path('boats/update/<int:pk>/', views.update_boat_view, name='update_boat'),
+    path('boats/delete/<int:pk>/', views.delete_boat_view, name='delete_boat'),
+    
+    # Cabin
+    path('cabins/', views.cabin_list_view, name='cabins'),
+    path('api/cabins/<int:cabin_id>/', views.get_cabin_details, name='cabin_details'),
+    path('cabins/create/', views.create_cabin_view, name='create_cabin'),
+    path('cabins/update/<int:pk>/', views.update_cabin_view, name='update_cabin'),
+    path('cabins/delete/<int:pk>/', views.delete_cabin_view, name='delete_cabin'),
+    
+    path('schedule-calendars/', views.schedule_calendar_list_view, name='schedule_calendars'),
+    path('customers/', views.customer_list_view, name='customers'),
+    path('bookings/', views.booking_list_view, name='bookings'),
+    path('tour-types/', views.tour_type_list_view, name='tour_types'),
+    
+    path('tour-packages/', views.tour_package_list_view, name='tour_packages'),
+    path('tour-package-schedules/', views.tour_package_schedule_list_view, name='tour_package_schedules'),
+    path('packages/create/', views.create_tour_package, name='create_tour_package'),
+    path('packages/delete/<int:pk>/', views.delete_tour_package_view, name='delete_tour_package'),
+    
+    
+    path('signup/', views.signup_view, name='signup'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    
+    
+    # path('calendar/<int:boat_id>/', views.calendar_data, name='calendar_data'),
+    # path('book/', views.book_date, name='book_date'),
+
+    path('api/boat/<int:boat_id>/cabins/', views.get_boat_cabins, name='get_boat_cabins'),
+    path('payment-gateway/', views.payment_gateway, name='payment_gateway'),
+
+    path('api/tour-packages/<int:boat_id>/', views.tour_package_api, name='tour_package_api'),
+    
+
+]
+
