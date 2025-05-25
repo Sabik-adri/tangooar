@@ -48,9 +48,12 @@ urlpatterns = [
     path('customers/', views.customer_list_view, name='customers'),
     path('bookings/', views.booking_list_view, name='bookings'),
     path('tour-types/', views.tour_type_list_view, name='tour_types'),
+    
     path('tour-packages/', views.tour_package_list_view, name='tour_packages'),
     path('tour-package-schedules/', views.tour_package_schedule_list_view, name='tour_package_schedules'),
     path('packages/create/', views.create_tour_package, name='create_tour_package'),
+    path('packages/delete/<int:pk>/', views.delete_tour_package_view, name='delete_tour_package'),
+    
     
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),

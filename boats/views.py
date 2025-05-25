@@ -1,7 +1,9 @@
 from datetime import datetime, timezone
+from decimal import Decimal
 import re
 from django.forms import ValidationError
 from django.shortcuts import render
+from django.urls import reverse
 
 from .form import BoatForm
 
@@ -12,7 +14,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-
+from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
@@ -596,6 +598,20 @@ def tour_package_list_view(request):
     }
     return render(request, 'boats/tour_package_list.html', context)
 
+
+@csrf_exempt
+def delete_tour_package_view(request, pk):
+    package = get_object_or_404(TourPackage, pk=pk)
+    if request.method == "POST":
+        package.deleted_by = request.user.id
+        package.deleted_at = timezone.now()
+        package.save()  # Soft delete
+        package.delete()
+        return redirect('tour_packages')
+
+    return render(request, 'tour_package_delete.html', {'package': package})
+
+
 def tour_package_schedule_list_view(request):
     schedules = TourPackageSchedule.objects.all()
     context = {
@@ -684,65 +700,123 @@ def payment_gateway(request):
     return render(request, 'payment-gateway.html')
 
 
+from decimal import Decimal
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user
+from django.shortcuts import render, redirect, reverse
+from django.contrib import messages
+from .models import TourPackage, Boat, TourType, TourPackageSchedule
+
 @login_required
 def create_tour_package(request):
     if request.method == 'POST':
-        boat_id = request.POST.get('boat')
-        start_date = request.POST.get('start_date')
-        start_time = request.POST.get('start_time')
-        end_date = request.POST.get('end_date')
-        end_time = request.POST.get('end_time')
-        start_from = request.POST.get('start_from')
-        destinations = request.POST.get('destinations')
-        guest_amount = request.POST.get('guest_amount')
-        guest_limitation = request.POST.get('guest_limitation')
-        package_name = request.POST.get('package_name')
-        description = request.POST.get('description')
-        cabin_quantity = request.POST.get('cabin_quantity') or None
-        cabin_names = request.POST.get('cabin_names')
-        price = request.POST.get('price')
+        try:
+            user = get_user(request)
+            boat_id = request.POST.get('boat')
+            tour_type_id = request.POST.get('tour_type') or None
+            start_from = request.POST.get('start_from')
+            destinations = request.POST.get('destinations')
+            guest_amount = request.POST.get('guest_amount')
+            guest_limitation = request.POST.get('guest_limitation')
+            package_name = request.POST.get('package_name')
+            description = request.POST.get('description')
+            cabin_quantity = request.POST.get('cabin_quantity') or None
+            cabin_names = request.POST.get('cabin_names')
+            price = request.POST.get('price')
 
-        TourPackage.objects.create(
-            boat_id=boat_id,
-            start_date=start_date,
-            start_time=start_time,
-            end_date=end_date,
-            end_time=end_time,
-            start_from=start_from,
-            destinations=destinations,
-            guest_amount=guest_amount,
-            guest_limitation=guest_limitation,
-            package_name=package_name,
-            description=description,
-            cabin_quantity=cabin_quantity,
-            cabin_names=cabin_names,
-            price=price,
-            created_by=request.user
-        )
-        return redirect('create_tour_package')
+            if not all([boat_id, start_from, destinations, guest_amount, guest_limitation, package_name, price]):
+                messages.error(request, "All required fields must be filled.")
+                return redirect('create_tour_package')
+
+            try:
+                guest_amount = int(guest_amount)
+                guest_limitation = int(guest_limitation)
+                price = Decimal(price)
+                if guest_amount < 0 or guest_limitation < 0 or price < 0:
+                    raise ValueError("Numeric fields cannot be negative.")
+                if cabin_quantity:
+                    cabin_quantity = int(cabin_quantity)
+                    if cabin_quantity < 0:
+                        raise ValueError("Cabin quantity cannot be negative.")
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid numeric values provided.")
+                return redirect('create_tour_package')
+
+            try:
+                boat = Boat.objects.get(id=boat_id)
+                tour_type = TourType.objects.get(id=tour_type_id) if tour_type_id else None
+            except (Boat.DoesNotExist, TourType.DoesNotExist):
+                messages.error(request, "Invalid boat or tour type selected.")
+                return redirect('create_tour_package')
+
+            tour_package = TourPackage.objects.create(
+                boat=boat,
+                tour_type=tour_type,
+                start_from=start_from,
+                destinations=destinations,
+                guest_amount=guest_amount,
+                guest_limitation=guest_limitation,
+                package_name=package_name,
+                description=description,
+                cabin_quantity=cabin_quantity,
+                cabin_names=cabin_names,
+                price=price,
+                created_by=user.id
+            )
+
+            tour_dates = request.POST.getlist('tour_dates')
+            for date_str in tour_dates:
+                try:
+                    start_date, end_date, start_time, end_time = date_str.split(',')
+                    # start_date = start_date.strip()
+                    # end_date = end_date.strip() if end_date.strip() else None
+                    # start_time = start_time.strip() if start_time.strip() else None
+                    # end_time = end_time.strip() if end_time.strip() else None
+
+                    TourPackageSchedule.objects.create(
+                        package=tour_package,
+                        start_date=start_date,
+                        start_time=start_time,
+                        end_date=end_date,
+                        end_time=end_time,
+                        created_by=user.id
+                    )
+                except (ValueError, TypeError):
+                    messages.error(request, f"Invalid date format for: {date_str}")
+                    continue
+
+            messages.success(request, "Tour package created successfully!")
+            return redirect(reverse('tour_packages'))
+
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect(reverse('create_tour_package'))
 
     boats = Boat.objects.all()
     tour_types = TourType.objects.all()
-    packages = TourPackage.objects.all().order_by('-created_at')
+    packages = TourPackage.objects.filter(deleted_at__isnull=True).order_by('-created_at')
     return render(request, 'package-create.html', {
         'boats': boats,
         'tour_types': tour_types,
         'packages': packages
     })
+
     
     
 def tour_package_api(request, boat_id):
-    packages = TourPackage.objects.filter(boat_id=boat_id).order_by('-created_at')
+    packages = TourPackage.objects.filter(boat_id=boat_id, deleted_at__isnull=True).order_by('-created_at')
     package_list = []
     for package in packages:
+        schedule = package.tour_date
         package_list.append({
             'id': package.id,
             'boat_id': package.boat.id,
             'boat': package.boat.name,
-            'start_date': package.start_date,
-            'start_time': package.start_time,
-            'end_date': package.end_date,
-            'end_time': package.end_time,
+            'tour_type': package.tour_type.name if package.tour_type else None,
+            'start_date': schedule.start_date if schedule else None,
+            'start_time': schedule.start_time if schedule else None,
+            'end_date': schedule.end_date if schedule else None,
+            'end_time': schedule.end_time if schedule else None,
             'start_from': package.start_from,
             'destinations': package.destinations,
             'guest_amount': package.guest_amount,
@@ -759,4 +833,3 @@ def tour_package_api(request, boat_id):
         'status': 'success',
         'packages': package_list
     })
-

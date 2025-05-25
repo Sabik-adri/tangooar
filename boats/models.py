@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.forms import ValidationError
@@ -166,34 +167,38 @@ class TourType(models.Model):
     deleted_at = models.DateTimeField(blank=True, null=True)
 
 class TourPackage(models.Model):
-    boat = models.ForeignKey(Boat, on_delete=models.CASCADE, related_name='packages')
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_packages')
-    booked_by = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True, related_name='booked_packages')
-    tour_type = models.ForeignKey(TourType, on_delete=models.CASCADE, related_name='packages', blank=True, null=True)
-    start_date = models.DateField()
-    start_time = models.TimeField()
-    end_date = models.DateField()
-    end_time = models.TimeField()
+    boat = models.ForeignKey('Boat', on_delete=models.CASCADE, related_name='packages')
+    created_by = models.IntegerField(blank=True, null=True)
+    booked_by = models.IntegerField(blank=True, null=True)
+    tour_type = models.ForeignKey('TourType', on_delete=models.CASCADE, related_name='packages', blank=True, null=True)
+    tour_date = models.ForeignKey('TourPackageSchedule', on_delete=models.CASCADE, related_name='packages', blank=True, null=True)
     start_from = models.CharField(max_length=255)
     destinations = models.TextField()
-    guest_amount = models.IntegerField()
-    guest_limitation = models.IntegerField()
+    guest_amount = models.PositiveIntegerField()
+    guest_limitation = models.PositiveIntegerField()
     package_name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    cabin_quantity = models.IntegerField(blank=True, null=True)
+    cabin_quantity = models.PositiveIntegerField(blank=True, null=True)
     cabin_names = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    created_by = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.IntegerField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_by = models.IntegerField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.package_name
+
 class TourPackageSchedule(models.Model):
-    package = models.ForeignKey(TourPackage, on_delete=models.CASCADE, related_name='schedules')
-    schedule_date = models.DateField()
-    schedule_time = models.TimeField()
+    package = models.ForeignKey('TourPackage', on_delete=models.CASCADE, related_name='schedules')  # <-- add this line
+    start_date = models.DateField(default=datetime.date.today)
+    start_time = models.TimeField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     created_by = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.IntegerField(blank=True, null=True)
@@ -201,3 +206,8 @@ class TourPackageSchedule(models.Model):
     deleted_by = models.IntegerField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['start_date', 'start_time']
+
+    def __str__(self):
+        return f"{self.package.package_name} ({self.start_date})"
